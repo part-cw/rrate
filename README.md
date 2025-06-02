@@ -19,6 +19,3 @@ npm run web
 
 After launching, you can open the app on another platform simultaneously by pressing **a** (android) **i** (ios) or **w** (web) in the console.
 
-# Linting
-
-Please lint by running `npm run lint` before committing. You can also run `npm run lintfix` to have ESLint make automatic fixes.
