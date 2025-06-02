@@ -7,8 +7,6 @@ This app is built with Expo. [Please see the Expo Docs](https://docs.expo.dev/ge
 
 After cloning the repo, run `npm install` from the project directory to install dependencies.
 
-A current member of the Expo project will need to send you an invitation to collaborate. Then, you will be able to run, build, and deploy the app on Expo.
-
 # Running
 
 To run, use one of the following
