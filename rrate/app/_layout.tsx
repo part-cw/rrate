@@ -6,7 +6,8 @@ import { Theme } from "../assets/theme";
 export default function RootLayout() {
   return (
     <PaperProvider theme={Theme}>
-      <Stack />
+      <Stack
+        screenOptions={{ headerShown: false }} />
     </PaperProvider>
   );
 }
