@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 export default function Index() {
   const [tapCount, setTapCount] = useState(0);
   const router = useRouter();
+  const [isPressed, setIsPressed] = useState(false);
 
   return (
     <View style={Style.screenContainer}>
@@ -39,16 +40,21 @@ export default function Index() {
         <TapCount tapCount={tapCount} />
       </View>
       <View style={Style.componentContainer}>
-        <Button mode="contained" contentStyle={{ width: 350, height: 400 }} labelStyle={{ fontSize: 24, padding: 10 }} onPress={() => {
-          setTapCount(() => {
-            if (tapCount < 12) {
-              return tapCount + 1;
-            } else {
-              return 0;
-            }
-          })
-        }} >
+        <Button mode="contained"
+
+          contentStyle={{ width: 350, height: 400 }} labelStyle={{ fontSize: 24, padding: 10 }} onPress={() => {
+            setTapCount(() => {
+              if (tapCount < 12) {
+                return tapCount + 1;
+              } else {
+                return 0;
+              }
+            })
+          }} >
           Tap on Inhalation
+        </Button>
+        <Button buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/results")}>
+          Results
         </Button>
       </View>
     </View >

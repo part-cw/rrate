@@ -19,6 +19,7 @@ export const Theme = {
     "onTertiaryContainer": "rgb(65, 1, 0)",
     "error": "rgb(186, 26, 26)",
     "onError": "rgb(255, 255, 255)",
+    "buttonPressed": "rgb(46,45,101)",
     "errorContainer": "rgb(255, 218, 214)",
     "onErrorContainer": "rgb(65, 0, 2)",
     "neutral-bttn": "rgb(138, 138, 138)",
