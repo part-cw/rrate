@@ -5,10 +5,13 @@ import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
 import { useState } from "react";
 import { GlobalStyles as Style } from "@/app/styles";
+import { useRouter } from "expo-router";
 
 
+// The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const [tapCount, setTapCount] = useState(0);
+  const router = useRouter();
 
   return (
     <View style={Style.screenContainer}>
@@ -28,7 +31,7 @@ export default function Index() {
         >
           Exit
         </Button>
-        <Button icon="cog" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => console.log('Pressed')}>
+        <Button icon="cog" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/settings")}>
           Settings
         </Button>
       </View>
