@@ -3,22 +3,19 @@ import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
-
+import { useState } from "react";
+import { GlobalStyles as Style } from "@/app/styles";
 
 
 export default function Index() {
+  const [tapCount, setTapCount] = useState(0);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-      }}
-    >
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 14 }}>
+    <View style={Style.screenContainer}>
+      <View style={[Style.componentContainer, { width: 350, flexDirection: 'row', justifyContent: 'space-between', gap: 14 }]}>
         <Button
           mode="contained"
-          buttonColor={Theme.colors.secondary}
+          buttonColor={Theme.colors.tertiary}
           onPress={() => console.log('Pressed')}
           icon={({ size, color }) => (
             <MaterialCommunityIcons
@@ -34,11 +31,20 @@ export default function Index() {
         <Button icon="cog" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => console.log('Pressed')}>
           Settings
         </Button>
-        <TapCount />
-
       </View>
-      <View style={{ marginTop: 20 }}>
-        <Button mode="contained" style={{ paddingTop: 100, paddingBottom: 100 }} onPress={() => console.log('Pressed')} >
+      <View style={Style.componentContainer}>
+        <TapCount tapCount={tapCount} />
+      </View>
+      <View style={Style.componentContainer}>
+        <Button mode="contained" contentStyle={{ width: 350, height: 400 }} labelStyle={{ fontSize: 24, padding: 10 }} onPress={() => {
+          setTapCount(() => {
+            if (tapCount < 12) {
+              return tapCount + 1;
+            } else {
+              return 0;
+            }
+          })
+        }} >
           Tap on Inhalation
         </Button>
       </View>
