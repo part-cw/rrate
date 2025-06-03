@@ -1,5 +1,5 @@
 import { GlobalStyles as Style } from "./styles";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import { Button, Switch, Checkbox, TextInput } from 'react-native-paper';
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
@@ -33,8 +33,8 @@ export default function Settings() {
   return (
     <ScrollView>
       <View style={Style.screenContainer}>
-        <View>
-          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
+        <View style={{ alignItems: 'flex-start', width: 350 }}>
+          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push('/')}>
             Back
           </Button>
         </View>
@@ -128,13 +128,15 @@ export default function Settings() {
 
         </View>
 
-        <View style={[Style.floatingContainer, {
-          flexDirection: 'row', alignItems: 'center'
-        }]}>
+        <Pressable onPress={() => router.push('/configSettings')}>
+          <View style={[Style.floatingContainer, {
+            flexDirection: 'row', alignItems: 'center'
+          }]}>
 
-          <EvilIcons name="lock" size={35} color="black" />
-          <Text style={Style.heading}> Configuration Settings</Text>
-        </View>
+            <EvilIcons name="lock" size={35} color="black" />
+            <Text style={Style.heading}> Configuration Settings</Text>
+          </View>
+        </Pressable>
 
         <Copyright />
 
