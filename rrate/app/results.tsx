@@ -1,81 +1,74 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 import DropdownList from '../components/DropdownList';
 import { GlobalStyles as Style } from '@/app/styles';
+import { Button } from 'react-native-paper';
+import { Theme } from '../assets/theme';
+import { useRouter } from 'expo-router';
+import ConsistencyChartModal from '@/app/ConsistencyChartModal';
+import ConsistencyChart from '@/components/ConsistencyChart';
 
-const ages = ['<2 months', '2–12 months', '>1 year'];
+const ages = ['default', '<2 months', '2–12 months', '>1 year'];
 
 export default function RespiratoryRateCard() {
   const [age, setAge] = useState('');
+  const router = useRouter();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const onOpenChart = () => {
+    setIsModalVisible(true);
+  };
+
+  const onModalClose = () => {
+    setIsModalVisible(false);
+  };
 
   return (
-    <View style={[Style.floatingContainer, { flexDirection: 'row' }]}>
-      <View style={styles.leftColumn}>
-        <Text style={styles.rateValue}>41</Text>
-      </View>
+    <View>
+      <View style={[Style.floatingContainer, { flexDirection: 'row' }]}>
+        <View style={Style.leftColumn}>
+          <Text style={Style.rateValue}>41</Text>
+        </View>
 
+        <View style={Style.rightColumn}>
+          <Text style={Style.labelMain}>Respiratory Rate</Text>
+          <Text style={Style.labelSub}>(breaths/min)</Text>
 
+          <View style={Style.divider} />
 
-      <View style={styles.rightColumn}>
-        <Text style={styles.labelMain}>Respiratory Rate</Text>
-        <Text style={styles.labelSub}>(breaths/min)</Text>
-
-        <View style={styles.divider} />
-
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.ageLabel}>Age</Text>
-          <View style={styles.dropdownWrapper}>
-            <DropdownList data={ages} />
+          <View style={Style.dropdownContainer}>
+            <Text style={Style.ageLabel}>Age</Text>
+            <View style={{ width: 170 }}>
+              <DropdownList label="" data={ages} onSelect={setAge} />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+
+      <ConsistencyChart tapCount={3} />
+
+      <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>Does the breathing rate match the patient? </Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+          <Button
+            icon="check"
+            mode="contained"
+            buttonColor={Theme.colors.secondary}
+            onPress={() => console.log('Pressed')}
+            style={{ paddingHorizontal: 30, marginRight: 10 }}>
+            Yes
+          </Button>
+          <Button
+            icon="close"
+            buttonColor={Theme.colors.tertiary}
+            mode="contained"
+            onPress={() => router.push("/settings")}
+            style={{ paddingHorizontal: 30, marginLeft: 10 }}>
+            No</Button>
+        </View>
+      </View>
+      <ConsistencyChartModal isVisible={isModalVisible} onClose={onModalClose} />
+
+    </View >
   );
 }
-
-
-const styles = StyleSheet.create({
-  leftColumn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 25,
-  },
-  rateValue: {
-    fontSize: 60,
-    fontWeight: 'bold',
-  },
-  divider: {
-    width: '100%',
-    height: 1,
-    backgroundColor: '#ccc'
-  },
-  rightColumn: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  labelMain: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'left',
-  },
-  labelSub: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 12,
-  },
-  dropdownContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ageLabel: {
-    marginRight: 8,
-    fontSize: 16,
-  },
-  dropdownWrapper: {
-    flex: 1,
-    borderRadius: 6,
-    overflow: 'hidden',
-    backgroundColor: '#f9f9f9',
-    elevation: 2,
-  }
-});

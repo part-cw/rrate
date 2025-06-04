@@ -41,7 +41,7 @@ export default function Settings() {
 
 
         <View style={Style.floatingContainer}>
-          <DropDown data={languages} />
+          <DropDown label="Select Language" data={languages} />
         </View>
 
 
@@ -128,7 +128,7 @@ export default function Settings() {
 
         </View>
 
-        <Pressable onPress={() => router.push('/configSettings')}>
+        <Pressable onPress={() => router.push('/passwordConfigSettings')}>
           <View style={[Style.floatingContainer, {
             flexDirection: 'row', alignItems: 'center'
           }]}>

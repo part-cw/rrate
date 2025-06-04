@@ -4,7 +4,6 @@ import { Button, RadioButton, Checkbox, TextInput } from 'react-native-paper';
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import * as React from "react";
-import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
 

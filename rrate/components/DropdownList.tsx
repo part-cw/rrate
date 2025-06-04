@@ -8,15 +8,16 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/app/styles';
 
-export default function DropdownList({ data }: { data: string[] }) {
-  const [selected, setSelected] = useState('Select Language');
+export default function DropdownList({ label, data, onSelect }: { label: string; data: string[], onSelect?: (value: string) => void }) {
+  const [selected, setSelected] = useState(label);
   const [open, setOpen] = useState(false);
 
   const toggleDropdown = () => setOpen(prev => !prev);
 
-  const handleSelect = (lang: string) => {
-    setSelected(lang);
+  const handleSelect = (val: string) => {
+    setSelected(val);
     setOpen(false);
+    if (onSelect) onSelect(val);
   };
 
   return (

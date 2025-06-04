@@ -41,7 +41,7 @@ export const GlobalStyles = StyleSheet.create({
     margin: 20,
   },
 
-  // Dropdown
+  // Dropdown List
   dropdownBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -76,5 +76,44 @@ export const GlobalStyles = StyleSheet.create({
   heading: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  // Respiratory Rate Display
+  leftColumn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: 25,
+  },
+  rateValue: {
+    fontSize: 70,
+    fontWeight: 'bold',
+  },
+  divider: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#ccc'
+  },
+  rightColumn: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  labelMain: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  labelSub: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  dropdownContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ageLabel: {
+    marginRight: 8,
+    fontSize: 16,
   }
 });
