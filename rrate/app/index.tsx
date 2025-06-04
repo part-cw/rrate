@@ -13,6 +13,7 @@ export default function Index() {
   const [tapCount, setTapCount] = useState(0);
   const router = useRouter();
   const [isPressed, setIsPressed] = useState(false);
+  const [rrate, setRRate] = useState(0);
 
   return (
     <View style={Style.screenContainer}>
