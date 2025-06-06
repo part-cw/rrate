@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { GlobalStyles as Style } from '@/app/styles';
+import { GlobalStyles as Style } from '@/assets/styles';
 import { Theme } from '../assets/theme';
 
 export default function PasswordPage() {

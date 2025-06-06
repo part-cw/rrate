@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { GlobalStyles as Style } from '@/app/styles';
+import { GlobalStyles as Style } from '@/assets/styles';
 
 export default function ConsistencyChart({ tapCount }: { tapCount: number }) {
   return (

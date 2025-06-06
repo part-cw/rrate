@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { GlobalStyles as Style } from "@/app/styles";
+import { GlobalStyles as Style } from "@/assets/styles";
 
 type TapCountProps = {
   tapCount: number;

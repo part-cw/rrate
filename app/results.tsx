@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import DropdownList from '../components/DropdownList';
-import { GlobalStyles as Style } from '@/app/styles';
+import { GlobalStyles as Style } from '@/assets/styles';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';

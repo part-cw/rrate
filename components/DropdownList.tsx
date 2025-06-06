@@ -6,7 +6,7 @@ import {
   FlatList
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { GlobalStyles as Style } from '@/app/styles';
+import { GlobalStyles as Style } from '@/assets/styles';
 
 export default function DropdownList({ label, data, onSelect }: { label: string; data: string[], onSelect?: (value: string) => void }) {
   const [selected, setSelected] = useState(label);

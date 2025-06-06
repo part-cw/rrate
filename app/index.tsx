@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
 import { useState } from "react";
-import { GlobalStyles as Style } from "@/app/styles";
+import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 
 

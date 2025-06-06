@@ -1,4 +1,4 @@
-import { GlobalStyles as Style } from "./styles";
+import { GlobalStyles as Style } from "../assets/styles";
 import { View, Text, ScrollView } from "react-native";
 import { Button, RadioButton, Checkbox, TextInput } from 'react-native-paper';
 import { Theme } from "../assets/theme";
