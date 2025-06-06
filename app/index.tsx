@@ -3,22 +3,49 @@ import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useSettings } from "./SettingsContext";
-
+import AlertModal from "../components/alertModal";
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const router = useRouter();
 
   const [tapCount, setTapCount] = useState(0);
-  const [isPressed, setIsPressed] = useState(false);
-  const [timestamps, setTimestamps] = useState<number[]>([]); // used in calculating the rrate
+  const [timestamps, setTimestamps] = useState<number[]>([]);
+  const [tapsTooFastModalVisible, setTapsTooFastModalVisible] = useState<boolean>(false);
+  const [notEnoughTapsModalVisible, setNotEnoughTapsModalVisible] = useState<boolean>(false);
+  const [tapsInconsistentModalVisible, setTapsInconsistentModalVisible] = useState<boolean>(false);
   const { tapCountRequired, consistencyThreshold, setRRate } = useSettings();
+
   const tapLimit = tapCountRequired;
   const consistencyThresholdPercent = consistencyThreshold;
+
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const tapsTooFast = () => setTapsTooFastModalVisible(true);
+  const notEnoughTaps = () => setNotEnoughTapsModalVisible(true);
+  const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
+
+  // Start/reset timeout after each tap
+  useEffect(() => {
+    if (timestamps.length === 0) return;
+
+    // Clear any previous timeout
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      if (!notEnoughTapsModalVisible) {
+        notEnoughTaps();
+      }
+    }, 60000);
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [timestamps]);
 
   // Handler function triggered by the Tap on Inhalation button. 
   function countAndCalculateTap() {
@@ -29,29 +56,38 @@ export default function Index() {
       setTapCount(0);
     }
 
-    // perform consistency calculation 
+    // perform consistency calculation
     consistencyCalculation();
   }
 
-  // handles interactions with the Tap on Inhalation button 
+  // calculates consistency of taps
   const consistencyCalculation = () => {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
     setTimestamps(updated);
 
     const result = evaluateRecentTaps({ timestamps: updated });
+
     if (result) {
-      setRRate(Math.round(result.rate)); // set the respiratory rate in the global context so it can be used in other components
-      router.push("/results");
-      return;
+      if (result.rate < 140) {
+        setRRate(Math.round(result.rate)); // set the respiratory rate in the global context so it can be used in other components
+
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+        router.push("/results");
+        return;
+      } else {
+        tapsTooFast();
+        return;
+      }
     }
 
     if (updated.length >= 12) {
-      // force restart
+      inconsistentTaps();
     }
   };
 
-  // Checks if the last few taps were consistent (required tap count determined in Settings; default is 5)
+  // Checks if the last few taps were consistent and calculates rrate (required tap count determined in Settings; default is 5)
   function evaluateRecentTaps({ timestamps }: { timestamps: number[] }) {
     if (timestamps.length < tapLimit) return null;
 
@@ -84,7 +120,6 @@ export default function Index() {
       : sorted[mid];
   };
 
-
   return (
     <View style={Style.screenContainer}>
       <View style={[Style.componentContainer, { width: 350, flexDirection: 'row', justifyContent: 'space-between', gap: 14 }]}>
@@ -103,7 +138,8 @@ export default function Index() {
         >
           Exit
         </Button>
-        <Button icon="cog"
+        <Button
+          icon="cog"
           buttonColor={Theme.colors["neutral-bttn"]}
           mode="contained"
           onPress={() => router.push("/settings")}
@@ -111,16 +147,25 @@ export default function Index() {
           Settings
         </Button>
       </View>
+
       <View style={Style.componentContainer}>
         <TapCount tapCount={tapCount} />
       </View>
-      <View style={Style.componentContainer}>
-        <Button mode="contained"
 
-          contentStyle={{ width: 350, height: 400 }} labelStyle={{ fontSize: 24, padding: 10 }} onPress={countAndCalculateTap}>
+      <View style={Style.componentContainer}>
+        <Button
+          mode="contained"
+          contentStyle={{ width: 350, height: 400 }}
+          labelStyle={{ fontSize: 24, padding: 10 }}
+          onPress={countAndCalculateTap}
+        >
           Tap on Inhalation
         </Button>
       </View>
-    </View >
+
+      <AlertModal isVisible={tapsTooFastModalVisible} message={"Taps are too fast."} onClose={() => setTapsTooFastModalVisible(false)} />
+      <AlertModal isVisible={notEnoughTapsModalVisible} message={"Not enough taps in 60 seconds."} onClose={() => setNotEnoughTapsModalVisible(false)} />
+      <AlertModal isVisible={tapsInconsistentModalVisible} message={"Taps are inconsistent."} onClose={() => setTapsInconsistentModalVisible(false)} />
+    </View>
   );
 }
