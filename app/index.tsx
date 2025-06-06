@@ -14,9 +14,8 @@ export default function Index() {
   const [tapCount, setTapCount] = useState(0);
   const router = useRouter();
   const [isPressed, setIsPressed] = useState(false);
-  const [rrate, setRRate] = useState(0);
   const [timestamps, setTimestamps] = useState<number[]>([]); // used in calculating the rrate
-  const { tapCountRequired, consistencyThreshold } = useSettings();
+  const { tapCountRequired, consistencyThreshold, setRRate } = useSettings();
   const tapLimit = tapCountRequired;
   const consistencyThresholdPercent = consistencyThreshold;
 
@@ -28,7 +27,7 @@ export default function Index() {
 
     const result = evaluateRecentTaps({ timestamps: updated });
     if (result) {
-      setRRate(result.rate);
+      setRRate(Math.round(result.rate));
       console.log("Consistent rate found:", result.rate);
       router.push("/results");
       return;

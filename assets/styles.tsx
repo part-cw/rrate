@@ -85,7 +85,7 @@ export const GlobalStyles = StyleSheet.create({
     paddingRight: 25,
   },
   rateValue: {
-    fontSize: 70,
+    fontSize: 60,
     fontWeight: 'bold',
   },
   divider: {

@@ -21,6 +21,9 @@ type SettingsContextType = {
 
   tapCountRequired: number;
   setTapCountRequired: (value: number) => void;
+
+  rrate: number;
+  setRRate: (value: number) => void;
 };
 
 const SettingsContext = createContext<SettingsContextType | null>(null);
@@ -32,6 +35,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
   const [consistencyThreshold, setConsistencyThreshold] = useState(13);
   const [tapCountRequired, setTapCountRequired] = useState(4);
+  const [rrate, setRRate] = useState(0);
 
   return (
     <SettingsContext.Provider
@@ -48,6 +52,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setConsistencyThreshold,
         tapCountRequired,
         setTapCountRequired,
+        rrate,
+        setRRate
       }}
     >
       {children}

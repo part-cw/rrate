@@ -7,13 +7,16 @@ import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import ConsistencyChartModal from '@/app/ConsistencyChartModal';
 import ConsistencyChart from '@/components/ConsistencyChart';
+import { useSettings } from './SettingsContext';
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
+
 
 export default function RespiratoryRateCard() {
   const [age, setAge] = useState('');
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const { rrate } = useSettings();
 
   const onOpenChart = () => {
     setIsModalVisible(true);
@@ -27,7 +30,7 @@ export default function RespiratoryRateCard() {
     <View style={Style.screenContainer}>
       <View style={[Style.floatingContainer, { flexDirection: 'row' }]}>
         <View style={Style.leftColumn}>
-          <Text style={Style.rateValue}>41</Text>
+          <Text style={Style.rateValue}>{rrate}</Text>
         </View>
 
         <View style={Style.rightColumn}>
@@ -62,7 +65,7 @@ export default function RespiratoryRateCard() {
             icon="close"
             buttonColor={Theme.colors.tertiary}
             mode="contained"
-            onPress={() => router.push("/settings")}
+            onPress={() => router.push("/")}
             style={{ paddingHorizontal: 30, marginLeft: 10 }}>
             No</Button>
         </View>
