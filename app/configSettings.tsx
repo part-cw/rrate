@@ -6,11 +6,13 @@ import { useRouter } from "expo-router";
 import * as React from "react";
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
+import { useSettings } from "../app/SettingsContext";
 
 export default function Settings() {
   const router = useRouter();
 
   const [RRateSelected, setRRateSelected] = React.useState('first');
+  const { setMeasurementMethod, setTapCountRequired, setConsistencyThreshold } = useSettings();
 
 
   const numberOfTapsOptions = ["3", "4", "5", "6"];
@@ -32,7 +34,10 @@ export default function Settings() {
             <RadioButton
               value="first"
               status={RRateSelected === 'first' ? 'checked' : 'unchecked'}
-              onPress={() => setRRateSelected('first')}
+              onPress={() => {
+                setRRateSelected('first');
+                setMeasurementMethod('tap');
+              }}
             />
             <Text>Use RRate Algorithm </Text>
           </View>
@@ -40,7 +45,10 @@ export default function Settings() {
             <RadioButton
               value="second"
               status={RRateSelected === 'second' ? 'checked' : 'unchecked'}
-              onPress={() => setRRateSelected('second')}
+              onPress={() => {
+                setRRateSelected('second');
+                setMeasurementMethod('timer');
+              }}
             />
             <Text>Tap for one minute </Text>
           </View>
@@ -51,7 +59,7 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the number of consistent taps required for calculating the respiratory rate.</Text>
           </View>
-          <Slider values={numberOfTapsOptions} defaultValue="5" />
+          <Slider values={numberOfTapsOptions} defaultValue="5" onSelect={(val) => setTapCountRequired(parseInt(val))} />
         </View>
 
         <View style={[Style.floatingContainer, { padding: 30 }]}>
@@ -59,7 +67,7 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the threshold offset from the median time interval between taps. </Text>
           </View>
-          <Slider values={consistencyThresholdOptions} defaultValue="13%" />
+          <Slider values={consistencyThresholdOptions} defaultValue="13%" onSelect={(val) => setTapCountRequired(parseInt(val.replace('%', '')))} />
         </View>
 
         <Copyright />

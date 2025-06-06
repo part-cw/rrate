@@ -7,6 +7,7 @@ import * as React from "react";
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
+import { useSettings } from "./SettingsContext";
 
 export default function Settings() {
   const router = useRouter();
@@ -23,7 +24,12 @@ export default function Settings() {
   const [API, setAPI] = React.useState("");
 
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = () => {
+    setIsSwitchOn(!isSwitchOn);
+    setAgeThresholdEnabled(!isSwitchOn);
+  }
+
+  const { setSelectedLanguage, setAgeThresholdEnabled, setBabyAnimation } = useSettings();
 
   const languages = [
     'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
@@ -41,14 +47,15 @@ export default function Settings() {
 
 
         <View style={Style.floatingContainer}>
-          <DropDown label="Select Language" data={languages} />
+          <DropDown label="Select Language" data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
 
 
         <View style={Style.floatingContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={Style.heading}> Patient Age Interpretation </Text>
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+            <Switch value={isSwitchOn}
+              onValueChange={onToggleSwitch} />
           </View>
           <View style={{ marginVertical: 20 }}>
             <Text style={{ color: "#707070" }}>Uses age-based thresholds to classify the respiratory rate as normal or high. </Text>

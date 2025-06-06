@@ -8,8 +8,14 @@ import {
 } from 'react-native';
 import { GlobalStyles as Style } from '../assets/styles';
 
+type SliderProps = {
+  values: string[];
+  defaultValue: string;
+  onSelect?: (value: string) => void; // 👈 new
+};
 
-export default function Slider({ values, defaultValue }: { values: string[], defaultValue: string }) {
+
+export default function Slider({ values, defaultValue }: SliderProps) {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);
 
