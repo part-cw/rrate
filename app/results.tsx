@@ -26,11 +26,34 @@ export default function RespiratoryRateCard() {
     setIsModalVisible(false);
   };
 
+  let rrateColour;
+
+  if (age === '<2 months') {
+    if (rrate > 60) {
+      rrateColour = Theme.colors.tertiary;
+    } else {
+      rrateColour = Theme.colors.secondary;
+    }
+  } else if (age === '2–12 months') {
+    if (rrate > 50) {
+      rrateColour = Theme.colors.tertiary;
+    } else {
+      rrateColour = Theme.colors.secondary;
+    }
+  } else if (age === '>1 year') {
+    if (rrate > 40) {
+      rrateColour = Theme.colors.tertiary;
+    } else {
+      rrateColour = Theme.colors.secondary;
+    }
+  }
+
+
   return (
     <View style={Style.screenContainer}>
       <View style={[Style.floatingContainer, { flexDirection: 'row' }]}>
         <View style={Style.leftColumn}>
-          <Text style={Style.rateValue}>{rrate}</Text>
+          <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
         </View>
 
         <View style={Style.rightColumn}>
