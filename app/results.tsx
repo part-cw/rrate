@@ -24,7 +24,7 @@ export default function RespiratoryRateCard() {
   };
 
   return (
-    <View>
+    <View style={Style.screenContainer}>
       <View style={[Style.floatingContainer, { flexDirection: 'row' }]}>
         <View style={Style.leftColumn}>
           <Text style={Style.rateValue}>41</Text>

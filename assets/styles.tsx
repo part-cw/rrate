@@ -152,4 +152,30 @@ export const GlobalStyles = StyleSheet.create({
   label: {
     fontSize: 16
   },
+
+  // Consistency Chart
+  outsideThreshold: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5
+  },
+  insideThreshold: {
+    backgroundColor: '#E8E8E8',
+    borderRadius: 5
+  },
+  consistentTap: {
+    width: 10,
+    height: 10,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
+  inconsistentTap: {
+    width: 10,
+    height: 10,
+    borderRadius: 50,
+    backgroundColor: '#DC3220',
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
+
 });
