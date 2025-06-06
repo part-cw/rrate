@@ -9,13 +9,20 @@ After cloning the repo, run `npm install` from the project directory to install 
 
 # Running
 
-To run, use one of the following
+To run:
 
-```
-npm run android
-npm run ios
-npm run web
-```
+ ```bash
+   npx expo start
+   ```
+
+In the output, you'll find options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+
 
 After launching, you can open the app on another platform simultaneously by pressing **a** (android) **i** (ios) or **w** (web) in the console.
 
