@@ -3,15 +3,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Dimensions,
   Animated,
 } from 'react-native';
+import { GlobalStyles as Style } from '../assets/styles';
 
-const values = [3, 4, 5, 6];
 
-export default function Slider() {
-  const [selectedValue, setSelectedValue] = useState(5);
+export default function Slider({ values, defaultValue }: { values: string[], defaultValue: string }) {
+  const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);
 
   const screenWidth = Dimensions.get('window').width;
@@ -22,73 +21,43 @@ export default function Slider() {
 
   useEffect(() => {
     Animated.timing(animatedLeft, {
-      toValue: selectedIndex * stepWidth,
+      toValue: selectedIndex * stepWidth + 15, // Adjusted to center triangle and label
       duration: 200,
       useNativeDriver: false,
     }).start();
   }, [selectedValue]);
 
   return (
-    <View style={styles.container}>
+    <View style={Style.container}>
       <Animated.View
         style={[
-          styles.triangle,
+          Style.triangle,
           {
             left: animatedLeft,
-            transform: [{ translateX: -1 }], // center the triangle
+            transform: [{ translateX: -1 }],
           },
         ]}
       />
 
-      <View style={styles.sliderLine} />
-      <View style={styles.numberRow}>
+      <View style={Style.sliderLine} />
+      <View style={Style.numberRow}>
         {values.map((val) => (
           <TouchableOpacity
             key={val}
             onPress={() => setSelectedValue(val)}
-            style={[styles.step, { width: stepWidth }]}
+            style={[Style.step, { width: stepWidth }]}
           >
-            <Text style={styles.label}>{val}</Text>
+            <Text
+              style={[
+                Style.label,
+                val === selectedValue && { fontWeight: 'bold' }
+              ]}
+            >
+              {val}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sliderLine: {
-    height: 2,
-    backgroundColor: 'black',
-    width: 290,
-    position: 'absolute',
-    top: 10,
-  },
-  triangle: {
-    position: 'absolute',
-    top: 7,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 6,
-    borderRightWidth: 6,
-    borderTopWidth: 10,
-    borderStyle: 'solid',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: 'black',
-  },
-  numberRow: {
-    flexDirection: 'row',
-    marginTop: 20
-  },
-  step: {
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 16
-  },
-});

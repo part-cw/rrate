@@ -115,5 +115,41 @@ export const GlobalStyles = StyleSheet.create({
   ageLabel: {
     marginRight: 8,
     fontSize: 16,
-  }
+  },
+
+  // Slider
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sliderLine: {
+    height: 2,
+    backgroundColor: 'black',
+    width: 270,
+    position: 'absolute',
+    top: 10,
+  },
+  triangle: {
+    position: 'absolute',
+    top: 7,
+    width: 0,
+    height: 0,
+    borderLeftWidth: 6,
+    borderRightWidth: 6,
+    borderTopWidth: 10,
+    borderStyle: 'solid',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'black',
+  },
+  numberRow: {
+    flexDirection: 'row',
+    marginTop: 20
+  },
+  step: {
+    alignItems: 'center',
+  },
+  label: {
+    fontSize: 16
+  },
 });

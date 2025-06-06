@@ -12,6 +12,10 @@ export default function Settings() {
 
   const [RRateSelected, setRRateSelected] = React.useState('first');
 
+
+  const numberOfTapsOptions = ["3", "4", "5", "6"];
+  const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
+
   return (
     <ScrollView>
       <View style={Style.screenContainer}>
@@ -22,7 +26,7 @@ export default function Settings() {
         </View>
 
 
-        <View style={Style.floatingContainer}>
+        <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}> Measurement Method </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
             <RadioButton
@@ -42,19 +46,20 @@ export default function Settings() {
           </View>
         </View>
 
-        <View style={Style.floatingContainer}>
+        <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}>Taps </Text>
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the number of consistent taps required for calculating the respiratory rate.</Text>
           </View>
-          <Slider />
+          <Slider values={numberOfTapsOptions} defaultValue="5" />
         </View>
 
-        <View style={Style.floatingContainer}>
+        <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}>Consistency Threshold </Text>
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the threshold offset from the median time interval between taps. </Text>
           </View>
+          <Slider values={consistencyThresholdOptions} defaultValue="13%" />
         </View>
 
         <Copyright />
