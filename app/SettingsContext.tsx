@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-type MeasurementMethod = 'tap' | 'timer'; // Replace with actual method names
+type MeasurementMethod = 'tap' | 'timer';
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 
 type SettingsContextType = {

@@ -6,6 +6,7 @@ import TapCount from "../components/TapCount";
 import { useState } from "react";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
+import { useSettings } from "./SettingsContext";
 
 
 // The landing screen, where the measurement of respiratory rate takes place. 
@@ -14,6 +15,74 @@ export default function Index() {
   const router = useRouter();
   const [isPressed, setIsPressed] = useState(false);
   const [rrate, setRRate] = useState(0);
+  const [timestamps, setTimestamps] = useState<number[]>([]); // used in calculating the rrate
+  const { tapCountRequired, consistencyThreshold } = useSettings();
+  const tapLimit = tapCountRequired;
+  const consistencyThresholdPercent = consistencyThreshold;
+
+  // handles interactions with the Tap on Inhalation button 
+  const consistencyCalculation = () => {
+    const now = Date.now() / 1000;
+    const updated = [...timestamps, now];
+    setTimestamps(updated);
+
+    const result = evaluateRecentTaps({ timestamps: updated });
+    if (result) {
+      setRRate(result.rate);
+      console.log("Consistent rate found:", result.rate);
+      router.push("/results");
+      return;
+    }
+
+    if (updated.length >= 12) {
+      // force restart
+    }
+  };
+
+  function evaluateRecentTaps({ timestamps }: { timestamps: number[] }) {
+    if (timestamps.length < tapLimit) return null;
+
+    const recent = timestamps.slice(-tapLimit); // last 5 taps
+    const intervals = recent.slice(1).map((t, i) => t - recent[i]);
+    const median = getMedian({ arr: intervals });
+    const threshold = (consistencyThresholdPercent / 100) * median;
+
+    const isConsistent = intervals.every(
+      (interval) => Math.abs(interval - median) <= threshold
+    );
+
+    if (isConsistent) {
+      return {
+        intervals,
+        median,
+        rate: 60 / median,
+      };
+    }
+
+    return null;
+  }
+
+
+  function countAndCalculateTap() {
+    // update tap count
+    if (tapCount < 12) {
+      setTapCount(tapCount + 1);
+    } else {
+      setTapCount(0);
+    }
+
+    // perform consistency calculation 
+    consistencyCalculation();
+  }
+
+  const getMedian = ({ arr }: { arr: number[] }) => {
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 0
+      ? (sorted[mid - 1] + sorted[mid]) / 2
+      : sorted[mid];
+  };
+
 
   return (
     <View style={Style.screenContainer}>
@@ -47,15 +116,7 @@ export default function Index() {
       <View style={Style.componentContainer}>
         <Button mode="contained"
 
-          contentStyle={{ width: 350, height: 400 }} labelStyle={{ fontSize: 24, padding: 10 }} onPress={() => {
-            setTapCount(() => {
-              if (tapCount < 12) {
-                return tapCount + 1;
-              } else {
-                return 0;
-              }
-            })
-          }} >
+          contentStyle={{ width: 350, height: 400 }} labelStyle={{ fontSize: 24, padding: 10 }} onPress={countAndCalculateTap}>
           Tap on Inhalation
         </Button>
         <Button

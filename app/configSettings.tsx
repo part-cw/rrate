@@ -67,7 +67,7 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the threshold offset from the median time interval between taps. </Text>
           </View>
-          <Slider values={consistencyThresholdOptions} defaultValue="13%" onSelect={(val) => setTapCountRequired(parseInt(val.replace('%', '')))} />
+          <Slider values={consistencyThresholdOptions} defaultValue="13%" onSelect={(val) => setConsistencyThreshold(parseInt(val.replace('%', '')))} />
         </View>
 
         <Copyright />
