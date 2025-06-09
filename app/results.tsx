@@ -5,19 +5,19 @@ import { GlobalStyles as Style } from '@/assets/styles';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
-import ConsistencyChartModal from '@/app/ConsistencyChartModal';
-import ConsistencyChart from '@/components/ConsistencyChart';
+import ConsistencyChartModal from '../components/ConsistencyChartModal';
+import ConsistencyChart from '../components/ConsistencyChart';
 import { useSettings } from './SettingsContext';
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
 
 
-export default function RespiratoryRateCard() {
+export default function Results() {
   const [age, setAge] = useState('');
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { rrate, tapTimestamps } = useSettings();
-  console.log("Tap timestamps: " + tapTimestamps);
+  const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   const onOpenChart = () => {
     setIsModalVisible(true);
@@ -74,27 +74,50 @@ export default function RespiratoryRateCard() {
 
       <ConsistencyChart />
 
-      <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
-        <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>Does the breathing rate match the patient? </Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
-          <Button
-            icon="check"
-            mode="contained"
-            buttonColor={Theme.colors.secondary}
-            onPress={() => console.log('Pressed')}
-            style={{ paddingHorizontal: 30, marginRight: 10 }}>
-            Yes
-          </Button>
-          <Button
-            icon="close"
-            buttonColor={Theme.colors.tertiary}
-            mode="contained"
-            onPress={() => router.push("/")}
-            style={{ paddingHorizontal: 30, marginLeft: 10 }}>
-            No</Button>
+      {rrateConfirmed ? (
+
+        <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+            <Button
+              icon="location-exit"
+              mode="contained"
+              buttonColor={Theme.colors.tertiary}
+              onPress={() => console.log('Pressed')}
+              style={{ paddingHorizontal: 20, marginRight: 10 }}>
+              Exit
+            </Button>
+            <Button
+              icon="arrow-u-right-bottom"
+              buttonColor={Theme.colors["neutral-bttn"]}
+              mode="contained"
+              onPress={() => router.push("/")}
+              style={{ paddingHorizontal: 20, marginLeft: 10 }}>
+              Restart
+            </Button>
+          </View>
         </View>
-      </View>
-      <ConsistencyChartModal isVisible={isModalVisible} onClose={onModalClose} />
+
+      ) : (
+        <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+          <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>Does the breathing rate match the patient? </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+            <Button
+              icon="check"
+              mode="contained"
+              buttonColor={Theme.colors.secondary}
+              onPress={() => setRRateConfirmed(true)}
+              style={{ paddingHorizontal: 30, marginRight: 10 }}>
+              Yes
+            </Button>
+            <Button
+              icon="close"
+              buttonColor={Theme.colors.tertiary}
+              mode="contained"
+              onPress={() => router.push("/")}
+              style={{ paddingHorizontal: 30, marginLeft: 10 }}>
+              No</Button>
+          </View>
+        </View>)}
 
     </View >
   );
