@@ -24,28 +24,50 @@ export default function Index() {
   const consistencyThresholdPercent = consistencyThreshold;
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const notEnoughTapsVisibleRef = useRef(false); // reference for the modal to prevent multiple openings due to asynchronous state updates
+
 
   const tapsTooFast = () => setTapsTooFastModalVisible(true);
-  const notEnoughTaps = () => setNotEnoughTapsModalVisible(true);
+  const notEnoughTaps = () => {
+    if (!notEnoughTapsModalVisible) {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+      setNotEnoughTapsModalVisible(true);
+    }
+  };
+
   const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
+
+  useEffect(() => {
+    notEnoughTapsVisibleRef.current = notEnoughTapsModalVisible;
+  }, [notEnoughTapsModalVisible]);
+
 
   // Start/reset timeout after each tap
   useEffect(() => {
-    if (timestamps.length === 0) return;
+    // Only set a timeout if there are taps AND modal is not visible
+    if (timestamps.length === 0 || notEnoughTapsModalVisible) return;
 
-    // Clear any previous timeout
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (timeoutRef.current !== null) {
+      clearTimeout(timeoutRef.current);
+    }
 
     timeoutRef.current = setTimeout(() => {
-      if (!notEnoughTapsModalVisible) {
-        notEnoughTaps();
+      // Guard against multiple openings
+      if (!notEnoughTapsVisibleRef.current) { // use the ref to deal with slow asynchronous state updates
+        notEnoughTaps(); // sets modal visible 
       }
     }, 60000);
 
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-  }, [timestamps]);
+
+  }, [timestamps, notEnoughTapsModalVisible]);
+
 
   // Handler function triggered by the Tap on Inhalation button. 
   function countAndCalculateTap() {
@@ -164,7 +186,12 @@ export default function Index() {
       </View>
 
       <AlertModal isVisible={tapsTooFastModalVisible} message={"Taps are too fast."} onClose={() => setTapsTooFastModalVisible(false)} />
-      <AlertModal isVisible={notEnoughTapsModalVisible} message={"Not enough taps in 60 seconds."} onClose={() => setNotEnoughTapsModalVisible(false)} />
+      <AlertModal isVisible={notEnoughTapsModalVisible} message={"Not enough taps in 60 seconds."} onClose={() => {
+        setNotEnoughTapsModalVisible(false);
+        if (timeoutRef.current !== null) {
+          clearTimeout(timeoutRef.current);
+        }
+      }} />
       <AlertModal isVisible={tapsInconsistentModalVisible} message={"Taps are inconsistent."} onClose={() => setTapsInconsistentModalVisible(false)} />
     </View>
   );
