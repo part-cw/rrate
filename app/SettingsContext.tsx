@@ -24,6 +24,9 @@ type SettingsContextType = {
 
   rrate: number;
   setRRate: (value: number) => void;
+
+  tapTimestamps: number[],
+  setTapTimestaps: (value: number[]) => void;
 };
 
 const SettingsContext = createContext<SettingsContextType | null>(null);
@@ -34,8 +37,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [babyAnimation, setBabyAnimation] = useState<BabyAnimationOption>(1);
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
   const [consistencyThreshold, setConsistencyThreshold] = useState(13);
-  const [tapCountRequired, setTapCountRequired] = useState(4);
+  const [tapCountRequired, setTapCountRequired] = useState(5);
   const [rrate, setRRate] = useState(0);
+  const [tapTimestamps, setTapTimestaps] = useState<number[]>([]);
 
   return (
     <SettingsContext.Provider
@@ -53,7 +57,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         tapCountRequired,
         setTapCountRequired,
         rrate,
-        setRRate
+        setRRate,
+        tapTimestamps,
+        setTapTimestaps
       }}
     >
       {children}

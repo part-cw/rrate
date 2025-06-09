@@ -16,7 +16,8 @@ export default function RespiratoryRateCard() {
   const [age, setAge] = useState('');
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const { rrate } = useSettings();
+  const { rrate, tapTimestamps } = useSettings();
+  console.log(tapTimestamps);
 
   const onOpenChart = () => {
     setIsModalVisible(true);
@@ -71,7 +72,7 @@ export default function RespiratoryRateCard() {
         </View>
       </View>
 
-      <ConsistencyChart tapCount={3} />
+      <ConsistencyChart />
 
       <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
         <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>Does the breathing rate match the patient? </Text>

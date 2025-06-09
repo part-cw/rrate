@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
@@ -20,7 +20,7 @@ export default function Index() {
   const [tapsTooFastModalVisible, setTapsTooFastModalVisible] = useState<boolean>(false);
   const [notEnoughTapsModalVisible, setNotEnoughTapsModalVisible] = useState<boolean>(false);
   const [tapsInconsistentModalVisible, setTapsInconsistentModalVisible] = useState<boolean>(false);
-  const { tapCountRequired, consistencyThreshold, setRRate } = useSettings();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps } = useSettings();
 
   const tapLimit = tapCountRequired;
   const consistencyThresholdPercent = consistencyThreshold;
@@ -41,10 +41,12 @@ export default function Index() {
 
   const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
 
+  // Updates the reference for whether the Not Enough Taps modal is visible
   useEffect(() => {
     notEnoughTapsVisibleRef.current = notEnoughTapsModalVisible;
   }, [notEnoughTapsModalVisible]);
 
+  // Sets up a timeout to trigger the Not Enough Taps modal if no taps are recorded within 60 seconds
   useFocusEffect(
     useCallback(() => {
       if (timestamps.length === 0 || notEnoughTapsModalVisible) return;
@@ -93,6 +95,7 @@ export default function Index() {
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
+        setTapTimestaps(timestamps); // store timestamps in the global context
         router.push("/results");
         return;
       } else {
