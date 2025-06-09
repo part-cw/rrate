@@ -20,7 +20,6 @@ export const GlobalStyles = StyleSheet.create({
     padding: 20,
     margin: 20,
     borderRadius: 10,
-    width: 350,
 
     // iOS 
     shadowColor: '#000',
@@ -37,7 +36,6 @@ export const GlobalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: '100%',
     margin: 20,
   },
 
@@ -176,6 +174,41 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor: '#DC3220',
     borderWidth: 1,
     borderColor: '#000000',
+  },
+
+  // Modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 30,
+    borderRadius: 16,
+    width: '85%',
+    maxWidth: 400,
+    alignItems: 'center',
+    elevation: 10,
+  },
+  message: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  subtext: {
+    fontSize: 14,
+    color: '#555',
+    marginVertical: 8,
+    textAlign: 'center',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    marginTop: 20,
+    gap: 10,
+    justifyContent: 'space-between',
   },
 
 });
