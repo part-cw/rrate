@@ -58,6 +58,14 @@ export default function ConsistencyChart() {
     return { x, y, isConsistent };
   });
 
+  // Returns the median of an array 
+  function getMedian(arr: number[]) {
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 0
+      ? (sorted[mid - 1] + sorted[mid]) / 2
+      : sorted[mid];
+  }
 
   return (
     <View style={{ backgroundColor: "fff", margin: 20, height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
@@ -141,12 +149,4 @@ export default function ConsistencyChart() {
       </Modal>
     </View>
   );
-}
-
-function getMedian(arr: number[]) {
-  const sorted = [...arr].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 0
-    ? (sorted[mid - 1] + sorted[mid]) / 2
-    : sorted[mid];
 }
