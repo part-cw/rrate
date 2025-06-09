@@ -17,7 +17,7 @@ export default function RespiratoryRateCard() {
   const router = useRouter();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { rrate, tapTimestamps } = useSettings();
-  console.log(tapTimestamps);
+  console.log("Tap timestamps: " + tapTimestamps);
 
   const onOpenChart = () => {
     setIsModalVisible(true);

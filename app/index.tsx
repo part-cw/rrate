@@ -95,7 +95,7 @@ export default function Index() {
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-        setTapTimestaps(timestamps); // store timestamps in the global context
+        setTapTimestaps(updated); // store timestamps in the global context
         router.push("/results");
         return;
       } else {

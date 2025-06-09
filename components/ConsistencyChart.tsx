@@ -6,30 +6,41 @@ import { useSettings } from '../app/SettingsContext';
 import { GlobalStyles as Style } from '@/assets/styles';
 
 export default function ConsistencyChart() {
-  const { consistencyThreshold, tapTimestamps } = useSettings();
+  const { consistencyThreshold, tapTimestamps, tapCountRequired } = useSettings();
   const [modalVisible, setModalVisible] = useState(false);
 
   const chartWidth = 350;
   const chartHeight = 100;
+  const chartPadding = 10;
 
-  const tapIntervals = tapTimestamps.slice(1).map((t, i) => t - tapTimestamps[i]);
-  console.log(tapIntervals);
-  const median = getMedian(tapIntervals);
+  const tapLimit = tapCountRequired; // number of taps to consider
+  const recentTaps = tapTimestamps.slice(-tapLimit);
+  const recentIntervals = recentTaps.slice(1).map((t, i) => t - recentTaps[i]);
+
+  const median = getMedian(recentIntervals);
   const threshold = (consistencyThreshold / 100) * median;
 
-  const pointSpacing = chartWidth / Math.max(1, tapIntervals.length) - 15; // leaves padding on the right
-  const maxDeviation = Math.max(...tapIntervals.map(i => Math.abs(i - median)), threshold);
+  // Use 1.5x threshold to give room for visualization
+  const minDisplay = median - 1.5 * threshold;
+  const maxDisplay = median + 1.5 * threshold;
 
   const getY = (interval: number) => {
-    const offset = interval - median;
-    return (
-      chartHeight / 2 +
-      (offset / maxDeviation) * (chartHeight / 2 - 10)
-    );
+    const clamped = Math.max(minDisplay, Math.min(maxDisplay, interval));
+    const normalized = (clamped - minDisplay) / (maxDisplay - minDisplay);
+    return chartPadding + normalized * (chartHeight - 2 * chartPadding);
   };
 
+  const grayTop = getY(median - threshold);
+  const grayBottom = getY(median + threshold);
+  const grayHeight = grayBottom - grayTop;
+
+
+  // DATA POINTS
+  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 2; // leaves padding on the right
+
   const points = tapTimestamps.map((_, i) => {
-    const x = i * pointSpacing + (i === 0 ? 10 : 0);
+    const x = i * pointSpacing + (i === 0 ? chartPadding : 0); // adds padding to the left of the first point
+    //console.log("Point " + i + " timestamp: " + tapTimestamps[i]);
 
     let y: number;
     let isConsistent: boolean;
@@ -38,20 +49,31 @@ export default function ConsistencyChart() {
       y = getY(median); // anchor first point to the median line
       isConsistent = true; // neutral
     } else {
-      const interval = tapIntervals[i - 1];
+      const interval = tapTimestamps[i] - tapTimestamps[i - 1];
       y = getY(interval);
       isConsistent = Math.abs(interval - median) <= threshold;
+
     }
 
     return { x, y, isConsistent };
   });
-  console.log("Points");
-  console.log(points);
+
 
   return (
     <View style={{ backgroundColor: "fff", margin: 20, height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
       {/* Background Threshold Band */}
-      <View style={{ position: 'absolute', top: '30%', left: 0, right: 0, height: "40%", backgroundColor: '#E4E4E4', borderRadius: 10, zIndex: 0 }} />
+      <View
+        style={{
+          position: 'absolute',
+          top: grayTop,
+          height: grayHeight,
+          left: 0,
+          right: 0,
+          backgroundColor: '#E4E4E4',
+          borderRadius: 10,
+          zIndex: 0,
+        }}
+      />
 
       {/* SVG Chart */}
       <Svg width={chartWidth} height={chartHeight} style={{ alignSelf: 'center', zIndex: 1 }}>
