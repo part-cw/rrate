@@ -22,7 +22,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
 
   const handleSettings = () => {
     onClose();
-    router.push('/results');
+    router.push('/settings');
   };
 
   return (

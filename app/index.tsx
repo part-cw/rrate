@@ -1,6 +1,8 @@
 import { Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
 import { useState, useEffect, useRef } from "react";
@@ -43,30 +45,25 @@ export default function Index() {
     notEnoughTapsVisibleRef.current = notEnoughTapsModalVisible;
   }, [notEnoughTapsModalVisible]);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (timestamps.length === 0 || notEnoughTapsModalVisible) return;
 
-  // Start/reset timeout after each tap
-  useEffect(() => {
-    // Only set a timeout if there are taps AND modal is not visible
-    if (timestamps.length === 0 || notEnoughTapsModalVisible) return;
+      // Set the timeout
+      timeoutRef.current = setTimeout(() => {
+        if (!notEnoughTapsModalVisible) {
+          notEnoughTaps();
+        }
+      }, 60000);
 
-    if (timeoutRef.current !== null) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      // Guard against multiple openings
-      if (!notEnoughTapsVisibleRef.current) { // use the ref to deal with slow asynchronous state updates
-        notEnoughTaps(); // sets modal visible 
-      }
-    }, 60000);
-
-    return () => {
-      if (timeoutRef.current !== null) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-
-  }, [timestamps, notEnoughTapsModalVisible]);
+      // Cleanup when screen is unfocused or timestamps change
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }, [timestamps, notEnoughTapsModalVisible])
+  );
 
 
   // Handler function triggered by the Tap on Inhalation button. 
