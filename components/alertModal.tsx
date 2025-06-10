@@ -22,7 +22,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
 
   const handleSettings = () => {
     onClose();
-    router.push('/settings');
+    router.push('/results');
   };
 
   return (
@@ -51,7 +51,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
               mode="contained"
               onPress={handleSettings}
             >
-              Settings
+              Ignore
             </Button>
           </View>
         </View>
