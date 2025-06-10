@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, Dimensions, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
 import { useSettings } from '../app/SettingsContext';
@@ -116,23 +116,24 @@ export default function ConsistencyChart() {
       </Svg>
 
       {/* Info Button */}
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-        style={{
-          position: 'absolute',
-          right: -10,
-          top: '26%',
-          backgroundColor: 'white',
-          borderRadius: 30,
-          padding: 5,
-          shadowColor: '#000',
-          shadowOpacity: 0.2,
-          shadowRadius: 3,
-        }}
-      >
-        <MaterialCommunityIcons name="information-outline" size={35} color="black" />
-      </TouchableOpacity>
-
+      <Pressable style={{ position: 'absolute', top: 25, right: 10 }} onPress={() => setModalVisible(true)}>
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          style={{
+            position: 'absolute',
+            right: -10,
+            top: '26%',
+            backgroundColor: 'white',
+            borderRadius: 30,
+            padding: 5,
+            shadowColor: '#000',
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+          }}
+        >
+          <MaterialCommunityIcons name="information-outline" size={40} color="black" />
+        </TouchableOpacity>
+      </Pressable>
       {/* Modal Dialog */}
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={Style.screenContainer}>
