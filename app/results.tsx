@@ -5,7 +5,6 @@ import { GlobalStyles as Style } from '@/assets/styles';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
-import ConsistencyChartModal from '../components/ConsistencyChartModal';
 import ConsistencyChart from '../components/ConsistencyChart';
 import { useSettings } from './SettingsContext';
 

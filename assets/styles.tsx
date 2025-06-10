@@ -46,7 +46,7 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 14,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafbfc',
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -56,7 +56,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   dropdownList: {
     marginTop: 2,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafbfc',
     borderRadius: 8,
     maxHeight: 250,
     overflow: 'hidden',

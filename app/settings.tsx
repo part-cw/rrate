@@ -13,9 +13,8 @@ import PatientModelPicker from "../components/PatientModelPicker";
 export default function Settings() {
   const router = useRouter();
 
-  // Patient age interpretation switch
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-  // REDCap checkbox
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false); // Patient age interpretation switch
+  // REDCap Settings
   const [REDCapchecked, setREDCapchecked] = React.useState(false);
   const [LongitudinalChecked, setLongitudinalChecked] = React.useState(false);
   const [RepeatableChecked, setRepeatableChecked] = React.useState(false);
@@ -30,7 +29,7 @@ export default function Settings() {
     setAgeThresholdEnabled(!isSwitchOn);
   }
 
-  const { setSelectedLanguage, setAgeThresholdEnabled, setBabyAnimation } = useSettings();
+  const { setSelectedLanguage, setAgeThresholdEnabled } = useSettings();
 
   const languages = [
     'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
