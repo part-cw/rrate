@@ -15,17 +15,8 @@ const ages = ['default', '<2 months', '2–12 months', '>1 year'];
 export default function Results() {
   const [age, setAge] = useState('');
   const router = useRouter();
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { rrate, tapTimestamps } = useSettings();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
-
-  const onOpenChart = () => {
-    setIsModalVisible(true);
-  };
-
-  const onModalClose = () => {
-    setIsModalVisible(false);
-  };
 
   let rrateColour;
 
@@ -65,7 +56,7 @@ export default function Results() {
 
           <View style={Style.dropdownContainer}>
             <Text style={Style.ageLabel}>Age</Text>
-            <View style={{ width: 170 }}>
+            <View style={{ width: 150 }}>
               <DropdownList label="" data={ages} onSelect={setAge} />
             </View>
           </View>

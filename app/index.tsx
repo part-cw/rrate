@@ -90,12 +90,11 @@ export default function Index() {
     const result = evaluateRecentTaps({ timestamps: updated });
 
     if (result) {
+      setRRate(Math.round(result.rate)); // set the respiratory rate in the global context so it can be used in other components
+      setTapTimestaps(updated); // store timestamps in the global context
       if (result.rate < 140) {
-        setRRate(Math.round(result.rate)); // set the respiratory rate in the global context so it can be used in other components
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-        setTapTimestaps(updated); // store timestamps in the global context
         router.push("/results");
         return;
       } else {
