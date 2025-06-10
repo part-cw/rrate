@@ -8,6 +8,7 @@ import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import { useSettings } from "./SettingsContext";
+import PatientModelPicker from "../components/PatientModelPicker";
 
 export default function Settings() {
   const router = useRouter();
@@ -62,9 +63,7 @@ export default function Settings() {
           </View>
         </View>
 
-        <View style={Style.floatingContainer}>
-          <Text style={Style.heading}> Patient Model </Text>
-        </View>
+        <PatientModelPicker />
 
         <View style={Style.floatingContainer}>
           <Text style={Style.heading}> REDCap</Text>
