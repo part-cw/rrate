@@ -23,22 +23,22 @@ export default function PasswordPage() {
   return (
     <View style={{ padding: 20, justifyContent: 'center', alignItems: 'center', flex: 1 }}>
 
-      <View style={{ justifyContent: 'center', alignItems: 'center', margin: 40 }}>
-        <MaterialCommunityIcons
-          name="lock-outline"
-          size={30}
-          color={'#000'}
-          style={{ marginBottom: 10 }}
-        />
-        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Configuration Settings</Text>
-        <Text> Please enter the admin password to access these settings. </Text>
-      </View>
+
+      <MaterialCommunityIcons
+        name="lock-outline"
+        size={30}
+        color={'#000'}
+        style={{ marginBottom: 10 }}
+      />
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Configuration Settings</Text>
+      <Text> Please enter the admin password to access these settings. </Text>
       <TextInput
         label="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
         error={!!error}
+        style={{ marginTop: 20 }}
       />
       {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
       <View style={{ flexDirection: 'row', margin: 20 }} >
@@ -49,6 +49,7 @@ export default function PasswordPage() {
           Access Settings
         </Button>
       </View>
+
     </View >
   );
 }
