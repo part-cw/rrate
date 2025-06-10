@@ -25,16 +25,18 @@ export default function PatientModelPicker() {
 
   // Move to the next baby model
   const handleNext = () => {
-    const nextBaby = currentBaby === 6 ? 1 : currentBaby + 1;
-    setCurrentBaby(nextBaby);
-    setBabyAnimation(nextBaby as BabyAnimationOption);
+    if (currentBaby < 6) {
+      setCurrentBaby(currentBaby + 1);
+      setBabyAnimation((currentBaby + 1) as BabyAnimationOption);
+    }
   }
 
   // Move to the previous baby model
   const handlePrev = () => {
-    const prevBaby = currentBaby === 1 ? 6 : currentBaby - 1;
-    setCurrentBaby(prevBaby);
-    setBabyAnimation(prevBaby as BabyAnimationOption);
+    if (currentBaby > 1) {
+      setCurrentBaby(currentBaby - 1);
+      setBabyAnimation((currentBaby - 1) as BabyAnimationOption);
+    }
   }
 
 
@@ -58,9 +60,9 @@ export default function PatientModelPicker() {
           shadowRadius: 4,
           borderRadius: 10,
         }]}>
-          <IconButton icon="arrow-left-drop-circle-outline" size={30} onPress={handlePrev} />
+          <IconButton icon="arrow-left-drop-circle-outline" size={30} disabled={currentBaby == 1} onPress={handlePrev} />
           <Text> Baby {currentBaby} </Text>
-          <IconButton icon="arrow-right-drop-circle-outline" size={30} onPress={handleNext} />
+          <IconButton icon="arrow-right-drop-circle-outline" size={30} disabled={currentBaby == 6} onPress={handleNext} />
         </View>
       </View>
 
