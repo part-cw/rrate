@@ -11,12 +11,15 @@ import { useSettings } from "../app/SettingsContext";
 export default function Settings() {
   const router = useRouter();
 
-  const [RRateSelected, setRRateSelected] = React.useState('first');
-  const { setMeasurementMethod, setTapCountRequired, setConsistencyThreshold } = useSettings();
+  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useSettings();
+  const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('first') : React.useState('second');
 
 
   const numberOfTapsOptions = ["3", "4", "5", "6"];
   const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
+
+  console.log("Consistency Threshold: " + consistencyThreshold);
+  console.log("Tap Count: " + tapCountRequired);
 
   return (
     <ScrollView>
@@ -33,9 +36,9 @@ export default function Settings() {
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
             <RadioButton
               value="first"
-              status={RRateSelected === 'first' ? 'checked' : 'unchecked'}
+              status={measurementMethodRadioButton === 'first' ? 'checked' : 'unchecked'}
               onPress={() => {
-                setRRateSelected('first');
+                setmeasurementMethodRadioButton('first');
                 setMeasurementMethod('tap');
               }}
             />
@@ -44,9 +47,9 @@ export default function Settings() {
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
             <RadioButton
               value="second"
-              status={RRateSelected === 'second' ? 'checked' : 'unchecked'}
+              status={measurementMethodRadioButton === 'second' ? 'checked' : 'unchecked'}
               onPress={() => {
-                setRRateSelected('second');
+                setmeasurementMethodRadioButton('second');
                 setMeasurementMethod('timer');
               }}
             />
@@ -59,7 +62,12 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the number of consistent taps required for calculating the respiratory rate.</Text>
           </View>
-          <Slider values={numberOfTapsOptions} defaultValue="5" onSelect={(val) => setTapCountRequired(parseInt(val))} />
+          <Slider values={numberOfTapsOptions} defaultValue={tapCountRequired.toString()} onSelect={(val) => {
+            setTapCountRequired(parseInt(val))
+
+
+            console.log("Tap Count: " + tapCountRequired);
+          }} />
         </View>
 
         <View style={[Style.floatingContainer, { padding: 30 }]}>
@@ -67,7 +75,10 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>Choose the threshold offset from the median time interval between taps. </Text>
           </View>
-          <Slider values={consistencyThresholdOptions} defaultValue="13%" onSelect={(val) => setConsistencyThreshold(parseInt(val.replace('%', '')))} />
+          <Slider values={consistencyThresholdOptions} defaultValue={`${consistencyThreshold}%`} onSelect={(val) => {
+            setConsistencyThreshold(parseInt(val.replace('%', '')));
+            console.log("Consistency Threshold: " + consistencyThreshold);
+          }} />
         </View>
 
         <Copyright />

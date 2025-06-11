@@ -11,11 +11,11 @@ import { GlobalStyles as Style } from '../assets/styles';
 type SliderProps = {
   values: string[];
   defaultValue: string;
-  onSelect?: (value: string) => void; // 👈 new
+  onSelect?: (value: string) => void;
 };
 
 
-export default function Slider({ values, defaultValue }: SliderProps) {
+export default function Slider({ values, defaultValue, onSelect }: SliderProps) {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);
 
@@ -50,7 +50,10 @@ export default function Slider({ values, defaultValue }: SliderProps) {
         {values.map((val) => (
           <TouchableOpacity
             key={val}
-            onPress={() => setSelectedValue(val)}
+            onPress={() => {
+              setSelectedValue(val);
+              if (onSelect) onSelect(val);
+            }}
             style={[Style.step, { width: stepWidth }]}
           >
             <Text
