@@ -4,13 +4,11 @@ import { IconButton } from 'react-native-paper';
 import { useSettings } from '@/app/SettingsContext';
 import React, { useState } from 'react';
 
-
-
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 
 export default function PatientModelPicker() {
-  const [currentBaby, setCurrentBaby] = useState(1);
-  const { setBabyAnimation } = useSettings();
+  const { babyAnimation, setBabyAnimation } = useSettings();
+  const [currentBaby, setCurrentBaby] = useState(babyAnimation);
 
   const babyImages = {
     1: require('@/assets/babyAnimation/Baby1Static.png'),
@@ -26,7 +24,7 @@ export default function PatientModelPicker() {
   // Move to the next baby model
   const handleNext = () => {
     if (currentBaby < 6) {
-      setCurrentBaby(currentBaby + 1);
+      setCurrentBaby((currentBaby + 1) as BabyAnimationOption);
       setBabyAnimation((currentBaby + 1) as BabyAnimationOption);
     }
   }
@@ -34,7 +32,7 @@ export default function PatientModelPicker() {
   // Move to the previous baby model
   const handlePrev = () => {
     if (currentBaby > 1) {
-      setCurrentBaby(currentBaby - 1);
+      setCurrentBaby((currentBaby - 1) as BabyAnimationOption);
       setBabyAnimation((currentBaby - 1) as BabyAnimationOption);
     }
   }
