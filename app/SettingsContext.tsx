@@ -57,7 +57,7 @@ type SettingsContextType = {
 const SettingsContext = createContext<SettingsContextType | null>(null);
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('Select Language');
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [ageThresholdEnabled, setAgeThresholdEnabled] = useState(false);
   const [babyAnimation, setBabyAnimation] = useState<BabyAnimationOption>(1);
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');

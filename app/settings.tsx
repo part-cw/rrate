@@ -39,6 +39,8 @@ export default function Settings() {
 
 
         <View style={Style.floatingContainer}>
+
+          <Text style={Style.heading}> Select Language </Text>
           <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
 

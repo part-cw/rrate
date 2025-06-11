@@ -32,7 +32,7 @@ export const GlobalStyles = StyleSheet.create({
     elevation: 5,
   },
   componentContainer: {
-    margin: 10,
+    marginVertical: 10,
   }, screenContainer: {
     flex: 1,
     justifyContent: "center",
