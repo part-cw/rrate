@@ -12,24 +12,16 @@ import PatientModelPicker from "../components/PatientModelPicker";
 
 export default function Settings() {
   const router = useRouter();
-
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false); // Patient age interpretation switch
-  // REDCap Settings
-  const [REDCapchecked, setREDCapchecked] = React.useState(false);
-  const [LongitudinalChecked, setLongitudinalChecked] = React.useState(false);
-  const [RepeatableChecked, setRepeatableChecked] = React.useState(false);
-  const [UploadChecked, setUploadChecked] = React.useState(false);
-  const [hostText, sethostText] = React.useState("");
-  const [URL, setURL] = React.useState("");
-  const [API, setAPI] = React.useState("");
+  const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
+    REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
+    LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
+    UploadOnSave, setUploadOnSave,
+  } = useSettings();
 
 
   const onToggleSwitch = () => {
-    setIsSwitchOn(!isSwitchOn);
-    setAgeThresholdEnabled(!isSwitchOn);
+    setAgeThresholdEnabled(!ageThresholdEnabled);
   }
-
-  const { setSelectedLanguage, setAgeThresholdEnabled } = useSettings();
 
   const languages = [
     'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
@@ -47,14 +39,14 @@ export default function Settings() {
 
 
         <View style={Style.floatingContainer}>
-          <DropDown label="Select Language" data={languages} onSelect={(val) => setSelectedLanguage(val)} />
+          <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
 
 
         <View style={Style.floatingContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={Style.heading}> Patient Age Interpretation </Text>
-            <Switch value={isSwitchOn}
+            <Switch value={ageThresholdEnabled}
               onValueChange={onToggleSwitch} />
           </View>
           <View style={{ marginVertical: 20 }}>
@@ -68,41 +60,41 @@ export default function Settings() {
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
             <Checkbox
-              status={REDCapchecked ? 'checked' : 'unchecked'}
+              status={REDCap ? 'checked' : 'unchecked'}
               onPress={() => {
-                setREDCapchecked(!REDCapchecked);
+                setREDCap(!REDCap);
               }}
             />
             <Text> Save data for upload to REDCap</Text>
           </View>
 
-          {REDCapchecked && (
+          {REDCap && (
             <View >
               <TextInput
                 label="Host"
-                value={hostText}
+                value={REDCapHost}
                 style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
-                onChangeText={text => sethostText(text)}
+                onChangeText={text => setREDCapHost(text)}
               />
               <TextInput
                 label="URL"
-                value={URL}
+                value={REDCapURL}
                 style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
-                onChangeText={text => setURL(text)}
+                onChangeText={text => setREDCapURL(text)}
                 placeholder="/redcap/api/"
               />
               <TextInput
                 label="API Token"
-                value={API}
+                value={REDCapAPI}
                 style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
-                onChangeText={text => setAPI(text)}
+                onChangeText={text => setREDCapAPI(text)}
               />
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox
-                  status={LongitudinalChecked ? 'checked' : 'unchecked'}
+                  status={LongitudinalStudy ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    setLongitudinalChecked(!LongitudinalChecked);
+                    setLongitudinalStudy(!LongitudinalStudy);
                   }}
                 />
                 <Text>Longitudinal project </Text>
@@ -110,9 +102,9 @@ export default function Settings() {
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox
-                  status={RepeatableChecked ? 'checked' : 'unchecked'}
+                  status={RepeatableInstruments ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    setRepeatableChecked(!RepeatableChecked);
+                    setRepeatableInstruments(!RepeatableInstruments);
                   }}
                 />
                 <Text>Repeatable instruments</Text>
@@ -120,9 +112,9 @@ export default function Settings() {
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox
-                  status={UploadChecked ? 'checked' : 'unchecked'}
+                  status={UploadOnSave ? 'checked' : 'unchecked'}
                   onPress={() => {
-                    setUploadChecked(!UploadChecked);
+                    setUploadOnSave(!UploadOnSave);
                   }}
                 />
                 <Text>Upload on Save</Text>
