@@ -65,7 +65,7 @@ export default function Results() {
         </View>
       </View>
 
-      <ConsistencyChart />
+      <ConsistencyChart showInfoButton />
 
       {rrateConfirmed ? (
 

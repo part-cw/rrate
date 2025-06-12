@@ -5,8 +5,15 @@ import Svg, { Circle, Line } from 'react-native-svg';
 import { useGlobalVariables } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useTranslation } from '@/hooks/useTranslation';
+import ConsistencyChartModal from './ConsistencyChartModal';
 
-export default function ConsistencyChart() {
+// Show info button on results page and labels on modal dialog
+type ConsistencyChartProps = {
+  showInfoButton?: boolean;
+  showLabels?: boolean;
+};
+
+export default function ConsistencyChart({ showInfoButton, showLabels }: ConsistencyChartProps) {
   const { consistencyThreshold, tapTimestamps, tapCountRequired } = useGlobalVariables();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -116,39 +123,36 @@ export default function ConsistencyChart() {
         ))}
       </Svg>
 
-      {/* Info Button */}
-      <Pressable style={{ position: 'absolute', top: 25, right: 10 }} onPress={() => setModalVisible(true)}>
+      {showInfoButton && (
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
           style={{
             position: 'absolute',
-            right: -10,
-            top: '26%',
+            right: 0,
+            top: 25,
             backgroundColor: 'white',
             borderRadius: 30,
             padding: 5,
             shadowColor: '#000',
             shadowOpacity: 0.2,
             shadowRadius: 3,
+            zIndex: 2,
           }}
         >
           <MaterialCommunityIcons name="information-outline" size={40} color="black" />
         </TouchableOpacity>
-      </Pressable>
-      {/* Modal Dialog */}
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={Style.screenContainer}>
-          <View style={[Style.componentContainer, { backgroundColor: 'white', padding: 20, borderRadius: 12 }]}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10 }}>Consistency Chart</Text>
-            <Text style={{ marginBottom: 20 }}>
-              modal
-            </Text>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={{ color: 'blue', textAlign: 'right' }}>Close</Text>
-            </TouchableOpacity>
-          </View>
+      )}
+
+      {showLabels && (
+        <View style={{ flexDirection: 'column', justifyContent: 'space-between', width: 40, position: 'absolute', top: 25, right: 0, zIndex: 2 }}>
+          <Text>+ Threshold</Text>
+          <Text>Median</Text>
+          <Text>- Threshold</Text>
         </View>
-      </Modal>
+      )}
+
+      {/* Modal Dialog */}
+      <ConsistencyChartModal isVisible={modalVisible} message={"Message"} onClose={() => setModalVisible(false)} />
     </View>
   );
 }

@@ -1,10 +1,10 @@
-import { Modal, View, Text, StyleSheet } from "react-native";
+import { Modal, View, Text } from "react-native";
 import { PropsWithChildren } from 'react';
 import { GlobalStyles as Style } from "@/assets/styles";
-import { Button } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { IconButton } from 'react-native-paper';
 import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
+import ConsistencyChart from "./ConsistencyChart";
 
 type Props = PropsWithChildren<{
   isVisible: boolean;
@@ -24,22 +24,13 @@ export default function ConsistencyChartModal({ isVisible, message, onClose }: P
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View style={Style.modalOverlay}>
         <View style={Style.modalContent}>
-          <MaterialCommunityIcons
-            name="alert"
-            size={40}
-            color={'#000000'}
-          />
+          <View style={{ alignContent: 'flex-end', alignItems: 'flex-end', width: '100%' }}>
+            <IconButton icon="close" size={30} onPress={handleClose} />
+          </View>
           <Text style={Style.message}>{message}</Text>
-          <Text style={Style.subtext}>Please try again.</Text>
-          <View style={Style.buttonRow}>
-            <Button
-              icon="arrow-u-right-bottom"
-              mode="contained"
-              buttonColor={Theme.colors.tertiary}
-              onPress={handleClose}
-            >
-              Retry
-            </Button>
+          <View>
+            <ConsistencyChart showLabels />
+
           </View>
         </View>
       </View>
