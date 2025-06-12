@@ -6,6 +6,7 @@ import { useGlobalVariables } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useTranslation } from '@/hooks/useTranslation';
 import ConsistencyChartModal from './ConsistencyChartModal';
+import * as consistencyFunctions from '../utils/consistencyFunctions';
 
 // Show info button on results page and labels on modal dialog
 type ConsistencyChartProps = {
@@ -166,7 +167,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
               fontSize: 12,
             }}
           >
-            − Threshold
+            + Threshold
           </Text>
           <Text
             style={{
@@ -190,7 +191,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
               fontSize: 12,
             }}
           >
-            + Threshold
+            - Threshold
           </Text>
         </View>
 
