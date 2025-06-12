@@ -6,7 +6,7 @@ import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import ConsistencyChart from '../components/ConsistencyChart';
-import { useSettings } from './globalContext';
+import { useGlobalVariables } from './globalContext';
 import { useTranslation } from '@/hooks/useTranslation';
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
@@ -17,7 +17,7 @@ export default function Results() {
   const { t } = useTranslation();
 
   const [age, setAge] = useState('');
-  const { rrate, tapTimestamps } = useSettings();
+  const { rrate, tapTimestamps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   let rrateColour;

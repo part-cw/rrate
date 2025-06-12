@@ -7,7 +7,7 @@ import * as React from "react";
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
-import { useSettings } from "./globalContext";
+import { useGlobalVariables } from "./globalContext";
 import { useTranslation } from '@/hooks/useTranslation';
 import PatientModelPicker from "../components/PatientModelPicker";
 
@@ -18,16 +18,22 @@ export default function Settings() {
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
     UploadOnSave, setUploadOnSave,
-  } = useSettings();
+  } = useGlobalVariables();
 
 
   const onToggleSwitch = () => {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
 
+
+  // ADD THIS IN FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
+  // const languages = [
+  //   'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
+  //   'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
+  // ];
+
   const languages = [
-    'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
-    'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
+    'English'
   ];
 
   return (

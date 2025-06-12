@@ -8,7 +8,7 @@ import TapCount from "../components/TapCount";
 import { useState, useEffect, useRef } from "react";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
-import { useSettings } from "./globalContext";
+import { useGlobalVariables } from "./globalContext";
 import AlertModal from "../components/alertModal";
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -22,7 +22,7 @@ export default function Index() {
   const [tapsTooFastModalVisible, setTapsTooFastModalVisible] = useState<boolean>(false);
   const [notEnoughTapsModalVisible, setNotEnoughTapsModalVisible] = useState<boolean>(false);
   const [tapsInconsistentModalVisible, setTapsInconsistentModalVisible] = useState<boolean>(false);
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps } = useSettings();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps } = useGlobalVariables();
 
   const tapLimit = tapCountRequired;
   const consistencyThresholdPercent = consistencyThreshold;

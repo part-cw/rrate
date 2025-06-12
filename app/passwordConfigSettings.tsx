@@ -6,15 +6,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { Theme } from '../assets/theme';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useGlobalVariables } from './globalContext';
 
 export default function PasswordPage() {
-  const [password, setPassword] = useState('');
+  const [passwordField, setPasswordField] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
   const { t } = useTranslation();
+  const { password } = useGlobalVariables();
 
   const handleSubmit = () => {
-    if (password === '1234') {
+    if (passwordField === password) {
       setError('');
       router.replace('/configSettings');
     } else {
@@ -37,8 +39,8 @@ export default function PasswordPage() {
       <TextInput
         label="Password"
         secureTextEntry
-        value={password}
-        onChangeText={setPassword}
+        value={passwordField}
+        onChangeText={setPasswordField}
         error={!!error}
         style={{ marginTop: 20 }}
       />

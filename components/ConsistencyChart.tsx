@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, Dimensions, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
-import { useSettings } from '../app/globalContext';
+import { useGlobalVariables } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ConsistencyChart() {
-  const { consistencyThreshold, tapTimestamps, tapCountRequired } = useSettings();
+  const { consistencyThreshold, tapTimestamps, tapCountRequired } = useGlobalVariables();
   const [modalVisible, setModalVisible] = useState(false);
 
   const chartWidth = 350;

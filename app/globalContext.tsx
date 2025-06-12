@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 type MeasurementMethod = 'tap' | 'timer';
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 
-type SettingsContextType = {
+type globalContextType = {
   // GENERAL SETTINGS
   selectedLanguage: string;
   setSelectedLanguage: (lang: string) => void;
@@ -37,6 +37,8 @@ type SettingsContextType = {
   setUploadOnSave: (value: boolean) => void;
 
   // CONFIG SETTINGS
+  password: string;
+
   measurementMethod: MeasurementMethod;
   setMeasurementMethod: (method: MeasurementMethod) => void;
 
@@ -54,12 +56,13 @@ type SettingsContextType = {
   setTapTimestaps: (value: number[]) => void;
 };
 
-const SettingsContext = createContext<SettingsContextType | null>(null);
+const GlobalContext = createContext<globalContextType | null>(null);
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [ageThresholdEnabled, setAgeThresholdEnabled] = useState(false);
   const [babyAnimation, setBabyAnimation] = useState<BabyAnimationOption>(1);
+  const password = "1234";
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
   const [consistencyThreshold, setConsistencyThreshold] = useState(13);
   const [tapCountRequired, setTapCountRequired] = useState(5);
@@ -74,7 +77,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [UploadOnSave, setUploadOnSave] = useState(false);
 
   return (
-    <SettingsContext.Provider
+    <GlobalContext.Provider
       value={{
         selectedLanguage,
         setSelectedLanguage,
@@ -82,6 +85,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setAgeThresholdEnabled,
         babyAnimation,
         setBabyAnimation,
+        password,
         measurementMethod,
         setMeasurementMethod,
         consistencyThreshold,
@@ -109,12 +113,12 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
       }}
     >
       {children}
-    </SettingsContext.Provider>
+    </GlobalContext.Provider>
   );
 };
 
-export const useSettings = () => {
-  const context = useContext(SettingsContext);
-  if (!context) throw new Error('useSettings must be used within a SettingsProvider');
+export const useGlobalVariables = () => {
+  const context = useContext(GlobalContext);
+  if (!context) throw new Error('useGlobalVariables must be used within a SettingsProvider');
   return context;
 };

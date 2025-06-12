@@ -6,14 +6,14 @@ import { useRouter } from "expo-router";
 import * as React from "react";
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
-import { useSettings } from "./globalContext";
+import { useGlobalVariables } from "./globalContext";
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Settings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useSettings();
+  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('first') : React.useState('second');
 
 
