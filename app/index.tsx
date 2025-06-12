@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
@@ -10,10 +10,13 @@ import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useSettings } from "./globalContext";
 import AlertModal from "../components/alertModal";
+import { useTranslation } from '@/hooks/useTranslation';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const router = useRouter();
+  const { t } = useTranslation(); // use the function to get translations; pass in the keyword for the word/phrase
+  // <Text>{t("CANCEL")}</Text>
 
   const [tapCount, setTapCount] = useState(0);
   const [timestamps, setTimestamps] = useState<number[]>([]);
