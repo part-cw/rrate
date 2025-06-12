@@ -8,10 +8,12 @@ import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import { useSettings } from "./globalContext";
+import { useTranslation } from '@/hooks/useTranslation';
 import PatientModelPicker from "../components/PatientModelPicker";
 
 export default function Settings() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
@@ -33,7 +35,7 @@ export default function Settings() {
       <View style={Style.screenContainer}>
         <View style={{ alignItems: 'flex-start', width: 350 }}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push('/')}>
-            Back
+            {t("BACK")}
           </Button>
         </View>
 
@@ -69,26 +71,26 @@ export default function Settings() {
                 setREDCap(!REDCap);
               }}
             />
-            <Text> Save data for upload to REDCap</Text>
+            <Text> {t("REDCAP_USE")}</Text>
           </View>
 
           {REDCap && (
             <View >
               <TextInput
-                label="Host"
+                label={t("HOST")}
                 value={REDCapHost}
                 style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
                 onChangeText={text => setREDCapHost(text)}
               />
               <TextInput
-                label="URL"
+                label={t("URL")}
                 value={REDCapURL}
                 style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
                 onChangeText={text => setREDCapURL(text)}
                 placeholder="/redcap/api/"
               />
               <TextInput
-                label="API Token"
+                label={t("TOKEN")}
                 value={REDCapAPI}
                 style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
                 onChangeText={text => setREDCapAPI(text)}
@@ -101,7 +103,7 @@ export default function Settings() {
                     setLongitudinalStudy(!LongitudinalStudy);
                   }}
                 />
-                <Text>Longitudinal project </Text>
+                <Text>{t("LONGITUDINAL")}</Text>
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -111,7 +113,7 @@ export default function Settings() {
                     setRepeatableInstruments(!RepeatableInstruments);
                   }}
                 />
-                <Text>Repeatable instruments</Text>
+                <Text>{t("REP_EVENTS")}</Text>
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -121,7 +123,7 @@ export default function Settings() {
                     setUploadOnSave(!UploadOnSave);
                   }}
                 />
-                <Text>Upload on Save</Text>
+                <Text>{t("UPLOAD_SAVE")}</Text>
               </View>
 
             </View>

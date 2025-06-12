@@ -15,8 +15,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const router = useRouter();
-  const { t } = useTranslation(); // use the function to get translations; pass in the keyword for the word/phrase
-  // <Text>{t("CANCEL")}</Text>
+  const { t } = useTranslation(); // use the function to get translations; pass in the keyword for the
 
   const [tapCount, setTapCount] = useState(0);
   const [timestamps, setTimestamps] = useState<number[]>([]);
@@ -160,7 +159,7 @@ export default function Index() {
             />
           )}
         >
-          Exit
+          <Text>{t("EXIT")}</Text>
         </Button>
         <Button
           icon="cog"
@@ -168,7 +167,7 @@ export default function Index() {
           mode="contained"
           onPress={() => router.push("/settings")}
         >
-          Settings
+          <Text>{t("SETTINGS")}</Text>
         </Button>
       </View>
 
@@ -183,18 +182,18 @@ export default function Index() {
           labelStyle={{ fontSize: 24, padding: 10 }}
           onPress={countAndCalculateTap}
         >
-          Tap on Inhalation
+          <Text>{t("TAP_INHALATION")}</Text>
         </Button>
       </View>
 
-      <AlertModal isVisible={tapsTooFastModalVisible} message={"Taps are too fast."} onClose={() => setTapsTooFastModalVisible(false)} />
-      <AlertModal isVisible={notEnoughTapsModalVisible} message={"Not enough taps in 60 seconds."} onClose={() => {
+      <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
+      <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
         setNotEnoughTapsModalVisible(false);
         if (timeoutRef.current !== null) {
           clearTimeout(timeoutRef.current);
         }
       }} />
-      <AlertModal isVisible={tapsInconsistentModalVisible} message={"Taps are inconsistent."} onClose={() => setTapsInconsistentModalVisible(false)} />
+      <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
     </View>
   );
 }

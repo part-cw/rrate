@@ -3,12 +3,14 @@ import { GlobalStyles as Style } from '@/assets/styles';
 import { IconButton } from 'react-native-paper';
 import { useSettings } from '@/app/globalContext';
 import React, { useState } from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 
 export default function PatientModelPicker() {
   const { babyAnimation, setBabyAnimation } = useSettings();
   const [currentBaby, setCurrentBaby] = useState(babyAnimation);
+  const { t } = useTranslation();
 
   const babyImages = {
     1: require('@/assets/babyAnimation/Baby1Static.png'),

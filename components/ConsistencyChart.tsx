@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
 import { useSettings } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ConsistencyChart() {
   const { consistencyThreshold, tapTimestamps, tapCountRequired } = useSettings();
@@ -140,7 +141,7 @@ export default function ConsistencyChart() {
           <View style={[Style.componentContainer, { backgroundColor: 'white', padding: 20, borderRadius: 12 }]}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10 }}>Consistency Chart</Text>
             <Text style={{ marginBottom: 20 }}>
-              Each circle represents the interval between taps. Red indicates an interval that falls outside the consistency threshold ({consistencyThreshold}% from the median). White means it's within threshold.
+              modal
             </Text>
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text style={{ color: 'blue', textAlign: 'right' }}>Close</Text>

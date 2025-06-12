@@ -5,11 +5,13 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { Theme } from '../assets/theme';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function PasswordPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = () => {
     if (password === '1234') {
@@ -43,7 +45,7 @@ export default function PasswordPage() {
       {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
       <View style={{ flexDirection: 'row', margin: 20 }} >
         <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.push('/settings')}>
-          Back
+          {t("BACK")}
         </Button>
         <Button mode="contained" onPress={handleSubmit} style={{ marginHorizontal: 5 }} >
           Access Settings

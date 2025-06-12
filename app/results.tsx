@@ -7,13 +7,16 @@ import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import ConsistencyChart from '../components/ConsistencyChart';
 import { useSettings } from './globalContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
 
 
 export default function Results() {
-  const [age, setAge] = useState('');
   const router = useRouter();
+  const { t } = useTranslation();
+
+  const [age, setAge] = useState('');
   const { rrate, tapTimestamps } = useSettings();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
@@ -48,8 +51,8 @@ export default function Results() {
         </View>
 
         <View style={Style.rightColumn}>
-          <Text style={Style.labelMain}>Respiratory Rate</Text>
-          <Text style={Style.labelSub}>(breaths/min)</Text>
+          <Text style={Style.labelMain}>{t("RRATE")}</Text>
+          <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
 
           <View style={Style.divider} />
 
@@ -74,7 +77,7 @@ export default function Results() {
               buttonColor={Theme.colors.tertiary}
               onPress={() => console.log('Pressed')}
               style={{ paddingHorizontal: 20, marginRight: 10 }}>
-              Exit
+              {t("EXIT")}
             </Button>
             <Button
               icon="arrow-u-right-bottom"
@@ -82,14 +85,14 @@ export default function Results() {
               mode="contained"
               onPress={() => router.push("/")}
               style={{ paddingHorizontal: 20, marginLeft: 10 }}>
-              Restart
+              {t("RESTART")}
             </Button>
           </View>
         </View>
 
       ) : (
         <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
-          <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>Does the breathing rate match the patient? </Text>
+          <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
             <Button
               icon="check"
@@ -97,7 +100,7 @@ export default function Results() {
               buttonColor={Theme.colors.secondary}
               onPress={() => setRRateConfirmed(true)}
               style={{ paddingHorizontal: 30, marginRight: 10 }}>
-              Yes
+              {t("YES")}
             </Button>
             <Button
               icon="close"
@@ -105,7 +108,8 @@ export default function Results() {
               mode="contained"
               onPress={() => router.push("/")}
               style={{ paddingHorizontal: 30, marginLeft: 10 }}>
-              No</Button>
+              {t("NO")}
+            </Button>
           </View>
         </View>)}
 

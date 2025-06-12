@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
+import { useTranslation } from '@/hooks/useTranslation';
 
 type Props = PropsWithChildren<{
   isVisible: boolean;
@@ -14,6 +15,7 @@ type Props = PropsWithChildren<{
 
 export default function AlertModal({ isVisible, message, onClose }: Props) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleRetry = () => {
     onClose();
@@ -35,7 +37,6 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
             color={'#000000'}
           />
           <Text style={Style.message}>{message}</Text>
-          <Text style={Style.subtext}>Please try again.</Text>
           <View style={Style.buttonRow}>
             <Button
               icon="arrow-u-right-bottom"
@@ -43,7 +44,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
               buttonColor={Theme.colors.tertiary}
               onPress={handleRetry}
             >
-              Retry
+              {t("RETRY")}
             </Button>
             <Button
               icon="minus-circle-outline"
@@ -51,7 +52,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
               mode="contained"
               onPress={handleSettings}
             >
-              Ignore
+              {t("IGNORE")}
             </Button>
           </View>
         </View>
