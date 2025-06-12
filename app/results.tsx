@@ -6,7 +6,7 @@ import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import ConsistencyChart from '../components/ConsistencyChart';
-import { useSettings } from './SettingsContext';
+import { useSettings } from './globalContext';
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
 

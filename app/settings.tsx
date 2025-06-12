@@ -7,7 +7,7 @@ import * as React from "react";
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
-import { useSettings } from "./SettingsContext";
+import { useSettings } from "./globalContext";
 import PatientModelPicker from "../components/PatientModelPicker";
 
 export default function Settings() {
@@ -52,7 +52,9 @@ export default function Settings() {
               onValueChange={onToggleSwitch} />
           </View>
           <View style={{ marginVertical: 20 }}>
-            <Text style={{ color: "#707070" }}>Uses age-based thresholds to classify the respiratory rate as normal or high. </Text>
+            <Text style={{ color: "#707070" }}>Uses age-based thresholds to classify the respiratory rate as
+              <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> normal</Text> or
+              <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> high.</Text> </Text>
           </View>
         </View>
 

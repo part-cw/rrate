@@ -8,7 +8,7 @@ import TapCount from "../components/TapCount";
 import { useState, useEffect, useRef } from "react";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
-import { useSettings } from "./SettingsContext";
+import { useSettings } from "./globalContext";
 import AlertModal from "../components/alertModal";
 
 // The landing screen, where the measurement of respiratory rate takes place. 

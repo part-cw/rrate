@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, Dimensions, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
-import { useSettings } from '../app/SettingsContext';
+import { useSettings } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
 
 export default function ConsistencyChart() {

@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import * as React from "react";
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
-import { useSettings } from "../app/SettingsContext";
+import { useSettings } from "./globalContext";
 
 export default function Settings() {
   const router = useRouter();

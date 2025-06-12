@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { IconButton } from 'react-native-paper';
-import { useSettings } from '@/app/SettingsContext';
+import { useSettings } from '@/app/globalContext';
 import React, { useState } from 'react';
 
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
