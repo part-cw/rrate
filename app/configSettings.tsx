@@ -1,6 +1,6 @@
 import { GlobalStyles as Style } from "../assets/styles";
 import { View, Text, ScrollView } from "react-native";
-import { Button, RadioButton, Checkbox, TextInput } from 'react-native-paper';
+import { Button, RadioButton } from 'react-native-paper';
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import * as React from "react";

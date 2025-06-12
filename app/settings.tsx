@@ -71,7 +71,7 @@ export default function Settings() {
                 setREDCap(!REDCap);
               }}
             />
-            <Text> {t("REDCAP_USE")}</Text>
+            <Text>{t("REDCAP_USE")}</Text>
           </View>
 
           {REDCap && (
