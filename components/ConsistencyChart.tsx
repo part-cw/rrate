@@ -14,7 +14,7 @@ type ConsistencyChartProps = {
 };
 
 export default function ConsistencyChart({ showInfoButton, showLabels }: ConsistencyChartProps) {
-  const { consistencyThreshold, tapTimestamps, tapCountRequired } = useGlobalVariables();
+  const { consistencyThreshold, tapTimestamps, tapCountRequired, rrate } = useGlobalVariables();
   const [modalVisible, setModalVisible] = useState(false);
 
   const chartWidth = 350;
@@ -123,7 +123,8 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
         ))}
       </Svg>
 
-      {showInfoButton && (
+      {/* Show info button when viewing the consistency chart on the results page */}
+      {(showInfoButton && rrate > 0) && (
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
           style={{
@@ -143,12 +144,56 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
         </TouchableOpacity>
       )}
 
+      {/* Show labels when viewing the consistency chart on the modal dialog page */}
       {showLabels && (
-        <View style={{ flexDirection: 'column', justifyContent: 'space-between', width: 40, position: 'absolute', top: 25, right: 0, zIndex: 2 }}>
-          <Text>+ Threshold</Text>
-          <Text>Median</Text>
-          <Text>- Threshold</Text>
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 5,
+            height: chartHeight,
+            width: 80,
+            zIndex: 2,
+          }}
+        >
+          <Text
+            style={{
+              position: 'absolute',
+              top: getY(median - threshold) - 17,
+              right: 0,
+              width: '100%',
+              textAlign: 'right',
+              fontSize: 12,
+            }}
+          >
+            − Threshold
+          </Text>
+          <Text
+            style={{
+              position: 'absolute',
+              top: getY(median) - 8,
+              right: 0,
+              width: '100%',
+              textAlign: 'right',
+              fontSize: 12,
+            }}
+          >
+            Median
+          </Text>
+          <Text
+            style={{
+              position: 'absolute',
+              top: getY(median + threshold) + 2,
+              right: 0,
+              width: '100%',
+              textAlign: 'right',
+              fontSize: 12,
+            }}
+          >
+            + Threshold
+          </Text>
         </View>
+
       )}
 
       {/* Modal Dialog */}

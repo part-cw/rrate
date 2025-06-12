@@ -193,12 +193,6 @@ export const GlobalStyles = StyleSheet.create({
     alignItems: 'center',
     elevation: 10,
   },
-  message: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginTop: 10,
-    textAlign: 'center',
-  },
   subtext: {
     fontSize: 14,
     color: '#555',
