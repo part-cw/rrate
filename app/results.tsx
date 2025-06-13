@@ -19,8 +19,7 @@ export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const [age, setAge] = useState('');
-  const { rrate, tapTimestamps } = useGlobalVariables();
+  const { rrate, tapTimestamps, age, setAge } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   const fadeOutSVG = useRef(new Animated.Value(0)).current; // start at exhale (fully visible)
@@ -98,7 +97,7 @@ export default function Results() {
           <View style={Style.dropdownContainer}>
             <Text style={Style.ageLabel}>Age</Text>
             <View style={{ width: 150 }}>
-              <DropdownList label="" data={ages} onSelect={setAge} />
+              <DropdownList label={age} data={ages} onSelect={setAge} />
             </View>
           </View>
         </View>
@@ -107,11 +106,11 @@ export default function Results() {
       <Pressable onPress={handleTap}>
         <View style={styles.container}>
           {/* Inhale is always fully visible */}
-          <InSVG width={300} height={300} />
+          <InSVG width={320} height={350} />
 
           {/* Exhale fades in and out above it */}
           <Animated.View style={[styles.overlay, { opacity: fadeOutSVG }]}>
-            <OutSVG width={300} height={300} />
+            <OutSVG width={320} height={350} />
           </Animated.View>
         </View>
       </Pressable>
@@ -171,8 +170,8 @@ export default function Results() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 300,
-    height: 300,
+    width: 320,
+    height: 350,
     position: 'relative',
     margin: 0
   },

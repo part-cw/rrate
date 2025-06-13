@@ -19,7 +19,7 @@ export default function ConsistencyChartModal({ isVisible, message, onClose }: P
 
   const handleClose = () => {
     onClose();
-    router.push('/');
+    router.push('/results');
   };
 
   return (
@@ -31,7 +31,7 @@ export default function ConsistencyChartModal({ isVisible, message, onClose }: P
           </View>
           <Text style={Style.heading}>Consistency Analysis</Text>
           <Text style={{ marginHorizontal: 15, marginVertical: 20 }}>A tap is considered consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median time interval between taps.</Text>
-          <View>
+          <View style={{ marginVertical: 30 }}>
             <ConsistencyChart showLabels />
 
           </View>

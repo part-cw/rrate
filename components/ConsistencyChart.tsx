@@ -19,7 +19,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   const [modalVisible, setModalVisible] = useState(false);
 
   const chartWidth = 350;
-  const chartHeight = 100;
+  const chartHeight = 90;
   const chartPadding = 10;
 
   const tapLimit = tapCountRequired; // number of taps to consider
@@ -49,7 +49,6 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
 
   const points = tapTimestamps.map((_, i) => {
     const x = i * pointSpacing + (i === 0 ? chartPadding : 0); // adds padding to the left of the first point
-    //console.log("Point " + i + " timestamp: " + tapTimestamps[i]);
 
     let y: number;
     let isConsistent: boolean;
@@ -77,7 +76,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   }
 
   return (
-    <View style={{ backgroundColor: "fff", margin: 20, height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
+    <View style={{ backgroundColor: "fff", height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
       {/* Background Threshold Band */}
       <View
         style={{
@@ -116,10 +115,10 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
             key={`dot-${i}`}
             cx={point.x}
             cy={point.y}
-            r={8}
+            r={7}
             fill={point.isConsistent ? '#FFFFFF' : '#E63946'}
             stroke="#000000"
-            strokeWidth={2}
+            strokeWidth={1}
           />
         ))}
       </Svg>
