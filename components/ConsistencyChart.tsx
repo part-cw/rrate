@@ -18,7 +18,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   const [modalVisible, setModalVisible] = useState(false);
 
   const chartWidth = 350;
-  const chartHeight = 70;
+  const chartHeight = 80;
   const chartPadding = 10;
 
   const tapLimit = tapCountRequired; // number of taps to consider

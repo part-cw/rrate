@@ -9,18 +9,46 @@ import { useRouter } from 'expo-router';
 import ConsistencyChart from '../components/ConsistencyChart';
 import { useGlobalVariables } from './globalContext';
 import useTranslation from '@/hooks/useTranslation';
-import InSVG from '../assets/babyAnimation/in.svg'
-import OutSVG from '../assets/babyAnimation/out.svg'
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
+
+const babySVGMap = {
+  1: {
+    inflate: require('../assets/babyAnimation/Baby1_inflate.svg').default,
+    deflate: require('../assets/babyAnimation/Baby1_deflate.svg').default,
+  },
+  2: {
+    inflate: require('../assets/babyAnimation/Baby2_inflate.svg').default,
+    deflate: require('../assets/babyAnimation/Baby2_deflate.svg').default,
+  },
+  3: {
+    inflate: require('../assets/babyAnimation/Baby3_inflate.svg').default,
+    deflate: require('../assets/babyAnimation/Baby3_deflate.svg').default,
+  },
+  4: {
+    inflate: require('../assets/babyAnimation/Baby4_inflate.svg').default,
+    deflate: require('../assets/babyAnimation/Baby4_deflate.svg').default,
+  },
+  5: {
+    inflate: require('../assets/babyAnimation/Baby5_inflate.svg').default,
+    deflate: require('../assets/babyAnimation/Baby5_deflate.svg').default,
+  },
+  6: {
+    inflate: require('../assets/babyAnimation/Baby6_inflate.svg').default,
+    deflate: require('../assets/babyAnimation/Baby6_deflate.svg').default,
+  },
+}
 
 
 export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { rrate, tapTimestamps, age, setAge } = useGlobalVariables();
+  const { rrate, tapTimestamps, age, setAge, babyAnimation } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
+
+  const InflateSVG = babySVGMap[babyAnimation]?.inflate;
+  const DeflateSVG = babySVGMap[babyAnimation]?.deflate;
 
   const fadeOutSVG = useRef(new Animated.Value(0)).current; // start at exhale (fully visible)
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
@@ -113,12 +141,14 @@ export default function Results() {
       <Pressable onPress={handleTap}>
         <View style={styles.container}>
           {/* Inhale is always fully visible */}
-          <InSVG width={320} height={350} />
+          {DeflateSVG && <DeflateSVG width={320} height={350} />}
 
           {/* Exhale fades in and out above it */}
-          <Animated.View style={[styles.overlay, { opacity: fadeOutSVG }]}>
-            <OutSVG width={320} height={350} />
-          </Animated.View>
+          {InflateSVG &&
+            <Animated.View style={[styles.overlay, { opacity: fadeOutSVG }]}>
+              <InflateSVG width={320} height={350} />
+            </Animated.View>
+          }
         </View>
       </Pressable>
 

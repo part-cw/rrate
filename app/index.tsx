@@ -27,6 +27,7 @@ export default function Index() {
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notEnoughTapsVisibleRef = useRef(false); // reference for the modal to prevent multiple openings due to asynchronous state updates
+  const [isPressed, setIsPressed] = useState<boolean>(false);
 
 
   const tapsTooFast = () => setTapsTooFastModalVisible(true);
@@ -66,6 +67,11 @@ export default function Index() {
       };
     }, [timestamps, notEnoughTapsModalVisible])
   );
+
+  function pressTapOnInhalation() {
+    countAndCalculateTap();
+
+  }
 
 
   // Handler function triggered by the Tap on Inhalation button. 
@@ -143,8 +149,10 @@ export default function Index() {
       <View style={Style.componentContainer}>
         <Button
           mode="contained"
-          contentStyle={{ width: 350, height: 400 }}
+          contentStyle={{ width: 350, height: 400, backgroundColor: isPressed ? Theme.colors.primary : Theme.colors.buttonPressed }}
           labelStyle={{ fontSize: 24, padding: 10 }}
+          onPressIn={() => setIsPressed(true)}   // when button is pressed
+          onPressOut={() => setIsPressed(false)} // when button is released
           onPress={countAndCalculateTap}
         >
           <Text>{t("TAP_INHALATION")}</Text>
