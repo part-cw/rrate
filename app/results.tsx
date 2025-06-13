@@ -23,42 +23,25 @@ export default function Results() {
   const { rrate, tapTimestamps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
-  const fadeIn = useRef(new Animated.Value(1)).current;
-  const fadeOut = useRef(new Animated.Value(0)).current;
-
+  const fadeOutSVG = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.parallel([
-          Animated.timing(fadeIn, {
-            toValue: 0,
-            duration: 1500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(fadeOut, {
-            toValue: 1,
-            duration: 1500,
-            useNativeDriver: true,
-          }),
-        ]),
-        Animated.parallel([
-          Animated.timing(fadeIn, {
-            toValue: 1,
-            duration: 1500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(fadeOut, {
-            toValue: 0,
-            duration: 1500,
-            useNativeDriver: true,
-          }),
-        ]),
+        Animated.timing(fadeOutSVG, {
+          toValue: 1,
+          duration: 800, // fade in (exhale)
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeOutSVG, {
+          toValue: 0,
+          duration: 800, // fade out (inhale)
+          useNativeDriver: true,
+        }),
       ])
     );
 
     loop.start();
-
     return () => loop.stop();
   }, []);
 
@@ -110,10 +93,11 @@ export default function Results() {
 
 
       <View style={styles.container}>
-        <Animated.View style={[styles.svg, { opacity: fadeIn }]}>
-          <InSVG width={300} height={300} />
-        </Animated.View>
-        <Animated.View style={[styles.svg, { opacity: fadeOut, position: 'absolute' }]}>
+        {/* Inhale is always fully visible */}
+        <InSVG width={300} height={300} />
+
+        {/* Exhale fades in and out above it */}
+        <Animated.View style={[styles.overlay, { opacity: fadeOutSVG }]}>
           <OutSVG width={300} height={300} />
         </Animated.View>
       </View>
@@ -176,9 +160,11 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     position: 'relative',
+    margin: 0
   },
-  svg: {
-    width: '100%',
-    height: '100%',
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
 });
