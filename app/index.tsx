@@ -12,25 +12,36 @@ import { useGlobalVariables } from "./globalContext";
 import AlertModal from "../components/alertModal";
 import useTranslation from '@/hooks/useTranslation';
 import { evaluateRecentTaps } from '../utils/consistencyFunctions';
+import Timer from '../components/timer';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const router = useRouter();
   const { t } = useTranslation(); // use the function to get translations; pass in the keyword 
 
+  // LOCAL VARIABLES
   const [tapCount, setTapCount] = useState(0);
   const [timestamps, setTimestamps] = useState<number[]>([]);
   const [tapsTooFastModalVisible, setTapsTooFastModalVisible] = useState<boolean>(false);
   const [notEnoughTapsModalVisible, setNotEnoughTapsModalVisible] = useState<boolean>(false);
   const [tapsInconsistentModalVisible, setTapsInconsistentModalVisible] = useState<boolean>(false);
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps } = useGlobalVariables();
+  const [isPressed, setIsPressed] = useState<boolean>(false); // Tap on Inhalation button state
+  const [time, setTime] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  // GLOBAL VARIABLES
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, measurementMethod } = useGlobalVariables();
 
+  // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notEnoughTapsVisibleRef = useRef(false); // reference for the modal to prevent multiple openings due to asynchronous state updates
-  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const tapCountRef = useRef(0);
 
-
+  // MODAL DIALOG PAGE LOGIC
   const tapsTooFast = () => setTapsTooFastModalVisible(true);
+
+  const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
+
   const notEnoughTaps = () => {
     if (!notEnoughTapsModalVisible) {
       if (timeoutRef.current !== null) {
@@ -39,8 +50,6 @@ export default function Index() {
       setNotEnoughTapsModalVisible(true);
     }
   };
-
-  const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
 
   // Updates the reference for whether the Not Enough Taps modal is visible
   useEffect(() => {
@@ -54,7 +63,7 @@ export default function Index() {
 
       // Set the timeout
       timeoutRef.current = setTimeout(() => {
-        if (!notEnoughTapsModalVisible) {
+        if (!notEnoughTapsModalVisible && measurementMethod === 'tap') {
           notEnoughTaps();
         }
       }, 60000);
@@ -68,23 +77,51 @@ export default function Index() {
     }, [timestamps, notEnoughTapsModalVisible])
   );
 
-  function pressTapOnInhalation() {
-    countAndCalculateTap();
+  // Start timer when first tap occurs; only if measurement method is 'tap for one minute'
+  const startTimer = () => {
+    intervalRef.current = setInterval(() => {
+      setTime(prev => {
+        if (prev >= 59) {
+          clearInterval(intervalRef.current!);
 
-  }
+          setRRate(tapCountRef.current);
+          setTapTimestaps(timestamps);
+          router.push("/results");
+
+          return 60;
+        }
+        return prev + 1;
+      });
+    }, 1000);
+  };
+
+  // Cleanup timer interval on unmount
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
 
-  // Handler function triggered by the Tap on Inhalation button. 
+  // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
-    // update tap count
-    if (tapCount < 12) {
-      setTapCount(tapCount + 1);
-    } else {
-      setTapCount(0);
-    }
+    const now = Date.now() / 1000;
 
-    // perform consistency calculation
-    consistencyCalculation();
+    if (measurementMethod === 'timer') {
+      // Start timer only on first tap
+      if (!timerRunning) {
+        startTimer();
+        setTimerRunning(true);
+      }
+
+      // Increment both state and ref
+      tapCountRef.current += 1;
+      setTapCount(tapCountRef.current)
+      setTimestamps(prev => [...prev, now]);
+    } else if (measurementMethod === 'tap') {
+      // Assess the consistency of taps to determine whether to proceed to results page
+      consistencyCalculation();
+    }
   }
 
   // calculates consistency of taps
@@ -143,7 +180,9 @@ export default function Index() {
       </View>
 
       <View style={Style.componentContainer}>
-        <TapCount tapCount={tapCount} />
+        {measurementMethod === 'tap' ?
+          <TapCount tapCount={tapCount} /> : <Timer time={time} />
+        }
       </View>
 
       <View style={Style.componentContainer}>

@@ -44,7 +44,7 @@ export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { rrate, tapTimestamps, age, setAge, babyAnimation } = useGlobalVariables();
+  const { rrate, tapTimestamps, age, setAge, babyAnimation, measurementMethod } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -153,7 +153,7 @@ export default function Results() {
       </Pressable>
 
 
-      <ConsistencyChart showInfoButton />
+      {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
 
       {rrateConfirmed ? (
 
