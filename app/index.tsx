@@ -11,11 +11,12 @@ import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
 import AlertModal from "../components/alertModal";
 import useTranslation from '@/hooks/useTranslation';
+import { evaluateRecentTaps } from '../utils/consistencyFunctions';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const router = useRouter();
-  const { t } = useTranslation(); // use the function to get translations; pass in the keyword for the
+  const { t } = useTranslation(); // use the function to get translations; pass in the keyword 
 
   const [tapCount, setTapCount] = useState(0);
   const [timestamps, setTimestamps] = useState<number[]>([]);
@@ -23,9 +24,6 @@ export default function Index() {
   const [notEnoughTapsModalVisible, setNotEnoughTapsModalVisible] = useState<boolean>(false);
   const [tapsInconsistentModalVisible, setTapsInconsistentModalVisible] = useState<boolean>(false);
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps } = useGlobalVariables();
-
-  const tapLimit = tapCountRequired;
-  const consistencyThresholdPercent = consistencyThreshold;
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notEnoughTapsVisibleRef = useRef(false); // reference for the modal to prevent multiple openings due to asynchronous state updates
@@ -89,7 +87,7 @@ export default function Index() {
     const updated = [...timestamps, now];
     setTimestamps(updated);
 
-    const result = evaluateRecentTaps({ timestamps: updated });
+    const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
 
     if (result) {
       setRRate(Math.round(result.rate)); // set the respiratory rate in the global context so it can be used in other components
@@ -108,39 +106,6 @@ export default function Index() {
     if (updated.length >= 12) {
       inconsistentTaps();
     }
-  };
-
-  // Checks if the last few taps were consistent and calculates rrate (required tap count determined in Settings; default is 5)
-  function evaluateRecentTaps({ timestamps }: { timestamps: number[] }) {
-    if (timestamps.length < tapLimit) return null;
-
-    const recent = timestamps.slice(-tapLimit);
-    const intervals = recent.slice(1).map((t, i) => t - recent[i]);
-    const median = getMedian({ arr: intervals });
-    const threshold = (consistencyThresholdPercent / 100) * median;
-
-    const isConsistent = intervals.every(
-      (interval) => Math.abs(interval - median) <= threshold
-    );
-
-    if (isConsistent) {
-      return {
-        intervals,
-        median,
-        rate: 60 / median,
-      };
-    }
-
-    return null;
-  }
-
-  // Returns the median of an array of numbers
-  const getMedian = ({ arr }: { arr: number[] }) => {
-    const sorted = [...arr].sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    return sorted.length % 2 === 0
-      ? (sorted[mid - 1] + sorted[mid]) / 2
-      : sorted[mid];
   };
 
   return (

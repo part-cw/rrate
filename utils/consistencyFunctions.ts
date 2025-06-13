@@ -1,3 +1,6 @@
+// Testable functions (ie. those that don't use global variables or React hooks)
+
+// Returns the median of an array of numbers
 export function getMedian(arr: number[]): number {
   const sorted = [...arr].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
@@ -6,12 +9,26 @@ export function getMedian(arr: number[]): number {
     : sorted[mid];
 }
 
-export function getIntervals(taps: number[]): number[] {
-  return taps.slice(1).map((t, i) => t - taps[i]);
-}
+// Checks if the last few taps were consistent and calculates rrate (required tap count determined in Settings; default is 5)
+export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyThreshold }: { timestamps: number[], tapCountRequired: number, consistencyThreshold: number }) {
+  if (timestamps.length < tapCountRequired) return null;
 
-export function getConsistencyFlags(intervals: number[], thresholdPercent: number): boolean[] {
+  const recent = timestamps.slice(-tapCountRequired);
+  const intervals = recent.slice(1).map((t, i) => t - recent[i]);
   const median = getMedian(intervals);
-  const threshold = (thresholdPercent / 100) * median;
-  return intervals.map(interval => Math.abs(interval - median) <= threshold);
+  const threshold = (consistencyThreshold / 100) * median;
+
+  const isConsistent = intervals.every(
+    (interval) => Math.abs(interval - median) <= threshold
+  );
+
+  if (isConsistent) {
+    return {
+      intervals,
+      median,
+      rate: 60 / median,
+    };
+  }
+
+  return null;
 }
