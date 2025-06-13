@@ -4,7 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
 import { useGlobalVariables } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
-import useTranslation from '@/hooks/useTranslation';
 import ConsistencyChartModal from './ConsistencyChartModal';
 import * as consistencyFunctions from '../utils/consistencyFunctions';
 
@@ -19,7 +18,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   const [modalVisible, setModalVisible] = useState(false);
 
   const chartWidth = 350;
-  const chartHeight = 90;
+  const chartHeight = 70;
   const chartPadding = 10;
 
   const tapLimit = tapCountRequired; // number of taps to consider
@@ -130,7 +129,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
           style={{
             position: 'absolute',
             right: 0,
-            top: 25,
+            top: 10,
             backgroundColor: 'white',
             borderRadius: 30,
             padding: 5,

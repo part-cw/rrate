@@ -25,18 +25,25 @@ export default function Results() {
   const fadeOutSVG = useRef(new Animated.Value(0)).current; // start at exhale (fully visible)
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
+  // Calculate breaths/min for animation timing 
+  const rate = rrate == 0 ? 40 : rrate;;
+  const secondsPerBreath = 60 / rate;
+  const msPerBreath = secondsPerBreath * 1000;
+  const halfCycle = msPerBreath / 2;
+
+
   // Start breathing loop: fade exhale out (inhale), then back in (exhale)
   const startBreathing = () => {
     animationRef.current = Animated.loop(
       Animated.sequence([
         Animated.timing(fadeOutSVG, {
           toValue: 1,
-          duration: 800,
+          duration: halfCycle,
           useNativeDriver: true,
         }),
         Animated.timing(fadeOutSVG, {
           toValue: 0,
-          duration: 800,
+          duration: halfCycle,
           useNativeDriver: true,
         }),
       ])
