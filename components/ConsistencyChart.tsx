@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
 import { useGlobalVariables } from '../app/globalContext';
 import { GlobalStyles as Style } from '@/assets/styles';
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
 import ConsistencyChartModal from './ConsistencyChartModal';
 import * as consistencyFunctions from '../utils/consistencyFunctions';
 

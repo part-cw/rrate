@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Animated, Text, Image, StyleSheet } from 'react-native';
 import DropdownList from '../components/DropdownList';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { Button } from 'react-native-paper';
@@ -7,7 +8,9 @@ import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import ConsistencyChart from '../components/ConsistencyChart';
 import { useGlobalVariables } from './globalContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
+import InSVG from '../assets/babyAnimation/in.svg'
+import OutSVG from '../assets/babyAnimation/out.svg'
 
 const ages = ['default', '<2 months', '2–12 months', '>1 year'];
 
@@ -19,6 +22,46 @@ export default function Results() {
   const [age, setAge] = useState('');
   const { rrate, tapTimestamps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
+
+  const fadeIn = useRef(new Animated.Value(1)).current;
+  const fadeOut = useRef(new Animated.Value(0)).current;
+
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(fadeIn, {
+            toValue: 0,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(fadeOut, {
+            toValue: 1,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.parallel([
+          Animated.timing(fadeIn, {
+            toValue: 1,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(fadeOut, {
+            toValue: 0,
+            duration: 1500,
+            useNativeDriver: true,
+          }),
+        ]),
+      ])
+    );
+
+    loop.start();
+
+    return () => loop.stop();
+  }, []);
+
 
   let rrateColour;
 
@@ -64,6 +107,17 @@ export default function Results() {
           </View>
         </View>
       </View>
+
+
+      <View style={styles.container}>
+        <Animated.View style={[styles.svg, { opacity: fadeIn }]}>
+          <InSVG width={300} height={300} />
+        </Animated.View>
+        <Animated.View style={[styles.svg, { opacity: fadeOut, position: 'absolute' }]}>
+          <OutSVG width={300} height={300} />
+        </Animated.View>
+      </View>
+
 
       <ConsistencyChart showInfoButton />
 
@@ -116,3 +170,15 @@ export default function Results() {
     </View >
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: 300,
+    height: 300,
+    position: 'relative',
+  },
+  svg: {
+    width: '100%',
+    height: '100%',
+  },
+});

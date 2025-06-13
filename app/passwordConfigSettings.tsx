@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { Theme } from '../assets/theme';
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
 import { useGlobalVariables } from './globalContext';
 
 export default function PasswordPage() {

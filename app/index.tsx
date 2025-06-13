@@ -10,7 +10,7 @@ import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
 import AlertModal from "../components/alertModal";
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {

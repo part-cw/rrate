@@ -8,7 +8,7 @@ import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import { useGlobalVariables } from "./globalContext";
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
 import PatientModelPicker from "../components/PatientModelPicker";
 
 export default function Settings() {

@@ -4,7 +4,7 @@ import translations from '../assets/translations';
 type Language = keyof typeof translations;
 type TranslationKey = keyof typeof translations['English'];
 
-export function useTranslation() {
+export default function useTranslation() {
   const { selectedLanguage } = useGlobalVariables();
 
   function t(key: TranslationKey): string {

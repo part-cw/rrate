@@ -7,7 +7,7 @@ import * as React from "react";
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
 import { useGlobalVariables } from "./globalContext";
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
 
 export default function Settings() {
   const router = useRouter();

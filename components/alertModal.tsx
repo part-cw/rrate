@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
-import { useTranslation } from '@/hooks/useTranslation';
+import useTranslation from '@/hooks/useTranslation';
 
 type Props = PropsWithChildren<{
   isVisible: boolean;
@@ -36,7 +36,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
             size={40}
             color={'#000000'}
           />
-          <Text style={Style.message}>{message}</Text>
+          <Text>{message}</Text>
           <View style={Style.buttonRow}>
             <Button
               icon="arrow-u-right-bottom"
