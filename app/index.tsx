@@ -149,7 +149,7 @@ export default function Index() {
       <View style={Style.componentContainer}>
         <Button
           mode="contained"
-          contentStyle={{ width: 350, height: 400, backgroundColor: isPressed ? Theme.colors.primary : Theme.colors.buttonPressed }}
+          contentStyle={{ width: 350, height: 400, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}
           labelStyle={{ fontSize: 24, padding: 10 }}
           onPressIn={() => setIsPressed(true)}   // when button is pressed
           onPressOut={() => setIsPressed(false)} // when button is released
