@@ -9,7 +9,7 @@ export function getMedian(arr: number[]): number {
     : sorted[mid];
 }
 
-// Checks if the last few taps were consistent and calculates rrate (required tap count determined in Settings; default is 5)
+// Returns time intervals, median interval and rrate if the most recent taps are consistent (must have preset required number of taps to be consistent))
 export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyThreshold }: { timestamps: number[], tapCountRequired: number, consistencyThreshold: number }) {
   if (timestamps.length < tapCountRequired) return null;
 
