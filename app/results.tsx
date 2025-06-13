@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Animated, Text, Image, StyleSheet } from 'react-native';
+import { View, Animated, Text, StyleSheet, Pressable } from 'react-native';
 import DropdownList from '../components/DropdownList';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { Button } from 'react-native-paper';
@@ -23,27 +23,40 @@ export default function Results() {
   const { rrate, tapTimestamps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
-  const fadeOutSVG = useRef(new Animated.Value(0)).current;
+  const fadeOutSVG = useRef(new Animated.Value(0)).current; // start at exhale (fully visible)
+  const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
-  useEffect(() => {
-    const loop = Animated.loop(
+  // Start breathing loop: fade exhale out (inhale), then back in (exhale)
+  const startBreathing = () => {
+    animationRef.current = Animated.loop(
       Animated.sequence([
         Animated.timing(fadeOutSVG, {
           toValue: 1,
-          duration: 800, // fade in (exhale)
+          duration: 800,
           useNativeDriver: true,
         }),
         Animated.timing(fadeOutSVG, {
           toValue: 0,
-          duration: 800, // fade out (inhale)
+          duration: 800,
           useNativeDriver: true,
         }),
       ])
     );
+    animationRef.current.start();
+  };
 
-    loop.start();
-    return () => loop.stop();
+  // On mount, begin the animation
+  React.useEffect(() => {
+    startBreathing();
+    return () => animationRef.current?.stop();
   }, []);
+
+  // When tapped: reset to exhale state, restart inhale from there
+  const handleTap = () => {
+    animationRef.current?.stop();
+    fadeOutSVG.setValue(0); // fully exhaled
+    startBreathing();       // restart cycle
+  };
 
 
   let rrateColour;
@@ -91,16 +104,17 @@ export default function Results() {
         </View>
       </View>
 
+      <Pressable onPress={handleTap}>
+        <View style={styles.container}>
+          {/* Inhale is always fully visible */}
+          <InSVG width={300} height={300} />
 
-      <View style={styles.container}>
-        {/* Inhale is always fully visible */}
-        <InSVG width={300} height={300} />
-
-        {/* Exhale fades in and out above it */}
-        <Animated.View style={[styles.overlay, { opacity: fadeOutSVG }]}>
-          <OutSVG width={300} height={300} />
-        </Animated.View>
-      </View>
+          {/* Exhale fades in and out above it */}
+          <Animated.View style={[styles.overlay, { opacity: fadeOutSVG }]}>
+            <OutSVG width={300} height={300} />
+          </Animated.View>
+        </View>
+      </Pressable>
 
 
       <ConsistencyChart showInfoButton />
