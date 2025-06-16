@@ -72,6 +72,7 @@ export default function Settings() {
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
             <Checkbox
+              color="#f5f6f7"
               status={REDCap ? 'checked' : 'unchecked'}
               onPress={() => {
                 setREDCap(!REDCap);

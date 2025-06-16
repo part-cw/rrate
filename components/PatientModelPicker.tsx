@@ -55,6 +55,7 @@ export default function PatientModelPicker() {
 
         <View style={[Style.componentContainer, {
           paddingHorizontal: 30, flexDirection: 'row', justifyContent: 'space-between', gap: 14, alignItems: 'center', shadowColor: '#000',
+          backgroundColor: "#f5f6f7",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.2,
           shadowRadius: 4,
