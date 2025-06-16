@@ -52,8 +52,17 @@ type globalContextType = {
   setTapCountRequired: (value: number) => void;
 
   // MEASUREMENTS
-  rrate: number;
-  setRRate: (value: number) => void;
+  // rate is the integral breathing rate in breaths/minute as a string
+  // time is the timestamp in seconds since epoch of when save was triggered
+  // taps is a string corresponding to the start time followed by time elapsed since start for each tap, separated by semicolons
+  rrate: string;
+  setRRate: (value: string) => void;
+
+  rr_time: string;
+  set_rrTime: (value: string) => void;
+
+  rr_taps: string;
+  set_rrTaps: (value: string) => void;
 
   tapTimestamps: number[],
   setTapTimestaps: (value: number[]) => void;
@@ -70,7 +79,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
   const [consistencyThreshold, setConsistencyThreshold] = useState(13);
   const [tapCountRequired, setTapCountRequired] = useState(5);
-  const [rrate, setRRate] = useState(0);
+  const [rrate, setRRate] = useState('0');
+  const [rr_time, set_rrTime] = useState('');
+  const [rr_taps, set_rrTaps] = useState('');
   const [tapTimestamps, setTapTimestaps] = useState<number[]>([]);
   const [REDCap, setREDCap] = useState(false);
   const [REDCapHost, setREDCapHost] = useState('');
@@ -100,6 +111,10 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setTapCountRequired,
         rrate,
         setRRate,
+        rr_time,
+        set_rrTime,
+        rr_taps,
+        set_rrTaps,
         tapTimestamps,
         setTapTimestaps,
         REDCap,

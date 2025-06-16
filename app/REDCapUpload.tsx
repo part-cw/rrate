@@ -8,6 +8,8 @@ import useTranslation from '@/hooks/useTranslation';
 export default function REDCapUpload() {
   const [REDCapAPI, setREDCapAPI] = useState<string>("");
   const [REDCapURL, setREDCapURL] = useState<string>("");
+  const [rate, setRate] = useState<string>("");
+  const [timestamps, setTimestamps] = useState<string>("");
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
@@ -20,8 +22,9 @@ export default function REDCapUpload() {
 
     const record = [
       {
-        rr_rate: 42,
-        rr_timestamp: new Date().toISOString(),
+        rr_rate: rate,
+        rr_time: new Date().toISOString(),
+        rr_taps: timestamps,
         notes: 'Test record from app',
       },
     ];
@@ -35,7 +38,7 @@ export default function REDCapUpload() {
       });
       setResponse('Upload successful:\n' + result);
     } catch (error: any) {
-      setResponse('Uploasd failed:\n' + error.message);
+      setResponse('Upload failed:\n' + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +59,18 @@ export default function REDCapUpload() {
         value={REDCapAPI}
         style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
         onChangeText={text => setREDCapAPI(text)}
+      />
+      <TextInput
+        label="Timestamps"
+        value={timestamps}
+        style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
+        onChangeText={text => setTimestamps(text)}
+      />
+      <TextInput
+        label="Rate"
+        value={rate}
+        style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
+        onChangeText={text => setRate(text)}
       />
 
       <Button title={isLoading ? 'Uploading...' : 'Upload Sample Record'} onPress={handleUpload} disabled={isLoading} />

@@ -32,3 +32,10 @@ export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyTh
 
   return null;
 }
+
+export function generateRRTapString(timestamps: number[]): string {
+  if (timestamps.length === 0) return '';
+  const start = timestamps[0];
+  const deltas = timestamps.map(t => (t - start).toFixed(2));
+  return [start.toFixed(2), ...deltas.slice(1)].join(';');
+}

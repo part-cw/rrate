@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
 import AlertModal from "../components/alertModal";
 import useTranslation from '@/hooks/useTranslation';
-import { evaluateRecentTaps } from '../utils/consistencyFunctions';
+import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import Timer from '../components/timer';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
@@ -30,7 +30,7 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, measurementMethod } = useGlobalVariables();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, set_rrTaps, measurementMethod } = useGlobalVariables();
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -85,7 +85,7 @@ export default function Index() {
         if (prev >= 59) {
           clearInterval(intervalRef.current!);
 
-          setRRate(tapCountRef.current);
+          setRRate(`{tapCountRef.current}`);
           setTapTimestaps(timestamps);
           router.push("/results");
 
@@ -117,7 +117,9 @@ export default function Index() {
         setTimerRunning(true);
       }
 
-      setTimestamps(prev => [...prev, now]);
+      const updated = [...timestamps, now];
+      setTimestamps(updated);
+      set_rrTaps(generateRRTapString(updated));
     } else if (measurementMethod === 'tap') {
       // Assess the consistency of taps to determine whether to proceed to results page
       consistencyCalculation();
@@ -133,8 +135,9 @@ export default function Index() {
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
 
     if (result) {
-      setRRate(Math.round(result.rate)); // set the respiratory rate in the global context so it can be used in other components
+      setRRate(`{Math.round(result.rate)}`); // set the respiratory rate in the global context so it can be used in other components
       setTapTimestaps(updated); // store timestamps in the global context
+      set_rrTaps(generateRRTapString(updated));
       if (result.rate < 140) {
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
