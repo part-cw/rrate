@@ -18,9 +18,9 @@ export const GlobalStyles = StyleSheet.create({
   },
   floatingContainer: {
     padding: 20,
-    margin: 20,
+    marginVertical: 15,
     borderRadius: 10,
-    width: 350,
+    backgroundColor: "#f5f6f7",
 
     // iOS 
     shadowColor: '#000',
@@ -33,7 +33,9 @@ export const GlobalStyles = StyleSheet.create({
   },
   componentContainer: {
     marginVertical: 10,
-  }, screenContainer: {
+  },
+
+  screenContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
