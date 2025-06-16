@@ -10,7 +10,7 @@ const translations = {
     RESTART: "Restart",
     RR_MATCH: "Does the breathing rate match the patient?",
     EXIT: "Exit",
-    RRATE: "Respiratory Rate:",
+    RRATE: "Respiratory Rate",
     RRATE_UNIT: "breaths/min",
     TAP_TO_SYNC: "Tap on inhalation to synchronize",
     FAST: "Fast",

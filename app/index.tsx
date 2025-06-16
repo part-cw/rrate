@@ -28,6 +28,7 @@ export default function Index() {
   const [isPressed, setIsPressed] = useState<boolean>(false); // Tap on Inhalation button state
   const [time, setTime] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
+
   // GLOBAL VARIABLES
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, measurementMethod } = useGlobalVariables();
 
@@ -116,11 +117,7 @@ export default function Index() {
         setTimerRunning(true);
       }
 
-      // Increment both state and ref
-      // tapCountRef.current += 1;
-      // setTapCount(tapCountRef.current)
       setTimestamps(prev => [...prev, now]);
-      console.log(`Tap count: ${tapCountRef.current}`);
     } else if (measurementMethod === 'tap') {
       // Assess the consistency of taps to determine whether to proceed to results page
       consistencyCalculation();
@@ -132,7 +129,6 @@ export default function Index() {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
     setTimestamps(updated);
-    console.log("Tap: ", updated);
 
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
 
