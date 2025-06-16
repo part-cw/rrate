@@ -37,7 +37,11 @@ export default function Settings() {
   ];
 
   return (
-    <ScrollView contentContainerStyle={{ margin: 30, paddingTop: 30 }}>
+    <ScrollView contentContainerStyle={{
+      margin: 30, paddingTop: 30, flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
       <View >
         <View style={{ alignItems: 'flex-start', width: 350 }}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push('/')}>

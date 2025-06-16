@@ -21,6 +21,7 @@ export const GlobalStyles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 10,
     backgroundColor: "#f5f6f7",
+    maxWidth: 350,
 
     // iOS 
     shadowColor: '#000',

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
@@ -152,60 +152,66 @@ export default function Index() {
   };
 
   return (
-    <View style={Style.screenContainer}>
-      <View style={[Style.componentContainer, { width: 350, flexDirection: 'row', justifyContent: 'space-between', gap: 14 }]}>
-        <Button
-          mode="contained"
-          buttonColor={Theme.colors.tertiary}
-          onPress={() => console.log('Pressed')}
-          icon={({ size, color }) => (
-            <MaterialCommunityIcons
-              name="location-exit"
-              size={size}
-              color={color}
-              style={{ transform: [{ rotate: '180deg' }] }}
-            />
-          )}
-        >
-          <Text>{t("EXIT")}</Text>
-        </Button>
-        <Button
-          icon="cog"
-          buttonColor={Theme.colors["neutral-bttn"]}
-          mode="contained"
-          onPress={() => router.push("/settings")}
-        >
-          <Text>{t("SETTINGS")}</Text>
-        </Button>
-      </View>
+    <ScrollView contentContainerStyle={{
+      margin: 30, paddingTop: 30, flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+      <View>
+        <View style={[Style.componentContainer, { flexDirection: 'row', justifyContent: 'space-between', gap: 14 }]}>
+          <Button
+            mode="contained"
+            buttonColor={Theme.colors.tertiary}
+            onPress={() => console.log('Pressed')}
+            icon={({ size, color }) => (
+              <MaterialCommunityIcons
+                name="location-exit"
+                size={size}
+                color={color}
+                style={{ transform: [{ rotate: '180deg' }] }}
+              />
+            )}
+          >
+            <Text>{t("EXIT")}</Text>
+          </Button>
+          <Button
+            icon="cog"
+            buttonColor={Theme.colors["neutral-bttn"]}
+            mode="contained"
+            onPress={() => router.push("/settings")}
+          >
+            <Text>{t("SETTINGS")}</Text>
+          </Button>
+        </View>
 
-      <View style={Style.componentContainer}>
-        {measurementMethod === 'tap' ?
-          <TapCount tapCount={tapCount} /> : <Timer time={time} />
-        }
-      </View>
+        <View style={Style.componentContainer}>
+          {measurementMethod === 'tap' ?
+            <TapCount tapCount={tapCount} /> : <Timer time={time} />
+          }
+        </View>
 
-      <View style={[Style.componentContainer, { width: '100%' }]}>
-        <Button
-          mode="contained"
-          contentStyle={{ height: 500, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}
-          labelStyle={{ fontSize: 24, padding: 10 }}
-          onPressIn={() => setIsPressed(true)}   // when button is pressed
-          onPressOut={() => setIsPressed(false)} // when button is released
-          onPress={countAndCalculateTap}
-        >
-          <Text>{t("TAP_INHALATION")}</Text>
-        </Button>
-      </View>
+        <View style={[Style.componentContainer, { width: '100%', maxWidth: 350 }]}>
+          <Button
+            mode="contained"
+            contentStyle={{ height: 500, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}
+            labelStyle={{ fontSize: 24, padding: 10 }}
+            onPressIn={() => setIsPressed(true)}   // when button is pressed
+            onPressOut={() => setIsPressed(false)} // when button is released
+            onPress={countAndCalculateTap}
+          >
+            <Text>{t("TAP_INHALATION")}</Text>
+          </Button>
+        </View>
 
-      <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
-      <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
-        setNotEnoughTapsModalVisible(false);
-        if (timeoutRef.current !== null) {
-          clearTimeout(timeoutRef.current);
-        }
-      }} />
-      <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
-    </View>
+        <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
+        <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
+          setNotEnoughTapsModalVisible(false);
+          if (timeoutRef.current !== null) {
+            clearTimeout(timeoutRef.current);
+          }
+        }} />
+        <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
+      </View>
+    </ScrollView>
   );
 }

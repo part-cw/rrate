@@ -19,15 +19,14 @@ export default function Slider({ values, defaultValue, onSelect }: SliderProps) 
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);
 
-  const screenWidth = Dimensions.get('window').width;
   const sliderWidth = 250;
   const stepWidth = sliderWidth / (values.length - 1);
 
-  const animatedLeft = useRef(new Animated.Value(selectedIndex * stepWidth)).current;
+  const trianglePosition = useRef(new Animated.Value(selectedIndex * stepWidth)).current;
 
   useEffect(() => {
-    Animated.timing(animatedLeft, {
-      toValue: selectedIndex * stepWidth + 15, // Adjusted to center triangle and label
+    Animated.timing(trianglePosition, {
+      toValue: selectedIndex * stepWidth, // Adjusted to center triangle and label
       duration: 200,
       useNativeDriver: false,
     }).start();
@@ -39,8 +38,8 @@ export default function Slider({ values, defaultValue, onSelect }: SliderProps) 
         style={[
           Style.triangle,
           {
-            left: animatedLeft,
-            transform: [{ translateX: -1 }],
+            left: trianglePosition,
+            transform: [{ translateX: +15 }],
           },
         ]}
       />
