@@ -30,7 +30,7 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, set_rrTaps, measurementMethod } = useGlobalVariables();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, rr_taps, set_rrTaps, measurementMethod } = useGlobalVariables();
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -131,13 +131,14 @@ export default function Index() {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
     setTimestamps(updated);
+    set_rrTaps(generateRRTapString(updated));
 
-    const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
+    const result = evaluateRecentTaps({ taps: rr_taps, tapCountRequired, consistencyThreshold });
 
     if (result) {
       setRRate(`{Math.round(result.rate)}`); // set the respiratory rate in the global context so it can be used in other components
-      setTapTimestaps(updated); // store timestamps in the global context
-      set_rrTaps(generateRRTapString(updated));
+      // setTapTimestaps(updated); // store timestamps in the global context
+      // set_rrTaps(generateRRTapString(updated));
       if (result.rate < 140) {
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);

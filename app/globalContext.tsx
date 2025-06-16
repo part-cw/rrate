@@ -64,7 +64,7 @@ type globalContextType = {
   rr_taps: string;
   set_rrTaps: (value: string) => void;
 
-  tapTimestamps: number[],
+  tapTimestamps: number[], // array of timestamps; not sent to REDCap
   setTapTimestaps: (value: number[]) => void;
 };
 
