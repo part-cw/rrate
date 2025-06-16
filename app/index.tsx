@@ -106,6 +106,8 @@ export default function Index() {
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
     const now = Date.now() / 1000;
+    tapCountRef.current += 1;
+    setTapCount(tapCountRef.current)
 
     if (measurementMethod === 'timer') {
       // Start timer only on first tap
@@ -115,9 +117,10 @@ export default function Index() {
       }
 
       // Increment both state and ref
-      tapCountRef.current += 1;
-      setTapCount(tapCountRef.current)
+      // tapCountRef.current += 1;
+      // setTapCount(tapCountRef.current)
       setTimestamps(prev => [...prev, now]);
+      console.log(`Tap count: ${tapCountRef.current}`);
     } else if (measurementMethod === 'tap') {
       // Assess the consistency of taps to determine whether to proceed to results page
       consistencyCalculation();
@@ -129,6 +132,7 @@ export default function Index() {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
     setTimestamps(updated);
+    console.log("Tap: ", updated);
 
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
 
