@@ -204,7 +204,7 @@ export default function Index() {
         </View>
 
         { /* TEST REDCap BUTTON */}
-        <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/settings")}> REDCap </Button>
+        <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
 
         <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
         <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {

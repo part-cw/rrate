@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Button, ScrollView, Alert } from 'react-native';
-import { useGlobalVariables } from '../app/globalContext';
 import { uploadRecordToREDCap } from '../services/redcap';
 import { GlobalStyles as Style } from '../assets/styles';
+import { TextInput } from 'react-native-paper';
+import useTranslation from '@/hooks/useTranslation';
 
-export default function testREDCapUpload() {
-  const { REDCapAPI, REDCapURL } = useGlobalVariables();
+export default function REDCapUpload() {
+  const [REDCapAPI, setREDCapAPI] = useState<string>("");
+  const [REDCapURL, setREDCapURL] = useState<string>("");
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
@@ -17,9 +20,8 @@ export default function testREDCapUpload() {
 
     const record = [
       {
-        age: 3,
-        rrate: 42,
-        timestamp: new Date().toISOString(),
+        rr_rate: 42,
+        rr_timestamp: new Date().toISOString(),
         notes: 'Test record from app',
       },
     ];
@@ -42,8 +44,22 @@ export default function testREDCapUpload() {
   return (
     <ScrollView contentContainerStyle={[Style.screenContainer, { padding: 24 }]}>
       <Text style={{ fontSize: 20, marginBottom: 16, fontWeight: 'bold' }}>Upload to REDCap</Text>
+      <TextInput
+        label={t("URL")}
+        value={REDCapURL}
+        style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
+        onChangeText={text => setREDCapURL(text)}
+        placeholder="/redcap/api/"
+      />
+      <TextInput
+        label={t("TOKEN")}
+        value={REDCapAPI}
+        style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
+        onChangeText={text => setREDCapAPI(text)}
+      />
 
       <Button title={isLoading ? 'Uploading...' : 'Upload Sample Record'} onPress={handleUpload} disabled={isLoading} />
+
 
       {response && (
         <View style={{ marginTop: 20 }}>

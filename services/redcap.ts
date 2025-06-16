@@ -1,3 +1,4 @@
+// Uploads new record to REDCap
 export async function uploadRecordToREDCap({
   apiUrl,
   apiToken,
