@@ -39,8 +39,6 @@ export default function PatientModelPicker() {
     }
   }
 
-
-
   return (
     <View style={Style.floatingContainer} >
       <Text style={Style.heading}> Patient Model </Text>
@@ -48,7 +46,7 @@ export default function PatientModelPicker() {
         <View style={{ alignItems: 'center' }}>
           <Image
             source={imageSource}
-            style={{ width: 170, height: 190, resizeMode: 'contain' }}
+            style={{ width: 170, height: 220, resizeMode: 'contain' }}
           />
         </View>
 

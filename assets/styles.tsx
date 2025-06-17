@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from './theme';
+import { ThemeContext } from '@react-navigation/native';
 
 export const GlobalStyles = StyleSheet.create({
   tapCircle: {
@@ -40,7 +42,7 @@ export const GlobalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    margin: 20,
+    margin: 15,
   },
 
   // Dropdown List
@@ -207,5 +209,9 @@ export const GlobalStyles = StyleSheet.create({
     gap: 10,
     justifyContent: 'space-between',
   },
+  checkbox: {
+    color: Theme.colors.primary,
+    margin: 10
+  }
 
 });

@@ -195,7 +195,7 @@ export default function Index() {
           }
         </View>
 
-        <View style={[Style.componentContainer, { width: '100%', maxWidth: 350 }]}>
+        <View style={[Style.componentContainer, { maxWidth: 350 }]}>
           <Button
             mode="contained"
             contentStyle={{ height: 500, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}

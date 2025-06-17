@@ -1,15 +1,16 @@
 import { GlobalStyles as Style } from "../assets/styles";
 import { View, Text, ScrollView, Pressable } from "react-native";
-import { Button, Switch, Checkbox, TextInput } from 'react-native-paper';
+import { Button, Switch, TextInput } from 'react-native-paper';
+import CheckBox from 'expo-checkbox';
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
-import * as React from "react";
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import { useGlobalVariables } from "./globalContext";
 import useTranslation from '@/hooks/useTranslation';
 import PatientModelPicker from "../components/PatientModelPicker";
+import { useState } from "react";
 
 export default function Settings() {
   const router = useRouter();
@@ -19,7 +20,6 @@ export default function Settings() {
     LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
     UploadOnSave, setUploadOnSave,
   } = useGlobalVariables();
-
 
   const onToggleSwitch = () => {
     setAgeThresholdEnabled(!ageThresholdEnabled);
@@ -38,9 +38,7 @@ export default function Settings() {
 
   return (
     <ScrollView contentContainerStyle={{
-      margin: 30, paddingTop: 30, flexGrow: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      margin: 15, paddingTop: 30,
     }}>
       <View >
         <View style={{ alignItems: 'flex-start', width: 350 }}>
@@ -75,12 +73,7 @@ export default function Settings() {
         <View style={Style.floatingContainer}>
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-            <Checkbox
-              status={REDCap ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setREDCap(!REDCap);
-              }}
-            />
+            <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={REDCap} onValueChange={() => setREDCap(!REDCap)} />
             <Text>{t("REDCAP_USE")}</Text>
           </View>
 
@@ -107,32 +100,17 @@ export default function Settings() {
               />
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Checkbox
-                  status={LongitudinalStudy ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    setLongitudinalStudy(!LongitudinalStudy);
-                  }}
-                />
+                <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={LongitudinalStudy} onValueChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
                 <Text>{t("LONGITUDINAL")}</Text>
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Checkbox
-                  status={RepeatableInstruments ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    setRepeatableInstruments(!RepeatableInstruments);
-                  }}
-                />
+                <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={RepeatableInstruments} onValueChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
                 <Text>{t("REP_EVENTS")}</Text>
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Checkbox
-                  status={UploadOnSave ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    setUploadOnSave(!UploadOnSave);
-                  }}
-                />
+                <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={UploadOnSave} onValueChange={() => setUploadOnSave(!UploadOnSave)} />
                 <Text>{t("UPLOAD_SAVE")}</Text>
               </View>
 
