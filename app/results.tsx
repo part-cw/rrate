@@ -44,7 +44,7 @@ export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { rrate, tapTimestamps, age, setAge, babyAnimation, measurementMethod } = useGlobalVariables();
+  const { rrate, age, setAge, babyAnimation, measurementMethod } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -54,7 +54,7 @@ export default function Results() {
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
   // Calculate breaths/min for animation timing 
-  const rate = rrate == 0 ? 40 : rrate;;
+  const rate = Number(rrate) === 0 ? 40 : Number(rrate);
   const secondsPerBreath = 60 / rate;
   const msPerBreath = secondsPerBreath * 1000;
   const halfCycle = msPerBreath / 2;

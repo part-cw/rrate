@@ -1,4 +1,4 @@
-import { getMedian, evaluateRecentTaps } from '@/utils/consistencyFunctions';
+import { getMedian, evaluateRecentTaps, generateRRTapString } from '@/utils/consistencyFunctions';
 
 // TEST: Get median function, used in evaluateRecentTaps function
 test('returns median of similar-valued array', () => {
@@ -213,4 +213,17 @@ test('checks inconsistent rrate, 11 taps', () => {
   });
   expect(result && result.rate).toBe(41);
 });
+
+// TEST: generate rr_tap string (e.g 2020-05-08 11:13:59.9186;1.5768;3.4793) from array of timestamps
+test('checks if rrtaap string is generated correctly for empty string', () => {
+  const result = generateRRTapString([]);
+  expect(result).toBe("");
+});
+
+test('checks if rrtaap string is generated correctly for non-empty string', () => {
+  const result = generateRRTapString([1750181825.141, 1750181826.948, 1750181827.498, 1750181828.066, 1750181828.629, 1750181829.263, 1750181829.913]);
+  expect(result).toBe("2025-06-17 17:37:05.141;1.8070;2.3570;2.9250;3.4880;4.1220");
+});
+
+
 

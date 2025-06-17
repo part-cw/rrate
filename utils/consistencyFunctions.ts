@@ -61,7 +61,7 @@ export function generateRRTapString(timestamps: number[]): string {
   const formattedStart = startDate.toISOString()
     .replace('T', ' ')
     .replace('Z', '')
-    .slice(0, 23); // e.g. "2020-04-27 11:50:32.064" (ISO without trailing Z)
+    .slice(0, 23);
 
   const deltas = timestamps.slice(1).map(t => (t - start).toFixed(4));
 

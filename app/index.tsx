@@ -85,7 +85,7 @@ export default function Index() {
         if (prev >= 59) {
           clearInterval(intervalRef.current!);
 
-          setRRate(`{tapCountRef.current}`);
+          setRRate(tapCountRef.current);
           setTapTimestaps(timestamps);
           router.push("/results");
 
@@ -132,14 +132,16 @@ export default function Index() {
     const updated = [...timestamps, now];
     setTimestamps(updated);
     set_rrTaps(generateRRTapString(updated));
+    console.log("Tap count:", tapCountRef.current);
+    console.log("Timestamps:", updated);
 
     const result = evaluateRecentTaps({ taps: rr_taps, tapCountRequired, consistencyThreshold });
 
     if (result) {
-      setRRate(`{result.rate}`); // set the respiratory rate in the global context so it can be used in other components
-      // setTapTimestaps(updated); // store timestamps in the global context
-      // set_rrTaps(generateRRTapString(updated));
-      if (result.rate < 140) {
+      setRRate(result.rate); // set the respiratory rate in the global context so it can be used in other components
+      setTapTimestaps(updated); // store timestamps in the global context
+      set_rrTaps(generateRRTapString(updated));
+      if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         router.push("/results");

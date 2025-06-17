@@ -52,11 +52,11 @@ type globalContextType = {
   setTapCountRequired: (value: number) => void;
 
   // MEASUREMENTS
-  // rate is the integral breathing rate in breaths/minute as a string
+  // rate is the integral breathing rate in breaths/minute
   // time is the timestamp in seconds since epoch of when save was triggered
   // taps is a string corresponding to the start time followed by time elapsed since start for each tap, separated by semicolons
-  rrate: string;
-  setRRate: (value: string) => void;
+  rrate: number;
+  setRRate: (value: number) => void;
 
   rr_time: string;
   set_rrTime: (value: string) => void;
@@ -79,7 +79,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
   const [consistencyThreshold, setConsistencyThreshold] = useState(13);
   const [tapCountRequired, setTapCountRequired] = useState(5);
-  const [rrate, setRRate] = useState('0');
+  const [rrate, setRRate] = useState(0);
   const [rr_time, set_rrTime] = useState('');
   const [rr_taps, set_rrTaps] = useState('');
   const [tapTimestamps, setTapTimestaps] = useState<number[]>([]);
