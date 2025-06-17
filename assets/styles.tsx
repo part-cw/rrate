@@ -23,6 +23,7 @@ export const GlobalStyles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 10,
     backgroundColor: "#f5f6f7",
+    width: '100%',
     maxWidth: 350,
 
     // iOS 
@@ -190,10 +191,11 @@ export const GlobalStyles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: 30,
+    padding: 20,
+    paddingTop: 50,
     borderRadius: 16,
-    width: '85%',
-    maxWidth: 400,
+    // width: '85%',
+    maxWidth: '95%',
     alignItems: 'center',
     elevation: 10,
   },

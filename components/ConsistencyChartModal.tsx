@@ -26,9 +26,13 @@ export default function ConsistencyChartModal({ isVisible, message, onClose }: P
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View style={Style.modalOverlay}>
         <View style={Style.modalContent}>
-          <View style={{ alignContent: 'flex-end', alignItems: 'flex-end', width: '100%' }}>
-            <IconButton icon="close" size={30} onPress={handleClose} />
-          </View>
+
+          <IconButton icon="close" size={30} style={{
+            position: 'absolute',
+            top: 2,
+            right: 5,
+            zIndex: 1, // just in case other elements try to cover it
+          }} onPress={handleClose} />
           <Text style={Style.heading}>Consistency Analysis</Text>
           <Text style={{ marginHorizontal: 15, marginVertical: 20 }}>A tap is considered consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median time interval between taps.</Text>
           <View style={{ marginVertical: 30 }}>

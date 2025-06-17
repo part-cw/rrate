@@ -118,7 +118,7 @@ export default function Results() {
 
   return (
     <View style={Style.screenContainer}>
-      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 170 }]}>
+      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10 }]}>
         <View style={Style.leftColumn}>
           <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
         </View>
