@@ -20,6 +20,7 @@ export function evaluateRecentTaps({
   consistencyThreshold: number;
 }) {
   if (!taps) return null;
+  console.log('Evaluating taps:', taps);
 
   const parts = taps.split(';');
   if (parts.length < tapCountRequired) return null;
@@ -31,8 +32,10 @@ export function evaluateRecentTaps({
   for (let i = 1; i < recent.length; i++) {
     intervals.push(recent[i] - recent[i - 1]);
   }
+  console.log('Intervals:', intervals);
 
   const median = getMedian(intervals);
+  console.log('Median interval:', median);
   const threshold = (consistencyThreshold / 100) * median;
 
   const isConsistent = intervals.every(
@@ -43,35 +46,13 @@ export function evaluateRecentTaps({
     return {
       intervals,
       median,
-      rate: 60 / median,
+      rate: Math.round(60 / median),
+      // rate: 60 / median,
     };
   }
 
   return null;
 }
-
-// export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyThreshold }: { timestamps: number[], tapCountRequired: number, consistencyThreshold: number }) {
-//   if (timestamps.length < tapCountRequired) return null;
-
-//   const recent = timestamps.slice(-tapCountRequired);
-//   const intervals = recent.slice(1).map((t, i) => t - recent[i]);
-//   const median = getMedian(intervals);
-//   const threshold = (consistencyThreshold / 100) * median;
-
-//   const isConsistent = intervals.every(
-//     (interval) => Math.abs(interval - median) <= threshold
-//   );
-
-//   if (isConsistent) {
-//     return {
-//       intervals,
-//       median,
-//       rate: 60 / median,
-//     };
-//   }
-
-//   return null;
-// }
 
 export function generateRRTapString(timestamps: number[]): string {
   if (timestamps.length === 0) return '';
