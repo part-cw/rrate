@@ -8,6 +8,7 @@ import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
 import { useGlobalVariables } from "./globalContext";
 import useTranslation from '@/hooks/useTranslation';
+import RadioButtonGroup from "../components/radioButtonGroup";
 
 export default function Settings() {
   const router = useRouter();
@@ -34,28 +35,14 @@ export default function Settings() {
 
         <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}> Measurement Method </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <RadioButton
-              value="first"
-              status={measurementMethodRadioButton === 'first' ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setmeasurementMethodRadioButton('first');
-                setMeasurementMethod('tap');
-              }}
-            />
-            <Text>{t("CHECK")}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <RadioButton
-              value="second"
-              status={measurementMethodRadioButton === 'second' ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setmeasurementMethodRadioButton('second');
-                setMeasurementMethod('timer');
-              }}
-            />
-            <Text>{t("ONEMIN")} </Text>
-          </View>
+          <RadioButtonGroup
+            options={[
+              { label: t("CHECK"), value: 'first' },
+              { label: t("ONEMIN"), value: 'second' },
+            ]}
+            selected={measurementMethodRadioButton}
+            onSelect={setmeasurementMethodRadioButton}
+          />
         </View>
 
         <View style={[Style.floatingContainer, { padding: 30 }]}>
