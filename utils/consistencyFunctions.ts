@@ -33,51 +33,6 @@ export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyTh
   return null;
 }
 
-// // Returns time intervals, median interval and rrate if the most recent taps are consistent (must have preset required number of taps to be consistent)
-// export function evaluateRecentTaps({
-//   taps,
-//   tapCountRequired,
-//   consistencyThreshold,
-// }: {
-//   taps: string;
-//   tapCountRequired: number;
-//   consistencyThreshold: number;
-// }) {
-//   if (!taps) return null;
-
-//   const parts = taps.split(';');
-//   if (parts.length < tapCountRequired) return null;
-
-//   const elapsedTimes = parts.slice(1).map(Number);
-//   elapsedTimes.unshift(0); // Add time 0 to the start of the array to allow for calculating first interval
-//   const recent = elapsedTimes.slice(-tapCountRequired);
-
-//   const intervals = [];
-//   for (let i = 1; i < recent.length; i++) {
-//     intervals.push(recent[i] - recent[i - 1]);
-//   }
-
-//   const median = getMedian(intervals);
-//   const threshold = (consistencyThreshold / 100) * median;
-
-//   const isConsistent = intervals.every(
-//     (interval) => Math.abs(interval - median) <= threshold
-//   );
-//   console.log("__________________________________");
-//   console.log("Taps: " + taps);
-//   console.log("is consistent?: " + isConsistent)
-
-//   if (isConsistent) {
-//     return {
-//       intervals,
-//       median,
-//       rate: Math.round(60 / median)
-//     };
-//   }
-
-//   return null;
-// }
-
 export function generateRRTapString(timestamps: number[]): string {
   if (timestamps.length === 0) return '';
 

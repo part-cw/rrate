@@ -18,7 +18,6 @@ export async function uploadRecordToREDCap({
   formData.append('type', 'flat');
   formData.append('overwriteBehavior', 'normal');
   formData.append('forceAutoNumber', 'true');
-  formData.append('returnContent', 'count');
   formData.append('returnFormat', 'json');
   if (event) {
     formData.append('event', event);
@@ -33,14 +32,17 @@ export async function uploadRecordToREDCap({
 
     const text = await response.text();
     if (!response.ok) {
+      console.error('Upload failed with status:', response.status);
       throw new Error(text);
     }
+
     return text;
   } catch (error) {
     console.error('REDCap upload failed:', error);
     throw error;
   }
 }
+
 
 // How to use: 
 // const result = await uploadRecordToREDCap({
