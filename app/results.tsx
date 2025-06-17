@@ -96,19 +96,19 @@ export default function Results() {
   let rrateColour;
 
   if (age === '<2 months') {
-    if (rrate > 60) {
+    if (Number(rrate) > 60) {
       rrateColour = Theme.colors.tertiary;
     } else {
       rrateColour = Theme.colors.secondary;
     }
   } else if (age === '2–12 months') {
-    if (rrate > 50) {
+    if (Number(rrate) > 50) {
       rrateColour = Theme.colors.tertiary;
     } else {
       rrateColour = Theme.colors.secondary;
     }
   } else if (age === '>1 year') {
-    if (rrate > 40) {
+    if (Number(rrate) > 40) {
       rrateColour = Theme.colors.tertiary;
     } else {
       rrateColour = Theme.colors.secondary;
