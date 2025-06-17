@@ -9,7 +9,10 @@ export default function RootLayout() {
     <PaperProvider theme={Theme}>
       <SettingsProvider>
         <Stack
-          screenOptions={{ headerShown: false }} />
+          screenOptions={{
+            headerShown: false,
+            animation: 'none',
+          }} />
       </SettingsProvider>
     </PaperProvider>
   );
