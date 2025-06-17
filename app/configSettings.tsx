@@ -23,7 +23,7 @@ export default function Settings() {
 
   return (
     <ScrollView contentContainerStyle={{
-      margin: 30, paddingTop: 30
+      margin: 30, paddingTop: 30, alignItems: 'center'
     }}>
       <View >
         <View style={{ alignItems: 'flex-start', width: 350 }}>

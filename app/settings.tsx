@@ -38,9 +38,9 @@ export default function Settings() {
 
   return (
     <ScrollView contentContainerStyle={{
-      margin: 15, paddingTop: 30,
+      margin: 15, paddingTop: 30, alignItems: 'center'
     }}>
-      <View >
+      <View>
         <View style={{ alignItems: 'flex-start', width: 350 }}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push('/')}>
             {t("BACK")}
@@ -78,7 +78,7 @@ export default function Settings() {
           </View>
 
           {REDCap && (
-            <View >
+            <View style={{ height: 340 }}>
               <TextInput
                 label={t("HOST")}
                 value={REDCapHost}
