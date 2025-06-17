@@ -19,30 +19,30 @@ test('returns median of even-numbered array', () => {
 // TEST: Evaluate recent taps function, which returns the time intervals, median time interval and rrate based on tap data
 
 test('checks rrate of 20, 5 taps), ', () => {
-  const result = evaluateRecentTaps({ taps: "2020-04-27 11:50:32.0644;2.8681;6.1887;9.226;11.9731", tapCountRequired: 5, consistencyThreshold: 13 });
+  const result = evaluateRecentTaps({ timestamps: [1587988232.0644, 1587988234.9325, 1587988238.2531, 1587988241.2904, 1587988244.0375], tapCountRequired: 5, consistencyThreshold: 13 });
   expect(result && result.rate).toBe(20);
 });
 
 test('checks rrate of 32, 5 taps', () => {
-  const result = evaluateRecentTaps({ taps: "2020-05-05 07:41:57.5379;1.9939;3.8189;5.472;7.4379", tapCountRequired: 5, consistencyThreshold: 13 });
+  const result = evaluateRecentTaps({ timestamps: [1588664517.5379, 1588664519.5318, 1588664521.3568, 1588664523.0098999, 1588664524.9758], tapCountRequired: 5, consistencyThreshold: 13 });
   expect(result && result.rate).toBe(32);
 });
 
 test('checks rrate of 68, 5 taps', () => {
-  const result = evaluateRecentTaps({ taps: "2020-05-07 10:06:48.9557;.8188;1.7461;2.6635;3.5181", tapCountRequired: 5, consistencyThreshold: 13 });
+  const result = evaluateRecentTaps({ timestamps: [1588846008.9557, 1588846009.7745, 1588846010.7017999, 1588846011.6192, 1588846012.4738], tapCountRequired: 5, consistencyThreshold: 13 });
   expect(result && result.rate).toBe(68);
 });
 
 test('checks rrate of 41, 12 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186; 1.5768; 3.4793; 5.5242; 7.0071; 8.7398; 9.9591; 11.0923; 12.4352; 13.9168; 15.3355; 16.8109", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002, 1588936448.6584, 1588936449.8777, 1588936451.0109, 1588936452.3538, 1588936453.8354, 1588936455.2541, 1588936456.7295], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(41);
 });
 
 test('checks rrate of 43, 10 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-18 08:46:01.7025;1.2273;2.9672;4.2516;5.4113;6.5254;7.9705;9.4421;10.804;12.1176", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1589791561.7025, 1589791562.9298, 1589791564.6697001, 1589791565.9541001, 1589791567.1138, 1589791568.2279, 1589791569.673, 1589791571.1446002, 1589791572.5065, 1589791573.8201], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(43);
 });
@@ -50,56 +50,56 @@ test('checks rrate of 43, 10 taps', () => {
 
 test('checks rrate of 20, 8 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-02 15:22:41.5854;2.0734;4.6304;8.0065;11.3491;14.0863;17.2783;20.0693", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588432961.5854, 1588432963.6588001, 1588432966.2158, 1588432969.5919, 1588432972.9345002, 1588432975.6717, 1588432978.8637002, 1588432981.6547], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(20);
 });
 
 test('checks rrate of 29, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-06 12:53:59.7902;2.2728;4.4066;6.4125;8.3062", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588769639.7902, 1588769642.063, 1588769644.1968, 1588769646.2027, 1588769648.0964], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(29);
 });
 
 test('checks rrate of 23, 12 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-04 12:13:00.5449;3.6477;7.1669;9.9744;11.8709;12.3494;14.8977;18.5566;21.2419;23.851;26.4653;28.8773", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588594380.5449, 1588594384.1926, 1588594387.7117999, 1588594390.5193, 1588594392.4157999, 1588594392.8943, 1588594395.4426, 1588594399.1015, 1588594401.7868, 1588594404.3959, 1588594407.0102, 1588594409.4222], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(23);
 });
 
 test('checks rrate of 32, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-05 07:41:57.5379;1.9939;3.8189;5.472;7.4379", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588664517.5379, 1588664519.5318, 1588664521.3568, 1588664523.0098999, 1588664524.9758], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(32);
 });
 
 test('checks rrate of 29, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-05 11:11:36.8834;2.2213;4.3681;6.4291;8.4334", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588677096.8834, 1588677099.1046999, 1588677101.2515, 1588677103.3125, 1588677105.3167999], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(29);
 });
 
 test('checks rrate of 27, 6 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-08 08:28:14.0802;2.8903;5.3613;7.6073;9.7756;11.9289", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588926494.0802, 1588926496.9705, 1588926499.4415, 1588926501.6875, 1588926503.8558, 1588926506.0091], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(27);
 });
 
 test('checks rrate of 41, 12 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-08 11:13:59.9186;1.5768;3.4793;5.5242;7.0071;8.7398;9.9591;11.0923;12.4352;13.9168;15.3355;16.8109", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002, 1588936448.6584, 1588936449.8777, 1588936451.0109, 1588936452.3538, 1588936453.8354, 1588936455.2541, 1588936456.7295], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(41);
 });
 
 test('checks rrate of 31, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-08 12:05:47.2266;2.0251;3.9752;5.7062;7.6791", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588939547.2266, 1588939549.2517, 1588939551.2017999, 1588939552.9327998, 1588939554.9057], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(31);
 });
@@ -107,7 +107,7 @@ test('checks rrate of 31, 5 taps', () => {
 
 test('checks rrate of 48, 7 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-14 16:43:53.5358;1.6874;3.1437;4.4071;5.6588;6.7827;8.0458", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1589474633.5358, 1589474635.2232, 1589474636.6794999, 1589474637.9429, 1589474639.1945999, 1589474640.3185, 1589474641.5816], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(48);
 });
@@ -115,7 +115,7 @@ test('checks rrate of 48, 7 taps', () => {
 
 test('checks rrate of 44, 9 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-16 14:26:28.1769;2.3899;3.6302;4.7226;6.1786;7.4931;8.6914;10.197;11.6365", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1589639188.1769, 1589639190.5667999, 1589639191.8070998, 1589639192.8995, 1589639194.3555, 1589639195.6699998, 1589639196.8683, 1589639198.3739, 1589639199.8133998], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(44);
 });
@@ -123,14 +123,14 @@ test('checks rrate of 44, 9 taps', () => {
 
 test('checks rrate of 55, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-17 12:52:35.911;1.1689;2.3957;3.426;4.4375", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1589719955.911, 1589719957.0799, 1589719958.3067, 1589719959.3370001, 1589719960.3485], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(55);
 });
 
 test('checks rrate of 26, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-18 11:00:22.4346;2.3898;4.7356;6.9285;9.0662", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1589799622.4346, 1589799624.8244002, 1589799627.1702, 1589799629.3631, 1589799631.5008001], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(26);
 });
@@ -138,56 +138,56 @@ test('checks rrate of 26, 5 taps', () => {
 // TEST: Inconsistent/null rrate checks
 test('checks inconsistent rrate, 8 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186; 1.5768; 3.4793; 5.5242; 7.0071; 8.7398; 9.9591; 11.0923", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002, 1588936448.6584, 1588936449.8777, 1588936451.0109], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks insufficient taps, 0 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 1 tap', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 2 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186; 1.5768", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 3 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186; 1.5768; 3.4793", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 4 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186; 1.5768; 3.4793; 5.5242", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05 -08 11: 13: 59.9186; 1.5768; 3.4793; 5.5242; 7.0071", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 9 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-18 08:46:01.7025;1.2273;2.9672;4.2516;5.4113;6.5254;7.9705;9.4421;10.804", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1589791561.7025, 1589791562.9298, 1589791564.6697001, 1589791565.9541001, 1589791567.1138, 1589791568.2279, 1589791569.673, 1589791571.1446002, 1589791572.5065], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
@@ -195,23 +195,23 @@ test('checks inconsistent rrate, 9 taps', () => {
 
 test('checks inconsistent rrate, 6 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-02 15:22:41.5854;2.0734;4.6304;8.0065;11.3491;14.0863", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588432961.5854, 1588432963.6588001, 1588432966.2158, 1588432969.5919, 1588432972.9345002, 1588432975.6717], tapCountRequired: 5, consistencyThreshold: 13
   });
   expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 5 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-08 08:28:14.0802;2.8903;5.3613;7.6073;9.7756", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588926494.0802, 1588926496.9705, 1588926499.4415, 1588926501.6875, 1588926503.8558], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(27);
+  expect(result && result.rate).toBe(null);
 });
 
 test('checks inconsistent rrate, 11 taps', () => {
   const result = evaluateRecentTaps({
-    taps: "2020-05-08 11:13:59.9186;1.5768;3.4793;5.5242;7.0071;8.7398;9.9591;11.0923;12.4352;13.9168;15.3355", tapCountRequired: 5, consistencyThreshold: 13
+    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002, 1588936448.6584, 1588936449.8777, 1588936451.0109, 1588936452.3538, 1588936453.8354, 1588936455.2541], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(41);
+  expect(result && result.rate).toBe(null);
 });
 
 // TEST: generate rr_tap string (e.g 2020-05-08 11:13:59.9186;1.5768;3.4793) from array of timestamps
@@ -222,7 +222,7 @@ test('checks if rrtaap string is generated correctly for empty string', () => {
 
 test('checks if rrtaap string is generated correctly for non-empty string', () => {
   const result = generateRRTapString([1750181825.141, 1750181826.948, 1750181827.498, 1750181828.066, 1750181828.629, 1750181829.263, 1750181829.913]);
-  expect(result).toBe("2025-06-17 17:37:05.141;1.8070;2.3570;2.9250;3.4880;4.1220");
+  expect(result).toBe("2025-06-17 17:37:05.141;1.8070;2.3570;2.9250;3.4880;4.1220;4.7720");
 });
 
 

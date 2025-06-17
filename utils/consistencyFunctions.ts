@@ -22,8 +22,6 @@ export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyTh
     (interval) => Math.abs(interval - median) <= threshold
   );
 
-  console.log("Timestamps:", timestamps);
-
   if (isConsistent) {
     return {
       intervals,
