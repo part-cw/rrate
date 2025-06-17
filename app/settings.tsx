@@ -42,7 +42,7 @@ export default function Settings() {
     }}>
       <View>
         <View style={{ alignItems: 'flex-start', width: 350 }}>
-          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push('/')}>
+          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
             {t("BACK")}
           </Button>
         </View>

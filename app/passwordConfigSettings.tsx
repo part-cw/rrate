@@ -51,7 +51,7 @@ export default function PasswordPage() {
         />
         {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
         <View style={{ flexDirection: 'row', margin: 20 }} >
-          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.push('/settings')}>
+          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
           </Button>
           <Button mode="contained" onPress={handleSubmit} style={{ marginHorizontal: 5 }} >
