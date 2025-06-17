@@ -78,7 +78,6 @@ export default function Index() {
   );
 
 
-
   // Start timer when first tap occurs; only if measurement method is 'tap for one minute'
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -133,7 +132,8 @@ export default function Index() {
     setTimestamps(updated);
     set_rrTaps(generateRRTapString(updated));
 
-    const result = evaluateRecentTaps({ taps: rr_taps, tapCountRequired, consistencyThreshold });
+    // const result = evaluateRecentTaps({ taps: rr_taps, tapCountRequired, consistencyThreshold });
+    const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
 
     if (result) {
       setRRate(result.rate); // set the respiratory rate in the global context so it can be used in other components
