@@ -20,22 +20,20 @@ export function evaluateRecentTaps({
   consistencyThreshold: number;
 }) {
   if (!taps) return null;
-  console.log('Evaluating taps:', taps);
 
   const parts = taps.split(';');
   if (parts.length < tapCountRequired) return null;
 
   const elapsedTimes = parts.slice(1).map(Number);
+  elapsedTimes.unshift(0); // Add time 0 to the start of the array to allow for calculating first interval
   const recent = elapsedTimes.slice(-tapCountRequired);
 
   const intervals = [];
   for (let i = 1; i < recent.length; i++) {
     intervals.push(recent[i] - recent[i - 1]);
   }
-  console.log('Intervals:', intervals);
 
   const median = getMedian(intervals);
-  console.log('Median interval:', median);
   const threshold = (consistencyThreshold / 100) * median;
 
   const isConsistent = intervals.every(
@@ -46,8 +44,7 @@ export function evaluateRecentTaps({
     return {
       intervals,
       median,
-      rate: Math.round(60 / median),
-      // rate: 60 / median,
+      rate: Math.round(60 / median)
     };
   }
 
