@@ -132,8 +132,6 @@ export default function Index() {
     const updated = [...timestamps, now];
     setTimestamps(updated);
     set_rrTaps(generateRRTapString(updated));
-    console.log("Tap count:", tapCountRef.current);
-    console.log("Timestamps:", updated);
 
     const result = evaluateRecentTaps({ taps: rr_taps, tapCountRequired, consistencyThreshold });
 

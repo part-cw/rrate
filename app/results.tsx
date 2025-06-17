@@ -44,7 +44,7 @@ export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { rrate, age, setAge, babyAnimation, measurementMethod } = useGlobalVariables();
+  const { rrate, age, setAge, babyAnimation, measurementMethod, ageThresholdEnabled } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -127,14 +127,18 @@ export default function Results() {
           <Text style={Style.labelMain}>{t("RRATE")}</Text>
           <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
 
-          <View style={Style.divider} />
+          {ageThresholdEnabled && <View>
+            <View style={Style.divider} />
 
-          <View style={Style.dropdownContainer}>
-            <Text style={Style.ageLabel}>Age</Text>
-            <View style={{ width: 150 }}>
-              <DropdownList label={age} data={ages} onSelect={setAge} />
+            <View style={Style.dropdownContainer}>
+              <Text style={Style.ageLabel}>Age</Text>
+              <View style={{ width: 150 }}>
+                <DropdownList label={age} data={ages} onSelect={setAge} />
+              </View>
             </View>
           </View>
+          }
+
         </View>
       </View>
 
