@@ -44,7 +44,7 @@ export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { rrate, age, setAge, babyAnimation, measurementMethod, ageThresholdEnabled } = useGlobalVariables();
+  const { rrate, age, setAge, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -118,7 +118,7 @@ export default function Results() {
 
   return (
     <View style={Style.screenContainer}>
-      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10 }]}>
+      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, width: '100%' }]}>
         <View style={Style.leftColumn}>
           <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
         </View>
@@ -198,7 +198,10 @@ export default function Results() {
               icon="close"
               buttonColor={Theme.colors.tertiary}
               mode="contained"
-              onPress={() => router.push("/")}
+              onPress={() => {
+                router.push("/");
+                set_rrTaps(''); // Reset rr_taps in global context}
+              }}
               style={{ paddingHorizontal: 30, marginLeft: 10 }}>
               {t("NO")}
             </Button>

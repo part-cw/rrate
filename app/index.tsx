@@ -20,7 +20,6 @@ export default function Index() {
   const { t } = useTranslation(); // use the function to get translations; pass in the keyword 
 
   // LOCAL VARIABLES
-  const [tapCount, setTapCount] = useState(0);
   const [timestamps, setTimestamps] = useState<number[]>([]);
   const [tapsTooFastModalVisible, setTapsTooFastModalVisible] = useState<boolean>(false);
   const [notEnoughTapsModalVisible, setNotEnoughTapsModalVisible] = useState<boolean>(false);
@@ -78,6 +77,8 @@ export default function Index() {
     }, [timestamps, notEnoughTapsModalVisible])
   );
 
+
+
   // Start timer when first tap occurs; only if measurement method is 'tap for one minute'
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -108,7 +109,6 @@ export default function Index() {
   function countAndCalculateTap() {
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
-    setTapCount(tapCountRef.current)
 
     if (measurementMethod === 'timer') {
       // Start timer only on first tap
@@ -141,7 +141,8 @@ export default function Index() {
       set_rrTaps(generateRRTapString(updated));
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
 
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        // if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        // clearInterval(tapCountRef.current);
         router.push("/results");
         return;
       } else {
@@ -190,7 +191,7 @@ export default function Index() {
 
         <View style={Style.componentContainer}>
           {measurementMethod === 'tap' ?
-            <TapCount tapCount={tapCount} /> : <Timer time={time} />
+            <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />
           }
         </View>
 
