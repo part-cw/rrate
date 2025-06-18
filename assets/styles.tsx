@@ -125,12 +125,13 @@ export const GlobalStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 270
+    width: 250,
+
   },
   sliderLine: {
     height: 2,
     backgroundColor: 'black',
-    width: 270,
+    width: 250,
     position: 'absolute',
     top: 10,
   },
@@ -149,7 +150,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   numberRow: {
     flexDirection: 'row',
-    marginTop: 20
+    marginTop: 20,
   },
   step: {
     alignItems: 'center',

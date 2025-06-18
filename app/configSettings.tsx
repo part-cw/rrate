@@ -50,9 +50,11 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
           </View>
-          <Slider values={numberOfTapsOptions} defaultValue={tapCountRequired.toString()} onSelect={(val) => {
-            setTapCountRequired(parseInt(val));
-          }} />
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Slider values={numberOfTapsOptions} defaultValue={tapCountRequired.toString()} onSelect={(val) => {
+              setTapCountRequired(parseInt(val));
+            }} />
+          </View>
         </View>
 
         <View style={[Style.floatingContainer, { padding: 30 }]}>
@@ -60,9 +62,11 @@ export default function Settings() {
           <View style={{ paddingVertical: 20 }}>
             <Text>{t("CONSISTENCY_THRESH")}</Text>
           </View>
-          <Slider values={consistencyThresholdOptions} defaultValue={`${consistencyThreshold}%`} onSelect={(val) => {
-            setConsistencyThreshold(parseInt(val.replace('%', '')));
-          }} />
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <Slider values={consistencyThresholdOptions} defaultValue={`${consistencyThreshold}%`} onSelect={(val) => {
+              setConsistencyThreshold(parseInt(val.replace('%', '')));
+            }} />
+          </View>
         </View>
 
         <Copyright />

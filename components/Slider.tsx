@@ -19,7 +19,7 @@ export default function Slider({ values, defaultValue, onSelect }: SliderProps) 
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);
 
-  const sliderWidth = 250;
+  const sliderWidth = 230;
   const stepWidth = sliderWidth / (values.length - 1);
 
   const trianglePosition = useRef(new Animated.Value(selectedIndex * stepWidth)).current;
