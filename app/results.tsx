@@ -118,6 +118,7 @@ export default function Results() {
 
   return (
     <View style={Style.screenContainer}>
+
       <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150 }]}>
         <View style={Style.leftColumn}>
           <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
@@ -127,7 +128,7 @@ export default function Results() {
           <Text style={Style.labelMain}>{t("RRATE")}</Text>
           <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
 
-          {ageThresholdEnabled && <View>
+          {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
             <View style={Style.divider} />
 
             <View style={Style.dropdownContainer}>

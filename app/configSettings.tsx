@@ -1,6 +1,6 @@
 import { GlobalStyles as Style } from "../assets/styles";
 import { View, Text, ScrollView } from "react-native";
-import { Button, RadioButton } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import * as React from "react";
@@ -15,17 +15,15 @@ export default function Settings() {
   const { t } = useTranslation();
 
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useGlobalVariables();
-  const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('first') : React.useState('second');
+  const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('tap') : React.useState('timer');
 
 
   const numberOfTapsOptions = ["3", "4", "5", "6"];
   const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
 
   return (
-    <ScrollView contentContainerStyle={{
-      margin: 30, paddingTop: 30, alignItems: 'center'
-    }}>
-      <View style={{ width: '100%', maxWidth: 350 }}>
+    <ScrollView contentContainerStyle={Style.screenContainer}>
+      <View style={Style.innerContainer}>
         <View style={{ alignItems: 'flex-start', width: 350 }}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
             {t("BACK")}
@@ -37,11 +35,15 @@ export default function Settings() {
           <Text style={Style.heading}> Measurement Method </Text>
           <RadioButtonGroup
             options={[
-              { label: t("CHECK"), value: 'first' },
-              { label: t("ONEMIN"), value: 'second' },
+              { label: t("CHECK"), value: 'tap' },
+              { label: t("ONEMIN"), value: 'timer' },
             ]}
             selected={measurementMethodRadioButton}
-            onSelect={setmeasurementMethodRadioButton}
+            onSelect={(value) => {
+              setmeasurementMethodRadioButton(value);
+              setMeasurementMethod(value === 'tap' ? "tap" : "timer");
+              console.log("Measurement Method set to: " + measurementMethod);
+            }}
           />
         </View>
 

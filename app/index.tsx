@@ -5,7 +5,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Platform, BackHandler } from "react-native";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
@@ -59,6 +58,7 @@ export default function Index() {
   // Sets up a timeout to trigger the Not Enough Taps modal if no taps are recorded within 60 seconds
   useFocusEffect(
     useCallback(() => {
+      console.log("Method:" + { measurementMethod });
       if (timestamps.length === 0 || notEnoughTapsModalVisible) return;
 
       // Set the timeout
@@ -157,13 +157,9 @@ export default function Index() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{
-      margin: 30, paddingTop: 30, flexGrow: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
+    <ScrollView contentContainerStyle={Style.screenContainer}>
 
-      <View>
+      <View style={Style.innerContainer}>
         <View style={[Style.componentContainer, { flexDirection: 'row', justifyContent: 'space-between' }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
@@ -185,7 +181,7 @@ export default function Index() {
           }
         </View>
 
-        <View style={[Style.componentContainer, { maxWidth: 350 }]}>
+        <View style={[Style.componentContainer, { maxWidth: 500 }]}>
           <Button
             mode="contained"
             contentStyle={{ height: 500, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}

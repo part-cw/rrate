@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from './theme';
-import { ThemeContext } from '@react-navigation/native';
 
 export const GlobalStyles = StyleSheet.create({
   tapCircle: {
@@ -24,7 +23,7 @@ export const GlobalStyles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#f5f6f7",
     width: '100%',
-    maxWidth: 350,
+    maxWidth: 500,
 
     // iOS 
     shadowColor: '#000',
@@ -35,15 +34,21 @@ export const GlobalStyles = StyleSheet.create({
     // Android 
     elevation: 5,
   },
-  componentContainer: {
-    marginVertical: 10,
+  screenContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 35,
+    paddingHorizontal: 15,
   },
 
-  screenContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 15,
+  innerContainer: {
+    width: '100%',
+    maxWidth: 500,
+  },
+
+  componentContainer: {
+    marginVertical: 10,
   },
 
   // Dropdown List
@@ -94,7 +99,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   divider: {
     width: '100%',
-    height: 1,
+    height: 2,
     backgroundColor: '#ccc'
   },
   rightColumn: {

@@ -43,7 +43,7 @@ export default function PasswordPage() {
             style={{ marginBottom: 10 }}
           />
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Configuration Settings</Text>
-          <Text> Please enter the admin password to access these settings. </Text>
+          <Text style={{ textAlign: 'center' }}> Please enter the admin password to access these settings. </Text>
           <TextInput
             label="Password"
             secureTextEntry
