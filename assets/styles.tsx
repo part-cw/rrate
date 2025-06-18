@@ -2,20 +2,21 @@ import { StyleSheet } from 'react-native';
 import { Theme } from './theme';
 
 export const GlobalStyles = StyleSheet.create({
-  tapCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 50,
-    backgroundColor: '#4267BC',
-    borderWidth: 1,
-    borderColor: '#000000',
-  },
-  circleRow: {
-    flexDirection: 'row',
+  screenContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 5,
-    marginTop: 10,
+    paddingVertical: 35,
+    paddingHorizontal: 15,
+  },
+
+  innerContainer: {
+    width: '100%',
+    maxWidth: 500,
+  },
+
+  componentContainer: {
+    marginVertical: 10,
   },
   floatingContainer: {
     padding: 20,
@@ -34,21 +35,22 @@ export const GlobalStyles = StyleSheet.create({
     // Android 
     elevation: 5,
   },
-  screenContainer: {
-    flexGrow: 1,
+
+  // Tap Count
+  tapCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 50,
+    backgroundColor: '#4267BC',
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
+  circleRow: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 35,
-    paddingHorizontal: 15,
-  },
-
-  innerContainer: {
-    width: '100%',
-    maxWidth: 500,
-  },
-
-  componentContainer: {
-    marginVertical: 10,
+    gap: 5,
+    marginTop: 10,
   },
 
   // Dropdown List
@@ -201,7 +203,6 @@ export const GlobalStyles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
     borderRadius: 16,
-    // width: '85%',
     maxWidth: '95%',
     alignItems: 'center',
     elevation: 10,
@@ -218,9 +219,24 @@ export const GlobalStyles = StyleSheet.create({
     gap: 10,
     justifyContent: 'space-between',
   },
+
+  // Checkbox
   checkbox: {
     color: Theme.colors.primary,
     margin: 10
-  }
+  },
+
+  // Baby SVG 
+  SVGcontainer: {
+    width: 320,
+    height: 350,
+    position: 'relative',
+    margin: 0,
+  },
+  SVGoverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 
 });

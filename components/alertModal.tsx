@@ -1,4 +1,4 @@
-import { Modal, View, Text, StyleSheet } from "react-native";
+import { Modal, View, Text } from "react-native";
 import { PropsWithChildren } from 'react';
 import { GlobalStyles as Style } from "@/assets/styles";
 import { Button } from 'react-native-paper';
@@ -13,6 +13,7 @@ type Props = PropsWithChildren<{
   onClose: () => void;
 }>;
 
+// Pop-up alert screen
 export default function AlertModal({ isVisible, message, onClose }: Props) {
   const router = useRouter();
   const { t } = useTranslation();

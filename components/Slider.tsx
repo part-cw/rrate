@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Dimensions,
   Animated,
 } from 'react-native';
 import { GlobalStyles as Style } from '../assets/styles';
@@ -14,7 +13,7 @@ type SliderProps = {
   onSelect?: (value: string) => void;
 };
 
-
+// Allows the user to select from a range of values by tapping on a slider. 
 export default function Slider({ values, defaultValue, onSelect }: SliderProps) {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);

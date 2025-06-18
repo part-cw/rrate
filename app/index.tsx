@@ -1,16 +1,15 @@
 import { View, Text, ScrollView, Image } from "react-native";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "react-native-paper";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
 import { Theme } from "../assets/theme";
-import TapCount from "../components/TapCount";
-import { useState, useEffect, useRef, useCallback } from "react";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
-import AlertModal from "../components/alertModal";
 import useTranslation from '@/hooks/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
+import TapCount from "../components/TapCount";
+import AlertModal from "../components/alertModal";
 import Timer from '../components/timer';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
@@ -78,7 +77,7 @@ export default function Index() {
   );
 
 
-  // Start timer when first tap occurs; only if measurement method is 'tap for one minute'
+  // Start timer when first tap occurs; only if measurement method is set to 'tap for one minute'
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
       setTime(prev => {
@@ -125,14 +124,13 @@ export default function Index() {
     }
   }
 
-  // calculates consistency of taps
+  // calculates consistency of taps; proceeds to results page if rate is below 140 and consistent
   const consistencyCalculation = () => {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
-    setTimestamps(updated);
-    set_rrTaps(generateRRTapString(updated));
+    setTimestamps(updated); // timestamps is an array of timestamps in seconds since start
+    set_rrTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
 
-    // const result = evaluateRecentTaps({ taps: rr_taps, tapCountRequired, consistencyThreshold });
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
 
     if (result) {
@@ -140,9 +138,6 @@ export default function Index() {
       setTapTimestaps(updated); // store timestamps in the global context
       set_rrTaps(generateRRTapString(updated));
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
-
-        // if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        // clearInterval(tapCountRef.current);
         router.push("/results");
         return;
       } else {
@@ -186,8 +181,8 @@ export default function Index() {
             mode="contained"
             contentStyle={{ height: 500, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}
             labelStyle={{ fontSize: 24, padding: 10 }}
-            onPressIn={() => setIsPressed(true)}   // when button is pressed
-            onPressOut={() => setIsPressed(false)} // when button is released
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
             onPress={countAndCalculateTap}
           >
             <Text>{t("TAP_INHALATION")}</Text>

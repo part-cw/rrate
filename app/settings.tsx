@@ -1,20 +1,21 @@
-import { GlobalStyles as Style } from "../assets/styles";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { Button, Switch, TextInput } from 'react-native-paper';
-import CheckBox from 'expo-checkbox';
-import { Theme } from "../assets/theme";
+import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
+import { useGlobalVariables } from "./globalContext";
+import useTranslation from '@/hooks/useTranslation';
+import { Theme } from "../assets/theme";
+import CheckBox from 'expo-checkbox';
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
-import { useGlobalVariables } from "./globalContext";
-import useTranslation from '@/hooks/useTranslation';
 import PatientModelPicker from "../components/PatientModelPicker";
-import { useState } from "react";
 
+// Displays all general settings for the app, including language selection, age interpretation, REDCap settings, and configuration settings.
 export default function Settings() {
   const router = useRouter();
   const { t } = useTranslation();
+
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
@@ -24,7 +25,6 @@ export default function Settings() {
   const onToggleSwitch = () => {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
-
 
   // ADD THIS IN FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
   // const languages = [
@@ -45,14 +45,13 @@ export default function Settings() {
           </Button>
         </View>
 
-
+        {/* Language Selection */}
         <View style={Style.floatingContainer}>
-
           <Text style={Style.heading}> Select Language </Text>
           <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
 
-
+        {/* Patient Age Interpretation Dropdown */}
         <View style={Style.floatingContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={Style.heading}> Patient Age Interpretation </Text>
@@ -66,8 +65,10 @@ export default function Settings() {
           </View>
         </View>
 
+        {/* Patient Model (Baby Animation) Selection */}
         <PatientModelPicker />
 
+        {/* REDCap Settings */}
         <View style={Style.floatingContainer}>
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
@@ -138,6 +139,7 @@ export default function Settings() {
 
         </View>
 
+        {/* Configuration Settings */}
         <Pressable onPress={() => router.push('/passwordConfigSettings')}>
           <View style={[Style.floatingContainer, {
             flexDirection: 'row', alignItems: 'center'

@@ -14,6 +14,7 @@ type Props = {
   onSelect: (value: string) => void;
 };
 
+// Displays a group of radio buttons
 export default function RadioButtonGroup({ options, selected, onSelect }: Props) {
   return (
     <View>

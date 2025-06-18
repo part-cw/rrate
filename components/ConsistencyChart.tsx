@@ -14,6 +14,7 @@ type ConsistencyChartProps = {
   showLabels?: boolean;
 };
 
+// Visualizes the consistency of tap intervals by graphing taps against the median tap interval.
 export default function ConsistencyChart({ showInfoButton, showLabels }: ConsistencyChartProps) {
   const { consistencyThreshold, tapTimestamps, tapCountRequired, rrate } = useGlobalVariables();
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,7 +23,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   const chartHeight = 80;
   const chartPadding = 12;
 
-  const tapLimit = tapCountRequired; // number of taps to consider
+  const tapLimit = tapCountRequired;
   const recentTaps = tapTimestamps.slice(-tapLimit);
   const recentIntervals = recentTaps.slice(1).map((t, i) => t - recentTaps[i]);
 
@@ -43,9 +44,8 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   const grayBottom = getY(median + threshold);
   const grayHeight = grayBottom - grayTop;
 
-
   // DATA POINTS
-  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 3; // leaves padding on the right
+  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 3; // leaves padding on the right (arbitrarily set to 3px)
 
   const points = tapTimestamps.map((_, i) => {
     const x = i * pointSpacing + (i === 0 ? chartPadding : 0); // adds padding to the left of the first point
@@ -54,15 +54,14 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
     let isConsistent: boolean;
 
     if (i === 0) {
-      y = getY(median); // anchor first point to the median line
-      isConsistent = true; // neutral
+      y = getY(median); // first point always lies on the median line
+      isConsistent = true;
     } else {
       const interval = tapTimestamps[i] - tapTimestamps[i - 1];
       y = getY(interval);
       isConsistent = Math.abs(interval - median) <= threshold;
 
     }
-
     return { x, y, isConsistent };
   });
 
@@ -189,7 +188,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
 
         )}
 
-        {/* Modal Dialog */}
+        {/* Modal Dialog; only available when on Results Screen */}
         <ConsistencyChartModal isVisible={modalVisible} message={"Message"} onClose={() => setModalVisible(false)} />
       </View>
     </View>

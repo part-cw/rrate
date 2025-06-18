@@ -8,6 +8,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/assets/styles';
 
+// Dropdown that allows user to select from a list of options.
 export default function DropdownList({ label, data, onSelect }: { label: string; data: string[], onSelect?: (value: string) => void }) {
   const [selected, setSelected] = useState(label);
   const [open, setOpen] = useState(false);

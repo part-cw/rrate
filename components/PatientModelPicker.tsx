@@ -7,6 +7,7 @@ import useTranslation from '@/hooks/useTranslation';
 
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 
+// Allows user to select from one of six baby animations.
 export default function PatientModelPicker() {
   const { babyAnimation, setBabyAnimation } = useGlobalVariables();
   const [currentBaby, setCurrentBaby] = useState(babyAnimation);
@@ -49,7 +50,6 @@ export default function PatientModelPicker() {
             style={{ width: 170, height: 220, resizeMode: 'contain' }}
           />
         </View>
-
 
         <View style={[Style.componentContainer, {
           paddingHorizontal: 30, flexDirection: 'row', justifyContent: 'space-between', gap: 14, alignItems: 'center', shadowColor: '#000',

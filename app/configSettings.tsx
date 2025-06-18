@@ -1,22 +1,23 @@
-import { GlobalStyles as Style } from "../assets/styles";
+import * as React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { Button } from 'react-native-paper';
+import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
-import * as React from "react";
-import Copyright from "../components/Copyright";
-import Slider from "../components/Slider";
 import { useGlobalVariables } from "./globalContext";
 import useTranslation from '@/hooks/useTranslation';
+import Copyright from "../components/Copyright";
+import Slider from "../components/Slider";
 import RadioButtonGroup from "../components/radioButtonGroup";
 
-export default function Settings() {
+// The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and 
+// consistency threshold for respiratory rate measurements.
+export default function configSettings() {
   const router = useRouter();
   const { t } = useTranslation();
 
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('tap') : React.useState('timer');
-
 
   const numberOfTapsOptions = ["3", "4", "5", "6"];
   const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
@@ -30,7 +31,7 @@ export default function Settings() {
           </Button>
         </View>
 
-
+        {/* Measurement Method Selection*/}
         <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}> Measurement Method </Text>
           <RadioButtonGroup
@@ -47,6 +48,7 @@ export default function Settings() {
           />
         </View>
 
+        {/* Number of Taps Selection*/}
         <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}>Taps </Text>
           <View style={{ paddingVertical: 20 }}>
@@ -59,6 +61,7 @@ export default function Settings() {
           </View>
         </View>
 
+        {/* Consistency Threshold Selection*/}
         <View style={[Style.floatingContainer, { padding: 30 }]}>
           <Text style={Style.heading}>Consistency Threshold </Text>
           <View style={{ paddingVertical: 20 }}>

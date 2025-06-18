@@ -3,18 +3,20 @@ import { View, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-na
 import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { GlobalStyles as Style } from '@/assets/styles';
 import { Theme } from '../assets/theme';
 import useTranslation from '@/hooks/useTranslation';
 import { useGlobalVariables } from './globalContext';
 
 export default function PasswordPage() {
-  const [passwordField, setPasswordField] = useState('');
-  const [error, setError] = useState('');
   const router = useRouter();
   const { t } = useTranslation();
+
   const { password } = useGlobalVariables();
 
+  const [passwordField, setPasswordField] = useState('');
+  const [error, setError] = useState('');
+
+  // Handle password submission
   const handleSubmit = () => {
     if (passwordField === password) {
       setError('');

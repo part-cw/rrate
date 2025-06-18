@@ -13,6 +13,7 @@ type Props = PropsWithChildren<{
   onClose: () => void;
 }>;
 
+// Pop-up modal dialog that displays the consistency chart and a description of how consistency is calculated.
 export default function ConsistencyChartModal({ isVisible, message, onClose }: Props) {
   const router = useRouter();
   const { consistencyThreshold } = useGlobalVariables();

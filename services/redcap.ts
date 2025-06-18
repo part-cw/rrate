@@ -12,6 +12,7 @@ export async function uploadRecordToREDCap({
 }): Promise<string> {
   const formData = new FormData();
 
+  // Fields taken from BCCHR REDCap API documentation for "Import Records" endpoint
   formData.append('token', apiToken);
   formData.append('content', 'record');
   formData.append('format', 'json');

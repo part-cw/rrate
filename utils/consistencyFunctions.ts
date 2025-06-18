@@ -33,6 +33,7 @@ export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyTh
   return null;
 }
 
+// Turns the timestamps array into a string formatted for REDCap that is consistent with data inputs from previous version of the app
 export function generateRRTapString(timestamps: number[]): string {
   if (timestamps.length === 0) return '';
 

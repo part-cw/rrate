@@ -1,6 +1,6 @@
 import { View, Text, Image } from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
+// Shows copyright information for the app and UBC logo.
 export default function Copyright() {
   return (
     <View style={{ margin: 50, alignItems: 'center' }}>
