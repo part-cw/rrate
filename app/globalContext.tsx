@@ -33,8 +33,14 @@ type globalContextType = {
   LongitudinalStudy: boolean;
   setLongitudinalStudy: (value: boolean) => void;
 
+  LongitudinalStudyEvent: string;
+  setLongitudinalStudyEvent: (value: string) => void;
+
   RepeatableInstruments: boolean;
   setRepeatableInstruments: (value: boolean) => void;
+
+  RepeatableInstrument: string;
+  setRepeatableInstrument: (value: string) => void;
 
   UploadOnSave: boolean;
   setUploadOnSave: (value: boolean) => void;
@@ -88,7 +94,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [REDCapURL, setREDCapURL] = useState('');
   const [REDCapAPI, setREDCapAPI] = useState('');
   const [LongitudinalStudy, setLongitudinalStudy] = useState(false);
+  const [LongitudinalStudyEvent, setLongitudinalStudyEvent] = useState('Event');
   const [RepeatableInstruments, setRepeatableInstruments] = useState(false);
+  const [RepeatableInstrument, setRepeatableInstrument] = useState('Instrument');
   const [UploadOnSave, setUploadOnSave] = useState(false);
 
   return (
@@ -127,8 +135,12 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setREDCapAPI,
         LongitudinalStudy,
         setLongitudinalStudy,
+        LongitudinalStudyEvent,
+        setLongitudinalStudyEvent,
         RepeatableInstruments,
         setRepeatableInstruments,
+        RepeatableInstrument,
+        setRepeatableInstrument,
         UploadOnSave,
         setUploadOnSave
       }}

@@ -18,7 +18,7 @@ export default function Settings() {
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
-    UploadOnSave, setUploadOnSave,
+    UploadOnSave, setUploadOnSave, LongitudinalStudyEvent, setLongitudinalStudyEvent, RepeatableInstrument, setRepeatableInstrument
   } = useGlobalVariables();
 
   const onToggleSwitch = () => {
@@ -78,7 +78,7 @@ export default function Settings() {
           </View>
 
           {REDCap && (
-            <View style={{ height: 340 }}>
+            <View >
               <TextInput
                 label={t("HOST")}
                 value={REDCapHost}
@@ -100,18 +100,39 @@ export default function Settings() {
               />
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={LongitudinalStudy} onValueChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
-                <Text>{t("LONGITUDINAL")}</Text>
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={LongitudinalStudy} onValueChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
+                    <Text>{t("LONGITUDINAL")}</Text>
+                  </View>
+                  {LongitudinalStudy && (
+                    <TextInput
+                      label={LongitudinalStudyEvent}
+                      onChangeText={text => setLongitudinalStudyEvent(text)} />)}
+                </View>
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={RepeatableInstruments} onValueChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
-                <Text>{t("REP_EVENTS")}</Text>
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={RepeatableInstruments} onValueChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
+                    <Text>{t("REP_EVENTS")}</Text>
+                  </View>
+                  {RepeatableInstruments && (
+                    <TextInput
+                      label={RepeatableInstrument}
+                      onChangeText={text => setRepeatableInstrument(text)} />)}
+                </View>
               </View>
-
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
                 <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={UploadOnSave} onValueChange={() => setUploadOnSave(!UploadOnSave)} />
                 <Text>{t("UPLOAD_SAVE")}</Text>
+
+
+              </View>
+              <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
+                {!UploadOnSave && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} > Upload to REDCap</Button>)}
               </View>
 
             </View>
