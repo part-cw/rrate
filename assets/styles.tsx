@@ -125,6 +125,7 @@ export const GlobalStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: 270
   },
   sliderLine: {
     height: 2,

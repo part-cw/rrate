@@ -39,7 +39,7 @@ export default function Slider({ values, defaultValue, onSelect }: SliderProps) 
           Style.triangle,
           {
             left: trianglePosition,
-            transform: [{ translateX: +15 }],
+            transform: [{ translateX: + 3 }],
           },
         ]}
       />
