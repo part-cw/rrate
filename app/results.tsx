@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Animated, Text, Pressable, useWindowDimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
@@ -42,6 +42,9 @@ const babySVGMap = {
 export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
+
+  const { width } = useWindowDimensions();
+  const dynamicPadding = width > 400 ? 30 : 20;
 
   const { rrate, age, setAge, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
@@ -117,7 +120,7 @@ export default function Results() {
   return (
     <View style={Style.screenContainer}>
 
-      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150 }]}>
+      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, padding: dynamicPadding }]}>
         <View style={Style.leftColumn}>
           <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
         </View>
@@ -161,7 +164,7 @@ export default function Results() {
       {/* Sets bottom buttons based on whether user has confirmed rate or not  */}
       {rrateConfirmed ? (
 
-        <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+        <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center', padding: dynamicPadding }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
             <Button
               icon="arrow-u-right-bottom"
@@ -175,7 +178,7 @@ export default function Results() {
         </View>
 
       ) : (
-        <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+        <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center', padding: dynamicPadding }]}>
           <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
             <Button
