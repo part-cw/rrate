@@ -164,19 +164,11 @@ export default function Results() {
         <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
             <Button
-              icon="location-exit"
-              mode="contained"
-              buttonColor={Theme.colors.tertiary}
-              onPress={() => console.log('Pressed')}
-              style={{ paddingHorizontal: 20, marginRight: 10 }}>
-              {t("EXIT")}
-            </Button>
-            <Button
               icon="arrow-u-right-bottom"
               buttonColor={Theme.colors["neutral-bttn"]}
               mode="contained"
               onPress={() => router.push("/")}
-              style={{ paddingHorizontal: 20, marginLeft: 10 }}>
+              style={{ paddingHorizontal: 20 }}>
               {t("RESTART")}
             </Button>
           </View>

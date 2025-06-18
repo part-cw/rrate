@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Image } from "react-native";
 import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
@@ -76,12 +76,6 @@ export default function Index() {
       };
     }, [timestamps, notEnoughTapsModalVisible])
   );
-
-  const handleExit = () => {
-    if (Platform.OS == 'android') {
-      BackHandler.exitApp();
-    }
-  }
 
 
   // Start timer when first tap occurs; only if measurement method is 'tap for one minute'
@@ -168,24 +162,13 @@ export default function Index() {
       justifyContent: 'center',
       alignItems: 'center',
     }}>
+
       <View>
-        <View style={[Style.componentContainer, { flexDirection: 'row', justifyContent: 'space-between', gap: 14 }]}>
-          <Button
-            mode="contained"
-            buttonColor={Theme.colors.tertiary}
-            onPress={() => handleExit()}
-            disabled={Platform.OS === 'web' || Platform.OS === 'ios'} // Disable on web and iOS
-            icon={({ size, color }) => (
-              <MaterialCommunityIcons
-                name="location-exit"
-                size={size}
-                color={color}
-                style={{ transform: [{ rotate: '180deg' }] }}
-              />
-            )}
-          >
-            <Text>{t("EXIT")}</Text>
-          </Button>
+        <View style={[Style.componentContainer, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
+            <Text style={{ fontSize: 16 }}>RRate</Text>
+          </View>
           <Button
             icon="cog"
             buttonColor={Theme.colors["neutral-bttn"]}
@@ -227,6 +210,6 @@ export default function Index() {
         }} />
         <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 }
