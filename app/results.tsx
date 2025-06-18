@@ -118,7 +118,7 @@ export default function Results() {
 
   return (
     <View style={Style.screenContainer}>
-      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10 }]}>
+      <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150 }]}>
         <View style={Style.leftColumn}>
           <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
         </View>
@@ -142,7 +142,7 @@ export default function Results() {
         </View>
       </View>
 
-      <Pressable onPress={handleTap}>
+      <Pressable onPress={handleTap} style={{ zIndex: 1 }}>
         <View style={styles.container}>
           {/* Inhale is always fully visible */}
           {DeflateSVG && <DeflateSVG width={320} height={350} />}
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     width: 320,
     height: 350,
     position: 'relative',
-    margin: 0
+    margin: 0,
   },
   overlay: {
     position: 'absolute',

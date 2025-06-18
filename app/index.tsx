@@ -2,10 +2,10 @@ import { View, Text, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
 import { Theme } from "../assets/theme";
 import TapCount from "../components/TapCount";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Platform, BackHandler } from "react-native";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
@@ -76,6 +76,12 @@ export default function Index() {
       };
     }, [timestamps, notEnoughTapsModalVisible])
   );
+
+  const handleExit = () => {
+    if (Platform.OS == 'android') {
+      BackHandler.exitApp();
+    }
+  }
 
 
   // Start timer when first tap occurs; only if measurement method is 'tap for one minute'
@@ -167,7 +173,8 @@ export default function Index() {
           <Button
             mode="contained"
             buttonColor={Theme.colors.tertiary}
-            onPress={() => console.log('Pressed')}
+            onPress={() => handleExit()}
+            disabled={Platform.OS === 'web' || Platform.OS === 'ios'} // Disable on web and iOS
             icon={({ size, color }) => (
               <MaterialCommunityIcons
                 name="location-exit"
@@ -209,7 +216,7 @@ export default function Index() {
         </View>
 
         { /* TEST REDCap BUTTON */}
-        <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
+        {/* <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button> */}
 
         <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
         <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {

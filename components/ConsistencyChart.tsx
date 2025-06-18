@@ -20,7 +20,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
 
   const chartWidth = 350;
   const chartHeight = 80;
-  const chartPadding = 10;
+  const chartPadding = 12;
 
   const tapLimit = tapCountRequired; // number of taps to consider
   const recentTaps = tapTimestamps.slice(-tapLimit);
@@ -45,7 +45,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
 
 
   // DATA POINTS
-  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 2; // leaves padding on the right
+  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 3; // leaves padding on the right
 
   const points = tapTimestamps.map((_, i) => {
     const x = i * pointSpacing + (i === 0 ? chartPadding : 0); // adds padding to the left of the first point
@@ -68,7 +68,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
 
 
   return (
-    <View style={{ backgroundColor: '#f0f2f0', borderRadius: 10 }}>
+    <View style={{ backgroundColor: '#fff', borderRadius: 10, marginTop: 2 }}>
       <View style={{ backgroundColor: "fff", height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
         {/* Background Threshold Band */}
         <View
