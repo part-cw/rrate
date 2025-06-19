@@ -31,7 +31,7 @@ export default function PasswordPage() {
       style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 30 : 0} >
       <ScrollView contentContainerStyle={{
-        margin: 30, paddingTop: 30, flexGrow: 1,
+        margin: 30, paddingTop: 20, flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
       }}>

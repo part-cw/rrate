@@ -37,7 +37,7 @@ export default function Settings() {
   ];
 
   return (
-    <ScrollView contentContainerStyle={[Style.screenContainer, { paddingTop: 45 }]}>
+    <ScrollView contentContainerStyle={Style.screenContainer}>
       <View style={Style.innerContainer}>
         <View style={{ alignItems: 'flex-start' }}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>

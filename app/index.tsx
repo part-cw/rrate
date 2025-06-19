@@ -154,7 +154,7 @@ export default function Index() {
     <ScrollView contentContainerStyle={Style.screenContainer}>
 
       <View style={Style.innerContainer}>
-        <View style={[Style.componentContainer, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
             <Text style={{ fontSize: 16 }}>RRate</Text>

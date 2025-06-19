@@ -7,6 +7,7 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 15,
+    paddingTop: 40,
     minHeight: '100%',
   },
 
