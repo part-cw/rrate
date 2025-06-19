@@ -144,15 +144,22 @@ export default function Results() {
         </View>
       </View>
 
-      <Pressable onPress={handleTap} style={{ zIndex: 1 }}>
-        <View style={Style.SVGcontainer}>
+      <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 40 : 0 }}>
+        <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
           {/* Inhale is always fully visible */}
-          {DeflateSVG && <DeflateSVG width={320} height={350} />}
+          {DeflateSVG &&
+            <DeflateSVG
+              width={measurementMethod === 'timer' ? 360 : 320}
+              height={measurementMethod === 'timer' ? 390 : 350}
+            />}
 
           {/* Exhale fades in and out above it */}
           {InflateSVG &&
             <Animated.View style={[Style.SVGoverlay, { opacity: fadeOutSVG }]}>
-              <InflateSVG width={320} height={350} />
+              <InflateSVG
+                width={measurementMethod === 'timer' ? 360 : 320}
+                height={measurementMethod === 'timer' ? 390 : 350}
+              />
             </Animated.View>
           }
         </View>

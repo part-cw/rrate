@@ -180,7 +180,7 @@ export default function Index() {
           <Button
             mode="contained"
             contentStyle={{ height: 500, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}
-            labelStyle={{ fontSize: 24, padding: 10 }}
+            labelStyle={{ fontSize: 30, padding: 10 }}
             onPressIn={() => setIsPressed(true)}
             onPressOut={() => setIsPressed(false)}
             onPress={countAndCalculateTap}

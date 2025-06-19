@@ -244,8 +244,8 @@ export const GlobalStyles = StyleSheet.create({
 
   // Baby SVG 
   SVGcontainer: {
-    width: 320,
-    height: 350,
+    // width: 320,
+    // height: 350,
     position: 'relative',
     margin: 0,
   },
