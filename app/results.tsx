@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, Text, Pressable, useWindowDimensions } from 'react-native';
+import { View, Animated, ScrollView, Text, Pressable, useWindowDimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
@@ -118,7 +118,7 @@ export default function Results() {
   }
 
   return (
-    <View style={Style.screenContainer}>
+    <ScrollView contentContainerStyle={Style.screenContainer}>
 
       <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, padding: dynamicPadding }]}>
         <View style={Style.leftColumn}>
@@ -210,6 +210,6 @@ export default function Results() {
           </View>
         </View>)}
 
-    </View >
+    </ScrollView >
   );
 }
