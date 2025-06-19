@@ -201,8 +201,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: 20,
-    paddingTop: 50,
+    padding: 40,
     borderRadius: 16,
     maxWidth: '95%',
     alignItems: 'center',

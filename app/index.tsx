@@ -62,7 +62,7 @@ export default function Index() {
 
       // Set the timeout
       timeoutRef.current = setTimeout(() => {
-        if (!notEnoughTapsModalVisible && measurementMethod === 'tap') {
+        if (!notEnoughTapsModalVisible && !tapsTooFastModalVisible && !tapsInconsistentModalVisible && measurementMethod === 'tap') {
           notEnoughTaps();
         }
       }, 60000);
@@ -169,7 +169,6 @@ export default function Index() {
                 intervalRef.current = null;
               }
 
-              // 🔁 Clear the timeout too, just in case
               if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
                 timeoutRef.current = null;

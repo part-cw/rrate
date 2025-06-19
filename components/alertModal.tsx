@@ -36,6 +36,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
             name="alert"
             size={40}
             color={'#000000'}
+            style={{ padding: 20 }}
           />
           <Text>{message}</Text>
           <View style={Style.buttonRow}>
