@@ -76,7 +76,6 @@ export default function Index() {
     }, [timestamps, notEnoughTapsModalVisible])
   );
 
-
   // Start timer when first tap occurs; only if measurement method is set to 'tap for one minute'
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -164,7 +163,26 @@ export default function Index() {
             icon="cog"
             buttonColor={Theme.colors["neutral-bttn"]}
             mode="contained"
-            onPress={() => router.push("/settings")}
+            onPress={() => {
+              if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+              }
+
+              // 🔁 Clear the timeout too, just in case
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+              }
+
+              tapCountRef.current = 0;
+              setTime(0);
+              setTimestamps([]);
+              setTimerRunning(false);
+              set_rrTaps('');
+              router.push("/settings");
+            }
+            }
           >
             <Text>{t("SETTINGS")}</Text>
           </Button>

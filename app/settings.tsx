@@ -69,7 +69,7 @@ export default function Settings() {
         <PatientModelPicker />
 
         {/* REDCap Settings */}
-        <View style={Style.floatingContainer}>
+        {/* <View style={Style.floatingContainer}>
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
             <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => setREDCap(!REDCap)} />
@@ -135,7 +135,7 @@ export default function Settings() {
             </View>
           )}
 
-        </View>
+        </View> */}
 
         {/* Configuration Settings */}
         <Pressable onPress={() => router.push('/passwordConfigSettings')}>
