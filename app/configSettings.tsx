@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, ScrollView, useWindowDimensions } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { Button } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
@@ -15,9 +15,6 @@ import RadioButtonGroup from "../components/radioButtonGroup";
 export default function configSettings() {
   const router = useRouter();
   const { t } = useTranslation();
-
-  const { width } = useWindowDimensions();
-  const dynamicPadding = width > 400 ? 30 : 20;
 
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('tap') : React.useState('timer');
@@ -35,7 +32,7 @@ export default function configSettings() {
         </View>
 
         {/* Measurement Method Selection*/}
-        <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
+        <View style={[Style.floatingContainer]}>
           <Text style={Style.heading}> Measurement Method </Text>
           <RadioButtonGroup
             options={[
@@ -52,7 +49,7 @@ export default function configSettings() {
         </View>
 
         {/* Number of Taps Selection*/}
-        <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
+        <View style={Style.floatingContainer}>
           <Text style={Style.heading}>Taps </Text>
           <View style={{ paddingVertical: 20 }}>
             <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
@@ -65,7 +62,7 @@ export default function configSettings() {
         </View>
 
         {/* Consistency Threshold Selection*/}
-        <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
+        <View style={Style.floatingContainer}>
           <Text style={Style.heading}>Consistency Threshold </Text>
           <View style={{ paddingVertical: 20 }}>
             <Text>{t("CONSISTENCY_THRESH")}</Text>

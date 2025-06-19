@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable, useWindowDimensions } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import { Button, Switch, TextInput } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
@@ -26,9 +26,6 @@ export default function Settings() {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
 
-  const { width } = useWindowDimensions();
-  const dynamicPadding = width > 400 ? 30 : 20;
-
   // ADD THIS IN FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
   // const languages = [
   //   'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
@@ -49,13 +46,13 @@ export default function Settings() {
         </View>
 
         {/* Language Selection */}
-        <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
+        <View style={Style.floatingContainer}>
           <Text style={Style.heading}> Select Language </Text>
           <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
 
         {/* Patient Age Interpretation Dropdown */}
-        <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
+        <View style={Style.floatingContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={Style.heading}> Patient Age Interpretation </Text>
             <Switch value={ageThresholdEnabled}
@@ -72,7 +69,7 @@ export default function Settings() {
         <PatientModelPicker />
 
         {/* REDCap Settings */}
-        <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
+        <View style={Style.floatingContainer}>
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
             <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => setREDCap(!REDCap)} />
@@ -143,7 +140,7 @@ export default function Settings() {
         {/* Configuration Settings */}
         <Pressable onPress={() => router.push('/passwordConfigSettings')}>
           <View style={[Style.floatingContainer, {
-            padding: dynamicPadding, flexDirection: 'row', alignItems: 'center'
+            flexDirection: 'row', alignItems: 'center'
           }]}>
 
             <EvilIcons name="lock" size={35} color="black" />

@@ -144,7 +144,7 @@ export default function Results() {
         </View>
       </View>
 
-      <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 40 : 0 }}>
+      <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0 }}>
         <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
           {/* Inhale is always fully visible */}
           {DeflateSVG &&

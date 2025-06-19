@@ -19,7 +19,7 @@ export const GlobalStyles = StyleSheet.create({
     marginVertical: 10,
   },
   floatingContainer: {
-    // padding: 20,
+    padding: 30,
     marginVertical: 15,
     borderRadius: 10,
     backgroundColor: "#f5f6f7",
