@@ -5,11 +5,11 @@ import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
 import useTranslation from '@/hooks/useTranslation';
 import { Theme } from "../assets/theme";
-import CheckBox from 'expo-checkbox';
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import PatientModelPicker from "../components/PatientModelPicker";
+import Checkbox from "../components/checkbox";
 
 // Displays all general settings for the app, including language selection, age interpretation, REDCap settings, and configuration settings.
 export default function Settings() {
@@ -75,8 +75,7 @@ export default function Settings() {
         <View style={[Style.floatingContainer, { padding: dynamicPadding }]}>
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-            <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={REDCap} onValueChange={() => setREDCap(!REDCap)} />
-            <Text>{t("REDCAP_USE")}</Text>
+            <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => setREDCap(!REDCap)} />
           </View>
 
           {REDCap && (
@@ -104,7 +103,7 @@ export default function Settings() {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={LongitudinalStudy} onValueChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
+                    <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
                     <Text>{t("LONGITUDINAL")}</Text>
                   </View>
                   {LongitudinalStudy && (
@@ -117,7 +116,7 @@ export default function Settings() {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={RepeatableInstruments} onValueChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
+                    <Checkbox label={t("REP_EVENTS")} checked={RepeatableInstruments} onChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
                     <Text>{t("REP_EVENTS")}</Text>
                   </View>
                   {RepeatableInstruments && (
@@ -127,8 +126,7 @@ export default function Settings() {
                 </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-
-                <CheckBox style={Style.checkbox} color={Theme.colors.primary} value={UploadOnSave} onValueChange={() => setUploadOnSave(!UploadOnSave)} />
+                <Checkbox label={t("UPLOAD_SAVE")} checked={UploadOnSave} onChange={() => setUploadOnSave(!UploadOnSave)} />
                 <Text>{t("UPLOAD_SAVE")}</Text>
 
 

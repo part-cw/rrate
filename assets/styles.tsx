@@ -221,9 +221,24 @@ export const GlobalStyles = StyleSheet.create({
   },
 
   // Checkbox
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
   checkbox: {
-    color: Theme.colors.primary,
-    margin: 10
+    height: 22,
+    width: 22,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: '#666',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  checked: {
+    backgroundColor: Theme.colors.primary,
+    borderColor: '#2e86de',
   },
 
   // Baby SVG 
