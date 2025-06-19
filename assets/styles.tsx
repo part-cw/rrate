@@ -75,6 +75,7 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#ccc',
     borderWidth: 1,
+    borderRadius: 10,
     zIndex: 20,
     elevation: 4, // Android shadow
   },

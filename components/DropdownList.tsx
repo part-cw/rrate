@@ -32,16 +32,12 @@ export default function DropdownList({ label, data, onSelect }: { label: string;
 
       {open && (
         <View style={Style.dropdownList}>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSelect(item)} style={Style.dropdownItem}>
-                <Text>{item}</Text>
-              </TouchableOpacity>
-            )}
-            nestedScrollEnabled
-          />
+          {data.map((item) => (
+            <TouchableOpacity key={item} onPress={() => handleSelect(item)} style={Style.dropdownItem}>
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          ))}
+
         </View>
       )}
     </View>
