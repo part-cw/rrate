@@ -7,7 +7,7 @@ export default function Timer({ time }: { time: number }) {
   const timeFormatted = time < 10 ? `0${time}` : time;
 
   return (
-    <View style={[Style.floatingContainer, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
+    <View style={[Style.floatingContainer, { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 35 }]}>
       <Text style={{ fontSize: 48 }}>0:{timeFormatted}</Text>
     </View>
   );
