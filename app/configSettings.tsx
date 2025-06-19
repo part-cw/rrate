@@ -26,7 +26,7 @@ export default function configSettings() {
   const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
 
   return (
-    <ScrollView contentContainerStyle={Style.screenContainer}>
+    <ScrollView contentContainerStyle={[Style.screenContainer, { paddingTop: 45 }]}>
       <View style={Style.innerContainer}>
         <View style={{ alignItems: 'flex-start', width: 350 }}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
