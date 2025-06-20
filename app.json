@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "RRate",
-    "slug": "RRate",
+    "slug": "rrate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon-ios.png",
