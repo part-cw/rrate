@@ -4,7 +4,7 @@
     "slug": "RRate",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon_ios.png",
+    "icon": "./assets/images/icon-ios.png",
     "scheme": "rrate",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon_android.png",
+        "foregroundImage": "./assets/images/icon-android.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -26,15 +26,15 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/icon_ios.png"
+      "favicon": "./assets/images/icon-ios.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon_ios.png",
-          "imageWidth": 200,
+          "image": "./assets/images/icon-ios.png",
+          "imageWidth": 250,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
