@@ -10,30 +10,6 @@ export function getMedian(arr: number[]): number {
 }
 
 // Returns time intervals, median interval and rrate if the most recent taps are consistent (must have preset required number of taps to be consistent))
-// export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyThreshold }: { timestamps: number[], tapCountRequired: number, consistencyThreshold: number }) {
-//   if (timestamps.length < tapCountRequired) return null;
-
-//   const recent = timestamps.slice(-tapCountRequired);
-//   const intervals = recent.slice(1).map((t, i) => t - recent[i]);
-//   const median = getMedian(intervals);
-//   const threshold = (consistencyThreshold / 100) * median;
-
-//   const isConsistent = intervals.every(
-//     (interval) => Math.abs(interval - median) <= threshold
-//   );
-
-//   if (isConsistent) {
-//     return {
-//       intervals,
-//       median,
-//       rate: Math.round(60 / median),
-//     };
-//   }
-
-//   return null;
-// }
-
-// Returns time intervals, median interval and rrate if the most recent taps are consistent (must have preset required number of taps to be consistent))
 export function evaluateRecentTaps({ timestamps, tapCountRequired, consistencyThreshold }: { timestamps: number[], tapCountRequired: number, consistencyThreshold: number }) {
   const recent = timestamps.slice(-tapCountRequired);
   const intervals = recent.slice(1).map((t, i) => t - recent[i]);

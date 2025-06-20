@@ -12,7 +12,7 @@ export const GlobalStyles = StyleSheet.create({
 
   innerContainer: {
     width: '100%',
-    paddingVertical: 40,
+    paddingVertical: 50,
     maxWidth: 500,
     flex: 1,
     justifyContent: 'space-between'

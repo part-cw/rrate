@@ -130,7 +130,7 @@ export default function Index() {
     setTimestamps(updated); // timestamps is an array of timestamps in seconds since start
     set_rrTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
 
-    if (timestamps.length < tapCountRequired) return; // ADDED THIS
+    if (updated.length < tapCountRequired) return; // ADDED THIS
 
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
     setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
@@ -147,21 +147,6 @@ export default function Index() {
         return;
       }
     }
-
-
-    // if (result) {
-    //   setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
-    //   setTapTimestaps(updated); // store timestamps in the global context
-    //   set_rrTaps(generateRRTapString(updated));
-    //   set_rrTime(updated[0].toString());
-    //   if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
-    //     router.push("/results");
-    //     return;
-    //   } else {
-    //     tapsTooFast();
-    //     return;
-    //   }
-    // }
 
     if (updated.length >= 12) {
       inconsistentTaps();
