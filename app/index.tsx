@@ -27,7 +27,7 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, rr_taps, set_rrTaps, measurementMethod } = useGlobalVariables();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, rr_taps, set_rrTime, set_rrTaps, measurementMethod } = useGlobalVariables();
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -130,12 +130,15 @@ export default function Index() {
     setTimestamps(updated); // timestamps is an array of timestamps in seconds since start
     set_rrTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
 
-    const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
+    if (timestamps.length < tapCountRequired) return; // ADDED THIS
 
-    if (result) {
-      setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
-      setTapTimestaps(updated); // store timestamps in the global context
-      set_rrTaps(generateRRTapString(updated));
+    const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
+    setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
+    setTapTimestaps(updated); // store timestamps in the global context
+    set_rrTaps(generateRRTapString(updated));
+    set_rrTime(updated[0].toString());
+
+    if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
         router.push("/results");
         return;
@@ -144,6 +147,21 @@ export default function Index() {
         return;
       }
     }
+
+
+    // if (result) {
+    //   setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
+    //   setTapTimestaps(updated); // store timestamps in the global context
+    //   set_rrTaps(generateRRTapString(updated));
+    //   set_rrTime(updated[0].toString());
+    //   if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
+    //     router.push("/results");
+    //     return;
+    //   } else {
+    //     tapsTooFast();
+    //     return;
+    //   }
+    // }
 
     if (updated.length >= 12) {
       inconsistentTaps();
@@ -208,7 +226,7 @@ export default function Index() {
         </View>
 
         { /* TEST REDCap BUTTON */}
-        {/* <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button> */}
+        <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
 
         <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
         <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {

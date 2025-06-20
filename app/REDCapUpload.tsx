@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Button, ScrollView, Alert } from 'react-native';
-import { uploadRecordToREDCap } from '../services/redcap';
+import { uploadRecordToREDCap, getNextRecordID } from '../services/redcap';
 import { GlobalStyles as Style } from '../assets/styles';
 import { TextInput } from 'react-native-paper';
 import useTranslation from '@/hooks/useTranslation';
+import { useGlobalVariables } from './globalContext';
 
 export default function REDCapUpload() {
   const [REDCapAPI, setREDCapAPI] = useState<string>("");
@@ -11,6 +12,7 @@ export default function REDCapUpload() {
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
+  const { rrate, rr_time, rr_taps } = useGlobalVariables();
 
   const handleUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
@@ -18,17 +20,22 @@ export default function REDCapUpload() {
       return;
     }
 
-    const record = [
-      {
-        record_id: '1',
-        rrate_rate: 60,
-        rrate_time: new Date().toISOString(),
-        rrate_taps: "test"
-      },
-    ];
-
     try {
       setIsLoading(true);
+
+      // Fetch the most recent record id 
+      const nextRecordId = await getNextRecordID({ apiUrl: REDCapURL, apiToken: REDCapAPI });
+
+      // The new record to upload
+      const record = [
+        {
+          record_id: nextRecordId,
+          rrate_rate: rrate,
+          rrate_time: rr_time,
+          rrate_taps: rr_taps
+        },
+      ];
+
       const result = await uploadRecordToREDCap({
         apiUrl: REDCapURL,
         apiToken: REDCapAPI,

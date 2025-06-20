@@ -51,3 +51,44 @@ export async function uploadRecordToREDCap({
 //         apiToken: token,
 //         recordData: record,
 //       });
+
+
+// Retrieves last record ID from REDCap and returns the next available record ID
+export async function getNextRecordID({
+  apiUrl,
+  apiToken
+}: {
+  apiUrl: string;
+  apiToken: string;
+}): Promise<string> {
+
+  try {
+    const res = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        token: apiToken,
+        content: 'record',
+        format: 'json',
+        type: 'flat',
+        fields: 'record_id',
+      }).toString(),
+    });
+
+    const existingRecords = await res.json();
+
+    // Get the max record_id
+    const maxId = existingRecords.reduce((max: number, r: any) => {
+      const id = parseInt(r.record_id, 10);
+      return isNaN(id) ? max : Math.max(max, id);
+    }, 0);
+
+    return (maxId + 1).toString();
+
+  } catch (error) {
+    throw new Error("Failed to fetch next record ID. Error: " + error);
+  }
+};
+
