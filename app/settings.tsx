@@ -19,7 +19,7 @@ export default function Settings() {
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
-    UploadOnSave, setUploadOnSave, LongitudinalStudyEvent, setLongitudinalStudyEvent, RepeatableInstrument, setRepeatableInstrument
+    UploadSingleRecord, setUploadSingleRecord, LongitudinalStudyEvent, setLongitudinalStudyEvent, RepeatableInstrument, setRepeatableInstrument
   } = useGlobalVariables();
 
   const onToggleSwitch = () => {
@@ -69,7 +69,7 @@ export default function Settings() {
         <PatientModelPicker />
 
         {/* REDCap Settings */}
-        {/* <View style={Style.floatingContainer}>
+        <View style={Style.floatingContainer}>
           <Text style={Style.heading}> REDCap</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
             <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => setREDCap(!REDCap)} />
@@ -123,19 +123,19 @@ export default function Settings() {
                 </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Checkbox label={t("UPLOAD_SAVE")} checked={UploadOnSave} onChange={() => setUploadOnSave(!UploadOnSave)} />
+                <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                 <Text>{t("UPLOAD_SAVE")}</Text>
 
 
               </View>
               <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                {!UploadOnSave && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} > Upload to REDCap</Button>)}
+                {!UploadSingleRecord && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} > Upload to REDCap</Button>)}
               </View>
 
             </View>
           )}
 
-        </View> */}
+        </View>
 
         {/* Configuration Settings */}
         <Pressable onPress={() => router.push('/passwordConfigSettings')}>

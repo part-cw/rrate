@@ -135,8 +135,9 @@ export default function Index() {
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
     setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
     setTapTimestaps(updated); // store timestamps in the global context
-    set_rrTaps(generateRRTapString(updated));
-    set_rrTime(updated[0].toString());
+    const rrTaps = generateRRTapString(updated); // generate the string for REDCap
+    set_rrTaps(rrTaps);
+    set_rrTime(rrTaps.split(';')[0]);
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
@@ -209,9 +210,6 @@ export default function Index() {
             <Text>{t("TAP_INHALATION")}</Text>
           </Button>
         </View>
-
-        { /* TEST REDCap BUTTON */}
-        <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
 
         <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
         <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {

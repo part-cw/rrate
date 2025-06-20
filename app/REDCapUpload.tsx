@@ -41,7 +41,7 @@ export default function REDCapUpload() {
         apiToken: REDCapAPI,
         recordData: record,
       });
-      setResponse('Upload successful:\n' + result);
+      setResponse('Upload successful!');
     } catch (error: any) {
       setResponse('Upload failed:\n' + error.message);
     } finally {

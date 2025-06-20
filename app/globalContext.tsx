@@ -42,8 +42,8 @@ type globalContextType = {
   RepeatableInstrument: string;
   setRepeatableInstrument: (value: string) => void;
 
-  UploadOnSave: boolean;
-  setUploadOnSave: (value: boolean) => void;
+  UploadSingleRecord: boolean;
+  setUploadSingleRecord: (value: boolean) => void;
 
   // CONFIG SETTINGS
   password: string;
@@ -97,7 +97,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [LongitudinalStudyEvent, setLongitudinalStudyEvent] = useState('Event');
   const [RepeatableInstruments, setRepeatableInstruments] = useState(false);
   const [RepeatableInstrument, setRepeatableInstrument] = useState('Instrument');
-  const [UploadOnSave, setUploadOnSave] = useState(false);
+  const [UploadSingleRecord, setUploadSingleRecord] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -141,8 +141,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setRepeatableInstruments,
         RepeatableInstrument,
         setRepeatableInstrument,
-        UploadOnSave,
-        setUploadOnSave
+        UploadSingleRecord,
+        setUploadSingleRecord
       }}
     >
       {children}
