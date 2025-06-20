@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/icon_android.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.partcw.rrate"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1dd31bd2-c7a1-4343-bcbd-96bd3c738267"
+      }
+    },
+    "owner": "part-cw"
   }
 }

@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, Dimensions, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
 import { useGlobalVariables } from '../app/globalContext';
-import { GlobalStyles as Style } from '@/assets/styles';
-import ConsistencyChartModal from './ConsistencyChartModal';
+import ConsistencyChartModal from '../components/ConsistencyChartModal';
 import { getMedian } from '../utils/consistencyFunctions';
-import { Theme } from '@/assets/theme';
 
 // Show info button on results page and labels on modal dialog
 type ConsistencyChartProps = {
