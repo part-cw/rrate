@@ -7,13 +7,16 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 15,
-    paddingTop: 40,
     minHeight: '100%',
   },
 
   innerContainer: {
     width: '100%',
+    paddingVertical: 40,
     maxWidth: 500,
+    flex: 1,
+    justifyContent: 'space-between'
+
   },
 
   componentContainer: {

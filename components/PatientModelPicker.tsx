@@ -1,4 +1,4 @@
-import { View, Text, Image, useWindowDimensions } from 'react-native';
+import { View, Text, Image, Pressable, useWindowDimensions } from 'react-native';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { IconButton } from 'react-native-paper';
 import { useGlobalVariables } from '@/app/globalContext';
@@ -50,21 +50,25 @@ export default function PatientModelPicker() {
         <View style={{ alignItems: 'center' }}>
           <Image
             source={imageSource}
-            style={{ width: 170, height: 220, resizeMode: 'contain' }}
+            style={{ width: 170, height: 240, resizeMode: 'contain' }}
           />
         </View>
 
-        <View style={[Style.componentContainer, {
+        <View style={{
           paddingHorizontal: 30, flexDirection: 'row', justifyContent: 'space-between', gap: 14, alignItems: 'center', shadowColor: '#000',
           backgroundColor: "#f5f6f7",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.2,
           shadowRadius: 4,
           borderRadius: 10,
-        }]}>
-          <IconButton icon="arrow-left-drop-circle-outline" size={30} disabled={currentBaby == 1} onPress={handlePrev} />
+        }}>
+          <Pressable onPress={handlePrev} style={{ padding: 10 }}>
+            <IconButton icon="arrow-left-drop-circle-outline" size={40} disabled={currentBaby == 1} />
+          </Pressable>
           <Text> Baby {currentBaby} </Text>
-          <IconButton icon="arrow-right-drop-circle-outline" size={30} disabled={currentBaby == 6} onPress={handleNext} />
+          <Pressable onPress={handleNext} style={{ padding: 10 }}>
+            <IconButton icon="arrow-right-drop-circle-outline" size={40} disabled={currentBaby == 6} />
+          </Pressable>
         </View>
       </View>
 

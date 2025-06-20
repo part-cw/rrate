@@ -34,8 +34,8 @@ export default function ConsistencyChartModal({ isVisible, message, onClose }: P
             right: 5,
             zIndex: 1, // just in case other elements try to cover it
           }} onPress={handleClose} />
-          <Text style={Style.heading}>Consistency Analysis</Text>
-          <Text style={{ marginHorizontal: 15, marginVertical: 20 }}>A tap is considered consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median time interval between taps.</Text>
+          <Text style={[Style.heading, { paddingTop: 15 }]}>Consistency Analysis</Text>
+          <Text style={{ marginHorizontal: 15, marginVertical: 20, textAlign: 'center' }}>A tap is considered consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median time interval between taps.</Text>
           <View style={{ marginVertical: 30 }}>
             <ConsistencyChart showLabels />
 

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rrate",
-    "slug": "rrate",
+    "name": "RRate",
+    "slug": "RRate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon_ios.png",
@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.partcw.rrate",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
