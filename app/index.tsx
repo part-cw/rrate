@@ -9,8 +9,8 @@ import { useGlobalVariables } from "./globalContext";
 import useTranslation from '@/hooks/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
-import AlertModal from "../components/alertModal";
-import Timer from '../components/timer';
+import AlertModal from "../components/AlertModal";
+import Timer from '../components/Timer';
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {

@@ -9,7 +9,7 @@ import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
 import PatientModelPicker from "../components/PatientModelPicker";
-import Checkbox from "../components/checkbox";
+import Checkbox from "../components/Checkbox";
 
 // Displays all general settings for the app, including language selection, age interpretation, REDCap settings, and configuration settings.
 export default function Settings() {
