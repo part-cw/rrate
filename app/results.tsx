@@ -46,7 +46,9 @@ export default function Results() {
   const { width } = useWindowDimensions();
   const dynamicPadding = width > 400 ? 30 : 20;
 
-  const { rrate, age, setAge, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
+  const [age, setAge] = useState<string>("");
+
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   // Sets the baby SVGs based on the selected animation from the Settings page

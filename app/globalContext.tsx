@@ -14,9 +14,6 @@ type globalContextType = {
   babyAnimation: BabyAnimationOption;
   setBabyAnimation: (value: BabyAnimationOption) => void;
 
-  age: string;
-  setAge: (value: string) => void;
-
   // REDCap SETTINGS
   REDCap: boolean;
   setREDCap: (value: boolean) => void;
@@ -79,7 +76,6 @@ const GlobalContext = createContext<globalContextType | null>(null);
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [ageThresholdEnabled, setAgeThresholdEnabled] = useState(false);
-  const [age, setAge] = useState<string>('');
   const [babyAnimation, setBabyAnimation] = useState<BabyAnimationOption>(1);
   const password = "1234";
   const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
@@ -106,8 +102,6 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setSelectedLanguage,
         ageThresholdEnabled,
         setAgeThresholdEnabled,
-        age,
-        setAge,
         babyAnimation,
         setBabyAnimation,
         password,
