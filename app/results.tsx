@@ -10,7 +10,7 @@ import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '@/hooks/useTranslation';
 
 // LOCAL VARIABLES
-const ages = ['default', '<2 months', '2–12 months', '>1 year'];
+const ages = ['<2 months', '2–12 months', '>1 year'];
 const babySVGMap = {
   1: {
     inflate: require('../assets/babyAnimation/Baby1_inflate.svg').default,
