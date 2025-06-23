@@ -98,7 +98,6 @@ export const GlobalStyles = StyleSheet.create({
   leftColumn: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 25,
   },
   rateValue: {
     fontSize: 60,
@@ -115,12 +114,12 @@ export const GlobalStyles = StyleSheet.create({
     padding: 10
   },
   labelMain: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   labelSub: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#555',
     marginBottom: 12,
     textAlign: 'center',

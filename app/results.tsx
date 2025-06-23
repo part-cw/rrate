@@ -127,7 +127,7 @@ export default function Results() {
     <ScrollView contentContainerStyle={Style.screenContainer}>
       <View style={Style.innerContainer}>
 
-        <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, padding: dynamicPadding }]}>
+        <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, paddingHorizontal: '10%', paddingVertical: dynamicPadding }]}>
           <View style={Style.leftColumn}>
             <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
             {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
