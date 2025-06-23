@@ -14,7 +14,7 @@ type Props = PropsWithChildren<{
 }>;
 
 // Pop-up modal dialog that displays the consistency chart and a description of how consistency is calculated.
-export default function ConsistencyChartModal({ isVisible, message, onClose }: Props) {
+export default function ConsistencyChartModal({ isVisible, onClose }: Props) {
   const router = useRouter();
   const { consistencyThreshold } = useGlobalVariables();
 
@@ -35,7 +35,8 @@ export default function ConsistencyChartModal({ isVisible, message, onClose }: P
             zIndex: 1, // just in case other elements try to cover it
           }} onPress={handleClose} />
           <Text style={[Style.heading, { paddingTop: 15 }]}>Consistency Analysis</Text>
-          <Text style={{ marginHorizontal: 15, marginVertical: 20, textAlign: 'center' }}>A tap is considered consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median time interval between taps.</Text>
+          <Text style={{ marginHorizontal: 15, marginVertical: 20, textAlign: 'center' }}>A tap is consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median interval.
+            {'\n'}The grey area shows this range.</Text>
           <View style={{ marginVertical: 30 }}>
             <ConsistencyChart showLabels />
 
