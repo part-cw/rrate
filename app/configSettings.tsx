@@ -8,7 +8,7 @@ import { useGlobalVariables } from "./globalContext";
 import useTranslation from '@/hooks/useTranslation';
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
-import RadioButtonGroup from "../components/radioButtonGroup";
+import RadioButtonGroup from "../components/RadioButtonGroup";
 
 // The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and 
 // consistency threshold for respiratory rate measurements.
