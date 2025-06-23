@@ -158,7 +158,7 @@ export default function Index() {
     <ScrollView contentContainerStyle={Style.screenContainer}>
 
       <View style={Style.innerContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
             <Text style={{ fontSize: 16 }}>RRate</Text>
@@ -191,13 +191,13 @@ export default function Index() {
           </Button>
         </View>
 
-        <View style={Style.componentContainer}>
+        <View style={[Style.componentContainer, { flexGrow: 1 }]}>
           {measurementMethod === 'tap' ?
             <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />
           }
         </View>
 
-        <View style={[Style.componentContainer, { maxWidth: 500 }]}>
+        <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 5 }]}>
           <Button
             mode="contained"
 

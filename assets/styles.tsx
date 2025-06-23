@@ -6,15 +6,15 @@ export const GlobalStyles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 60,
     minHeight: '100%',
   },
 
   innerContainer: {
     width: '100%',
-    paddingVertical: 50,
     maxWidth: 500,
-    flex: 1,
+    display: 'flex',
     justifyContent: 'space-between'
 
   },
@@ -22,6 +22,7 @@ export const GlobalStyles = StyleSheet.create({
   componentContainer: {
     marginVertical: 10,
   },
+
   floatingContainer: {
     padding: 30,
     marginVertical: 15,
