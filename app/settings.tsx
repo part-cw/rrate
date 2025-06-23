@@ -101,7 +101,6 @@ export default function Settings() {
                 <View style={{ flexDirection: 'column' }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
-                    <Text>{t("LONGITUDINAL")}</Text>
                   </View>
                   {LongitudinalStudy && (
                     <TextInput
@@ -114,7 +113,6 @@ export default function Settings() {
                 <View style={{ flexDirection: 'column' }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox label={t("REP_EVENTS")} checked={RepeatableInstruments} onChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
-                    <Text>{t("REP_EVENTS")}</Text>
                   </View>
                   {RepeatableInstruments && (
                     <TextInput
@@ -124,12 +122,9 @@ export default function Settings() {
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
-                <Text>{t("UPLOAD_SAVE")}</Text>
-
-
               </View>
               <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                {!UploadSingleRecord && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} > Upload to REDCap</Button>)}
+                {!UploadSingleRecord && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
               </View>
 
             </View>
