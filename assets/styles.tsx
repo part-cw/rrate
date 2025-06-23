@@ -112,6 +112,7 @@ export const GlobalStyles = StyleSheet.create({
   rightColumn: {
     flex: 1,
     justifyContent: 'center',
+    padding: 10
   },
   labelMain: {
     fontSize: 18,

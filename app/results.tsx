@@ -98,22 +98,26 @@ export default function Results() {
 
   // Determine the color of the respiratory rate value based on age and rate
   let rrateColour;
+  let rrateSeverity = 'normal';
 
   if (age === '<2 months') {
     if (Number(rrate) > 60) {
       rrateColour = Theme.colors.tertiary;
+      rrateSeverity = 'high';
     } else {
       rrateColour = Theme.colors.secondary;
     }
   } else if (age === '2–12 months') {
     if (Number(rrate) > 50) {
       rrateColour = Theme.colors.tertiary;
+      rrateSeverity = 'high';
     } else {
       rrateColour = Theme.colors.secondary;
     }
   } else if (age === '>1 year') {
     if (Number(rrate) > 40) {
       rrateColour = Theme.colors.tertiary;
+      rrateSeverity = 'high';
     } else {
       rrateColour = Theme.colors.secondary;
     }
@@ -126,6 +130,7 @@ export default function Results() {
         <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, padding: dynamicPadding }]}>
           <View style={Style.leftColumn}>
             <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
+            {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
           </View>
 
           <View style={Style.rightColumn}>

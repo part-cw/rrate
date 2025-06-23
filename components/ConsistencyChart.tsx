@@ -5,6 +5,7 @@ import Svg, { Circle, Line } from 'react-native-svg';
 import { useGlobalVariables } from '../app/globalContext';
 import ConsistencyChartModal from '../components/ConsistencyChartModal';
 import { getMedian } from '../utils/consistencyFunctions';
+import { Theme } from '../assets/theme';
 
 // Show info button on results page and labels on modal dialog
 type ConsistencyChartProps = {
@@ -154,6 +155,8 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
                 width: '100%',
                 textAlign: 'right',
                 fontSize: 12,
+                fontWeight: 'bold',
+                color: Theme.colors.tertiary
               }}
             >
               Fast
@@ -166,6 +169,8 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
                 width: '100%',
                 textAlign: 'right',
                 fontSize: 12,
+                fontWeight: 'bold',
+                color: Theme.colors.secondary
               }}
             >
               Consistent
@@ -178,6 +183,8 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
                 width: '100%',
                 textAlign: 'right',
                 fontSize: 12,
+                fontWeight: 'bold',
+                color: Theme.colors.tertiary
               }}
             >
               Slow
