@@ -160,10 +160,14 @@ export default function Index() {
       <View style={Style.screenContainer}>
         <View style={Style.innerContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
-              <Text style={{ fontSize: 16 }}>RRate</Text>
-            </View>
+            <Button
+              icon="close"
+              buttonColor={Theme.colors.tertiary}
+              mode="contained"
+              style={{ justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => { router.push("/") }}>
+              <Text>{t("CANCEL")}</Text>
+            </Button>
             <Button
               icon="cog"
               buttonColor={Theme.colors["neutral-bttn"]}
@@ -228,6 +232,6 @@ export default function Index() {
           <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
         </View>
       </View >
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }
