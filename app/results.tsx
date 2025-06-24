@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, Animated, ScrollView, Text, Pressable, useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
@@ -124,103 +125,104 @@ export default function Results() {
   }
 
   return (
-    <ScrollView contentContainerStyle={Style.screenContainer}>
-      <View style={Style.innerContainer}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
+      <ScrollView contentContainerStyle={Style.screenContainer}>
+        <View style={Style.innerContainer}>
 
-        <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, paddingHorizontal: '7%', paddingVertical: dynamicPadding }]}>
-          <View style={Style.leftColumn}>
-            <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
-            {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
-          </View>
+          <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, height: 150, paddingHorizontal: '7%', paddingVertical: dynamicPadding }]}>
+            <View style={Style.leftColumn}>
+              <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
+              {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
+            </View>
 
-          <View style={Style.rightColumn}>
-            <Text style={Style.labelMain}>{t("RRATE")}</Text>
-            <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
+            <View style={Style.rightColumn}>
+              <Text style={Style.labelMain}>{t("RRATE")}</Text>
+              <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
 
-            {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={Style.divider} />
+              {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={Style.divider} />
 
-              <View style={Style.dropdownContainer}>
-                <Text style={Style.ageLabel}>Age</Text>
-                <View style={{ width: 150 }}>
-                  <DropdownList label={age} data={ages} onSelect={setAge} />
+                <View style={Style.dropdownContainer}>
+                  <Text style={Style.ageLabel}>Age</Text>
+                  <View style={{ width: 150 }}>
+                    <DropdownList label={age} data={ages} onSelect={setAge} />
+                  </View>
                 </View>
               </View>
+              }
+
             </View>
-            }
-
           </View>
-        </View>
 
-        <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
-            {/* Inhale is always fully visible */}
-            {DeflateSVG &&
-              <DeflateSVG
-                width={measurementMethod === 'timer' ? 360 : 320}
-                height={measurementMethod === 'timer' ? 390 : 350}
-              />}
-
-            {/* Exhale fades in and out above it */}
-            {InflateSVG &&
-              <Animated.View style={[Style.SVGoverlay, { opacity: fadeOutSVG }]}>
-                <InflateSVG
+          <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
+              {/* Inhale is always fully visible */}
+              {DeflateSVG &&
+                <DeflateSVG
                   width={measurementMethod === 'timer' ? 360 : 320}
                   height={measurementMethod === 'timer' ? 390 : 350}
-                />
-              </Animated.View>
-            }
-          </View>
-        </Pressable>
+                />}
 
-        {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
-        {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
-
-        {/* Sets bottom buttons based on whether user has confirmed rate or not  */}
-        {rrateConfirmed ? (
-
-          <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center', padding: dynamicPadding }]}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
-              { /* TEST REDCap BUTTON */}
-              <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
-              <Button
-                icon="arrow-u-right-bottom"
-                buttonColor={Theme.colors["neutral-bttn"]}
-                mode="contained"
-                onPress={() => router.push("/")}
-                style={{ paddingHorizontal: 20 }}>
-                {t("RESTART")}
-              </Button>
+              {/* Exhale fades in and out above it */}
+              {InflateSVG &&
+                <Animated.View style={[Style.SVGoverlay, { opacity: fadeOutSVG }]}>
+                  <InflateSVG
+                    width={measurementMethod === 'timer' ? 360 : 320}
+                    height={measurementMethod === 'timer' ? 390 : 350}
+                  />
+                </Animated.View>
+              }
             </View>
-          </View>
+          </Pressable>
 
-        ) : (
-          <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center', padding: dynamicPadding }]}>
-            <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
-              <Button
-                icon="check"
-                mode="contained"
-                buttonColor={Theme.colors.secondary}
-                onPress={() => setRRateConfirmed(true)}
-                style={{ paddingHorizontal: 30, marginRight: 10 }}>
-                {t("YES")}
-              </Button>
-              <Button
-                icon="close"
-                buttonColor={Theme.colors.tertiary}
-                mode="contained"
-                onPress={() => {
-                  router.push("/");
-                  set_rrTaps(''); // Reset rr_taps in global context
-                }}
-                style={{ paddingHorizontal: 30, marginLeft: 10 }}>
-                {t("NO")}
-              </Button>
+          {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
+          {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
+
+          {/* Sets bottom buttons based on whether user has confirmed rate or not  */}
+          {rrateConfirmed ? (
+
+            <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center', padding: dynamicPadding }]}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+                { /* TEST REDCap BUTTON */}
+                <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
+                <Button
+                  icon="arrow-u-right-bottom"
+                  buttonColor={Theme.colors["neutral-bttn"]}
+                  mode="contained"
+                  onPress={() => router.push("/")}
+                  style={{ paddingHorizontal: 20 }}>
+                  {t("RESTART")}
+                </Button>
+              </View>
             </View>
-          </View>)}
-      </View>
-    </ScrollView >
 
+          ) : (
+            <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center', padding: dynamicPadding }]}>
+              <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+                <Button
+                  icon="check"
+                  mode="contained"
+                  buttonColor={Theme.colors.secondary}
+                  onPress={() => setRRateConfirmed(true)}
+                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                  {t("YES")}
+                </Button>
+                <Button
+                  icon="close"
+                  buttonColor={Theme.colors.tertiary}
+                  mode="contained"
+                  onPress={() => {
+                    router.push("/");
+                    set_rrTaps(''); // Reset rr_taps in global context
+                  }}
+                  style={{ paddingHorizontal: 30, marginLeft: 10 }}>
+                  {t("NO")}
+                </Button>
+              </View>
+            </View>)}
+        </View>
+      </ScrollView >
+    </SafeAreaView>
   );
 }

@@ -4,10 +4,11 @@ import { Theme } from './theme';
 export const GlobalStyles = StyleSheet.create({
   screenContainer: {
     flexGrow: 1,
+    display: "flex",
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 60,
+    paddingVertical: 30,
     minHeight: '100%',
   },
 
@@ -15,8 +16,8 @@ export const GlobalStyles = StyleSheet.create({
     width: '100%',
     maxWidth: 500,
     display: 'flex',
-    justifyContent: 'space-between'
-
+    justifyContent: 'space-between',
+    minHeight: '100%',
   },
 
   componentContainer: {
@@ -248,8 +249,6 @@ export const GlobalStyles = StyleSheet.create({
 
   // Baby SVG 
   SVGcontainer: {
-    // width: 320,
-    // height: 350,
     position: 'relative',
     margin: 0,
   },

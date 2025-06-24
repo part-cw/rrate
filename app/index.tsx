@@ -1,5 +1,6 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Pressable } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
 import { Theme } from "../assets/theme";
@@ -155,71 +156,78 @@ export default function Index() {
   };
 
   return (
-    <ScrollView contentContainerStyle={Style.screenContainer}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
+      <ScrollView contentContainerStyle={Style.screenContainer}>
+        <View style={Style.innerContainer}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
+              <Text style={{ fontSize: 16 }}>RRate</Text>
+            </View>
+            <Button
+              icon="cog"
+              buttonColor={Theme.colors["neutral-bttn"]}
+              mode="contained"
+              onPress={() => {
+                if (intervalRef.current) {
+                  clearInterval(intervalRef.current);
+                  intervalRef.current = null;
+                }
 
-      <View style={Style.innerContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image style={{ width: 40, height: 40 }} source={require('../assets/images/ubc-logo.png')} />
-            <Text style={{ fontSize: 16 }}>RRate</Text>
+                if (timeoutRef.current) {
+                  clearTimeout(timeoutRef.current);
+                  timeoutRef.current = null;
+                }
+
+                tapCountRef.current = 0;
+                setTime(0);
+                setTimestamps([]);
+                setTimerRunning(false);
+                set_rrTaps('');
+                router.push("/settings");
+              }
+              }
+            >
+              <Text>{t("SETTINGS")}</Text>
+            </Button>
           </View>
-          <Button
-            icon="cog"
-            buttonColor={Theme.colors["neutral-bttn"]}
-            mode="contained"
-            onPress={() => {
-              if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
-              }
 
-              if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-                timeoutRef.current = null;
-              }
-
-              tapCountRef.current = 0;
-              setTime(0);
-              setTimestamps([]);
-              setTimerRunning(false);
-              set_rrTaps('');
-              router.push("/settings");
+          <View style={[Style.componentContainer, { flexGrow: 1 }]}>
+            {measurementMethod === 'tap' ?
+              <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />
             }
+          </View>
+
+          {/* Use Pressable instead of React Native Button to allow for larger button size and clickable area */}
+          <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 99 }]}>
+            <Pressable
+              onPressIn={() => setIsPressed(true)}
+              onPressOut={() => setIsPressed(false)}
+              onPress={countAndCalculateTap}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ fontSize: 30, color: 'white', textAlign: 'center', padding: 20 }}>
+                {t("TAP_INHALATION")}
+              </Text>
+            </Pressable>
+          </View>
+
+          <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
+          <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
+            setNotEnoughTapsModalVisible(false);
+            if (timeoutRef.current !== null) {
+              clearTimeout(timeoutRef.current);
             }
-          >
-            <Text>{t("SETTINGS")}</Text>
-          </Button>
+          }} />
+          <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
         </View>
-
-        <View style={[Style.componentContainer, { flexGrow: 1 }]}>
-          {measurementMethod === 'tap' ?
-            <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />
-          }
-        </View>
-
-        <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 5 }]}>
-          <Button
-            mode="contained"
-
-            contentStyle={{ height: 510, backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary }}
-            labelStyle={{ fontSize: 30, padding: 20 }}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-            onPress={countAndCalculateTap}
-          >
-            <Text>{t("TAP_INHALATION")}</Text>
-          </Button>
-        </View>
-
-        <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
-        <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
-          setNotEnoughTapsModalVisible(false);
-          if (timeoutRef.current !== null) {
-            clearTimeout(timeoutRef.current);
-          }
-        }} />
-        <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
-      </View>
-    </ScrollView >
+      </ScrollView >
+    </SafeAreaView>
   );
 }
