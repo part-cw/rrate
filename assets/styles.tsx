@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { Theme } from './theme';
 
 export const GlobalStyles = StyleSheet.create({
@@ -8,7 +8,7 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 30
+    paddingVertical: Platform.OS === 'web' ? 30 : 0
   },
 
   innerContainer: {
@@ -113,7 +113,6 @@ export const GlobalStyles = StyleSheet.create({
   rightColumn: {
     flex: 1,
     justifyContent: 'center',
-    // padding: 10,
   },
   labelMain: {
     fontSize: 18,

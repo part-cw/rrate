@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-paper";
@@ -157,7 +157,7 @@ export default function Index() {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      <ScrollView contentContainerStyle={Style.screenContainer}>
+      <View style={Style.screenContainer}>
         <View style={Style.innerContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -227,7 +227,7 @@ export default function Index() {
           }} />
           <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
         </View>
-      </ScrollView >
+      </View >
     </SafeAreaView>
   );
 }

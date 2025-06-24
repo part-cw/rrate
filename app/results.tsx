@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, ScrollView, Text, Pressable, useWindowDimensions } from 'react-native';
+import { View, Animated, Text, Pressable, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
@@ -124,7 +124,6 @@ export default function Results() {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      {/* <ScrollView contentContainerStyle={Style.screenContainer}> */}
       <View style={Style.screenContainer}>
         <View style={Style.innerContainer}>
 
