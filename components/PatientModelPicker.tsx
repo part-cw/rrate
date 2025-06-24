@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, useWindowDimensions } from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { IconButton } from 'react-native-paper';
 import { useGlobalVariables } from '@/app/globalContext';
@@ -12,9 +12,6 @@ export default function PatientModelPicker() {
   const { babyAnimation, setBabyAnimation } = useGlobalVariables();
   const [currentBaby, setCurrentBaby] = useState(babyAnimation);
   const { t } = useTranslation();
-
-  const { width } = useWindowDimensions();
-  const dynamicPadding = width > 400 ? 30 : 20;
 
   const babyImages = {
     1: require('@/assets/babyAnimation/Baby1Static.png'),
@@ -44,7 +41,7 @@ export default function PatientModelPicker() {
   }
 
   return (
-    <View style={[Style.floatingContainer, { padding: dynamicPadding }]} >
+    <View style={Style.floatingContainer} >
       <Text style={Style.heading}> Patient Model </Text>
       <View style={{ paddingTop: 30 }}>
         <View style={{ alignItems: 'center' }}>
@@ -55,7 +52,7 @@ export default function PatientModelPicker() {
         </View>
 
         <View style={{
-          paddingHorizontal: 30, flexDirection: 'row', justifyContent: 'space-between', gap: 14, alignItems: 'center', shadowColor: '#000',
+          flexDirection: 'row', justifyContent: 'space-between', gap: 14, alignItems: 'center', shadowColor: '#000',
           backgroundColor: "#f5f6f7",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.2,

@@ -17,7 +17,7 @@ const translations = {
     CONSISTENT: "Consistent",
     CONSISTENTD: "Consistent",
     SLOW: "Slow",
-    TAP_INHALATION: "Tap on inhalation",
+    TAP_INHALATION: "Tap on Inhalation",
     TAPS_INCONSISTENT: "Taps are inconsistent. Please try again.",
     NOT_ENOUGH_TAPS: "Not enough taps. Please try again.",
     TAPS_TOO_FAST: "Taps are too fast. Please try again.",

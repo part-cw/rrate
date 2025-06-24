@@ -168,6 +168,7 @@ export default function Index() {
               icon="cog"
               buttonColor={Theme.colors["neutral-bttn"]}
               mode="contained"
+              style={{ justifyContent: 'center', alignItems: 'center' }}
               onPress={() => {
                 if (intervalRef.current) {
                   clearInterval(intervalRef.current);
@@ -178,7 +179,6 @@ export default function Index() {
                   clearTimeout(timeoutRef.current);
                   timeoutRef.current = null;
                 }
-
                 tapCountRef.current = 0;
                 setTime(0);
                 setTimestamps([]);

@@ -41,7 +41,7 @@ export default function Settings() {
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
       <ScrollView contentContainerStyle={Style.screenContainer}>
         <View style={Style.innerContainer}>
-          <View style={{ alignItems: 'flex-start' }}>
+          <View style={{ alignItems: 'flex-start', flexGrow: 1 }}>
             <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
               {t("BACK")}
             </Button>

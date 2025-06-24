@@ -9,7 +9,6 @@ export const GlobalStyles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 30,
-    minHeight: '100%',
   },
 
   innerContainer: {

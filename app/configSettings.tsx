@@ -1,5 +1,6 @@
 import * as React from "react";
 import { View, Text, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
@@ -23,60 +24,62 @@ export default function configSettings() {
   const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
 
   return (
-    <ScrollView contentContainerStyle={Style.screenContainer}>
-      <View style={Style.innerContainer}>
-        <View style={{ alignItems: 'flex-start', width: 350 }}>
-          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
-            {t("BACK")}
-          </Button>
-        </View>
-
-        {/* Measurement Method Selection*/}
-        <View style={[Style.floatingContainer]}>
-          <Text style={Style.heading}> Measurement Method </Text>
-          <RadioButtonGroup
-            options={[
-              { label: t("CHECK"), value: 'tap' },
-              { label: t("ONEMIN"), value: 'timer' },
-            ]}
-            selected={measurementMethodRadioButton}
-            onSelect={(value) => {
-              setmeasurementMethodRadioButton(value);
-              setMeasurementMethod(value === 'tap' ? "tap" : "timer");
-              console.log("Measurement Method set to: " + measurementMethod);
-            }}
-          />
-        </View>
-
-        {/* Number of Taps Selection*/}
-        <View style={Style.floatingContainer}>
-          <Text style={Style.heading}>Taps </Text>
-          <View style={{ paddingVertical: 20 }}>
-            <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
+      <ScrollView contentContainerStyle={Style.screenContainer}>
+        <View style={Style.innerContainer}>
+          <View style={{ alignItems: 'flex-start', width: 350 }}>
+            <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
+              {t("BACK")}
+            </Button>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Slider values={numberOfTapsOptions} defaultValue={tapCountRequired.toString()} onSelect={(val) => {
-              setTapCountRequired(parseInt(val));
-            }} />
+
+          {/* Measurement Method Selection*/}
+          <View style={[Style.floatingContainer]}>
+            <Text style={Style.heading}> Measurement Method </Text>
+            <RadioButtonGroup
+              options={[
+                { label: t("CHECK"), value: 'tap' },
+                { label: t("ONEMIN"), value: 'timer' },
+              ]}
+              selected={measurementMethodRadioButton}
+              onSelect={(value) => {
+                setmeasurementMethodRadioButton(value);
+                setMeasurementMethod(value === 'tap' ? "tap" : "timer");
+                console.log("Measurement Method set to: " + measurementMethod);
+              }}
+            />
           </View>
+
+          {/* Number of Taps Selection*/}
+          <View style={Style.floatingContainer}>
+            <Text style={Style.heading}>Taps </Text>
+            <View style={{ paddingVertical: 20 }}>
+              <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Slider values={numberOfTapsOptions} defaultValue={tapCountRequired.toString()} onSelect={(val) => {
+                setTapCountRequired(parseInt(val));
+              }} />
+            </View>
+          </View>
+
+          {/* Consistency Threshold Selection*/}
+          <View style={Style.floatingContainer}>
+            <Text style={Style.heading}>Consistency Threshold </Text>
+            <View style={{ paddingVertical: 20 }}>
+              <Text>{t("CONSISTENCY_THRESH")}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Slider values={consistencyThresholdOptions} defaultValue={`${consistencyThreshold}%`} onSelect={(val) => {
+                setConsistencyThreshold(parseInt(val.replace('%', '')));
+              }} />
+            </View>
+          </View>
+
+          <Copyright />
+
         </View>
-
-        {/* Consistency Threshold Selection*/}
-        <View style={Style.floatingContainer}>
-          <Text style={Style.heading}>Consistency Threshold </Text>
-          <View style={{ paddingVertical: 20 }}>
-            <Text>{t("CONSISTENCY_THRESH")}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Slider values={consistencyThresholdOptions} defaultValue={`${consistencyThreshold}%`} onSelect={(val) => {
-              setConsistencyThreshold(parseInt(val.replace('%', '')));
-            }} />
-          </View>
-        </View>
-
-        <Copyright />
-
-      </View>
-    </ScrollView >
+      </ScrollView >
+    </SafeAreaView>
   );
 }
