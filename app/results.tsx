@@ -182,7 +182,7 @@ export default function Results() {
               <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   { /* TEST REDCap BUTTON */}
-                  <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
+                  {/* <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button> */}
                   <Button
                     icon="arrow-u-right-bottom"
                     buttonColor={Theme.colors["neutral-bttn"]}
