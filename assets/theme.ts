@@ -22,7 +22,7 @@ export const Theme = {
     "buttonPressed": "rgb(46,45,101)",
     "errorContainer": "rgb(255, 218, 214)",
     "onErrorContainer": "rgb(65, 0, 2)",
-    "neutral-bttn": "rgb(160, 158, 158)",
+    "neutral-bttn": "rgb(147, 145, 145)",
     "background": "rgb(253, 251, 255)",
     "onBackground": "rgb(26, 27, 31)",
     "surface": "rgb(253, 251, 255)",

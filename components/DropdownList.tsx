@@ -3,10 +3,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/assets/styles';
+import { Theme } from '@/assets/theme';
 
 // Dropdown that allows user to select from a list of options.
 export default function DropdownList({ label, data, onSelect }: { label: string; data: string[], onSelect?: (value: string) => void }) {
@@ -22,10 +22,10 @@ export default function DropdownList({ label, data, onSelect }: { label: string;
   };
 
   return (
-    <View style={Style.componentContainer}>
+    <View>
 
       <TouchableOpacity style={Style.dropdownBox} onPress={toggleDropdown}>
-        <Text>{selected}</Text>
+        <Text style={{ color: selected == "Set Age" ? Theme.colors['neutral-bttn'] : "black" }}> {selected}</Text>
         <MaterialIcons name={open ? "keyboard-arrow-up" : "keyboard-arrow-down"} size={24} />
       </TouchableOpacity>
 

@@ -8,7 +8,7 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 30
   },
 
   innerContainer: {
@@ -105,33 +105,29 @@ export const GlobalStyles = StyleSheet.create({
     fontWeight: 'bold',
   },
   divider: {
-    width: '100%',
+    width: '80%',
     height: 2,
-    backgroundColor: '#ccc'
+    backgroundColor: '#ccc',
+    margin: 5
   },
   rightColumn: {
     flex: 1,
     justifyContent: 'center',
-    padding: 10
+    // padding: 10,
   },
   labelMain: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   labelSub: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#555',
-    marginBottom: 12,
     textAlign: 'center',
   },
   dropdownContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ageLabel: {
-    marginRight: 8,
-    fontSize: 16,
   },
 
   // Slider

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, ScrollView, Text, Pressable } from 'react-native';
+import { View, Animated, ScrollView, Text, Pressable, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
@@ -43,8 +43,9 @@ const babySVGMap = {
 export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
 
-  const [age, setAge] = useState<string>("");
+  const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
@@ -123,10 +124,11 @@ export default function Results() {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      <ScrollView contentContainerStyle={Style.screenContainer}>
+      {/* <ScrollView contentContainerStyle={Style.screenContainer}> */}
+      <View style={Style.screenContainer}>
         <View style={Style.innerContainer}>
 
-          <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, marginVertical: 0, paddingHorizontal: '7%' }]}>
+          <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, marginVertical: 0, paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
             <View style={Style.leftColumn}>
               <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
               {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
@@ -140,7 +142,6 @@ export default function Results() {
                 <View style={Style.divider} />
 
                 <View style={Style.dropdownContainer}>
-                  <Text style={Style.ageLabel}>Age</Text>
                   <View style={{ width: 150 }}>
                     <DropdownList label={age} data={ages} onSelect={setAge} />
                   </View>
@@ -151,7 +152,7 @@ export default function Results() {
             </View>
           </View>
 
-          <View >
+          <View>
             <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
               <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
                 {/* Inhale is always fully visible */}
@@ -179,7 +180,7 @@ export default function Results() {
             {/* Sets bottom buttons based on whether user has confirmed rate or not  */}
             {rrateConfirmed ? (
 
-              <View style={[Style.floatingContainer, { backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+              <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   { /* TEST REDCap BUTTON */}
                   <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button>
@@ -222,7 +223,7 @@ export default function Results() {
           </View>
         </View>
 
-      </ScrollView >
+      </View >
     </SafeAreaView >
   );
 }
