@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type MeasurementMethod = 'tap' | 'timer';
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
@@ -71,10 +72,27 @@ type globalContextType = {
   setTapTimestaps: (value: number[]) => void;
 };
 
+const STORAGE_KEYS = {
+  selectedLanguage: 'selectedLanguage',
+  ageThresholdEnabled: 'ageThresholdEnabled',
+  babyAnimation: 'babyAnimation',
+  measurementMethod: 'measurementMethod',
+  consistencyThreshold: 'consistencyThreshold',
+  REDCap: 'REDCap',
+  REDCapHost: 'REDCapHost',
+  REDCapURL: 'REDCapURL',
+  REDCapAPI: 'REDCapAPI',
+  LongitudinalStudy: 'LongitudinalStudy',
+  LongitudinalStudyEvent: 'LongitudinalStudyEvent',
+  RepeatableInstruments: 'RepeatableInstruments',
+  RepeatableInstrument: 'RepeatableInstrument',
+  UploadSingleRecord: 'UploadSingleRecord',
+};
+
 const GlobalContext = createContext<globalContextType | null>(null);
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [selectedLanguage, setSelectedLanguageState] = useState('English');
   const [ageThresholdEnabled, setAgeThresholdEnabled] = useState(false);
   const [babyAnimation, setBabyAnimation] = useState<BabyAnimationOption>(1);
   const password = "1234";
@@ -94,6 +112,27 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [RepeatableInstruments, setRepeatableInstruments] = useState(false);
   const [RepeatableInstrument, setRepeatableInstrument] = useState('Instrument');
   const [UploadSingleRecord, setUploadSingleRecord] = useState(false);
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      try {
+        const saved = await AsyncStorage.getItem(STORAGE_KEYS.selectedLanguage);
+        if (saved) setSelectedLanguageState(saved);
+      } catch (e) {
+        console.error('Failed to load language:', e);
+      }
+    };
+    loadLanguage();
+  }, []);
+
+  const setSelectedLanguage = async (lang: string) => {
+    setSelectedLanguageState(lang);
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.selectedLanguage, lang);
+    } catch (e) {
+      console.error('Failed to save language:', e);
+    }
+  };
 
   return (
     <GlobalContext.Provider
