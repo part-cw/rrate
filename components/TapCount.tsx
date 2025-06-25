@@ -5,7 +5,7 @@ type TapCountProps = {
   tapCount: number;
 };
 
-// TapCount displays 12 circles which become filled when the user taps on the Tap on Inhalation button.
+// TapCount displays a blue circle for each tap on the Tap on Inhalation button.
 export default function TapCount({ tapCount }: TapCountProps) {
 
   return (
@@ -14,12 +14,13 @@ export default function TapCount({ tapCount }: TapCountProps) {
         Tap Count
       </Text>
       <View style={Style.circleRow}>
-        {Array.from({ length: 12 }).map((_, index) => (
+        {Array.from({ length: tapCount }).map((_, index) => (
           <View
             key={index}
             style={[
               Style.tapCircle,
-              { backgroundColor: index < tapCount ? '#4267BC' : '#D3D3D3' }
+              // { backgroundColor: index < tapCount ? '#4267BC' : '#D3D3D3' }
+              { backgroundColor: '#4267BC' }
             ]}
           />
         ))}
