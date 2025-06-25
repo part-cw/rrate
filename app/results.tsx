@@ -55,8 +55,9 @@ export default function Results() {
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
   const DeflateSVG = babySVGMap[babyAnimation]?.deflate;
 
-  const fadeOutSVG = useRef(new Animated.Value(1)).current; // start at exhale 
-  const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+  const [isInhaling, setIsInhaling] = useState(false);
+  const animationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
 
   // Calculate breaths/min for animation timing 
   const rate = Number(rrate) === 0 ? 40 : Number(rrate); // 40 is default rate for animation
@@ -66,35 +67,32 @@ export default function Results() {
 
   // Start breathing loop: fade exhale out (inhale), then back in (exhale)
   const startBreathing = () => {
-    animationRef.current = Animated.loop(
-      Animated.sequence([
-        Animated.timing(fadeOutSVG, {
-          toValue: 0,
-          duration: halfCycle,
-          useNativeDriver: true,
-        }),
-        Animated.timing(fadeOutSVG, {
-          toValue: 1,
-          duration: halfCycle,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-    animationRef.current.start();
+    animationIntervalRef.current = setInterval(() => {
+      setIsInhaling(prev => !prev);
+    }, halfCycle);
   };
+
 
   // On mount, begin the animation
   React.useEffect(() => {
     startBreathing();
-    return () => animationRef.current?.stop();
+    return () => {
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+      }
+    };
   }, []);
 
-  // when animation is tapped, reset to exhale state
+
+  // when animation is tapped, reset to peak of inhalation state
   const handleTap = () => {
-    animationRef.current?.stop();
-    fadeOutSVG.setValue(1); // fully exhaled
-    startBreathing();       // restart cycle
+    if (animationIntervalRef.current) {
+      clearInterval(animationIntervalRef.current);
+    }
+    setIsInhaling(true); // reset to peak of inhalation
+    startBreathing();     // restart loop
   };
+
 
   // Determine the color of the respiratory rate value based on age and rate
   let rrateColour;
@@ -156,23 +154,18 @@ export default function Results() {
           <View>
             <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
               <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
-                {/* Inhale is always fully visible */}
-                {DeflateSVG &&
+                {isInhaling && InflateSVG &&
+                  <InflateSVG
+                    width={measurementMethod === 'timer' ? 360 : 320}
+                    height={measurementMethod === 'timer' ? 390 : 350}
+                  />}
+                {!isInhaling && DeflateSVG &&
                   <DeflateSVG
                     width={measurementMethod === 'timer' ? 360 : 320}
                     height={measurementMethod === 'timer' ? 390 : 350}
                   />}
-
-                {/* Exhale fades in and out above it */}
-                {InflateSVG &&
-                  <Animated.View style={[Style.SVGoverlay, { opacity: fadeOutSVG }]}>
-                    <InflateSVG
-                      width={measurementMethod === 'timer' ? 360 : 320}
-                      height={measurementMethod === 'timer' ? 390 : 350}
-                    />
-                  </Animated.View>
-                }
               </View>
+
             </Pressable>
 
             {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
