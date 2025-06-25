@@ -192,6 +192,7 @@ export default function Results() {
             ) : (
               <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
+                <Text style={{ color: Theme.colors['neutral-bttn'] }}>Tap on the animation to sync with patient exhalation.</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   <Button
                     icon="check"
