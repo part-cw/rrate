@@ -55,7 +55,7 @@ export default function Results() {
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
   const DeflateSVG = babySVGMap[babyAnimation]?.deflate;
 
-  const fadeOutSVG = useRef(new Animated.Value(0)).current; // start at exhale 
+  const fadeOutSVG = useRef(new Animated.Value(1)).current; // start at exhale 
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
   // Calculate breaths/min for animation timing 
@@ -69,12 +69,12 @@ export default function Results() {
     animationRef.current = Animated.loop(
       Animated.sequence([
         Animated.timing(fadeOutSVG, {
-          toValue: 1,
+          toValue: 0,
           duration: halfCycle,
           useNativeDriver: true,
         }),
         Animated.timing(fadeOutSVG, {
-          toValue: 0,
+          toValue: 1,
           duration: halfCycle,
           useNativeDriver: true,
         }),
@@ -92,7 +92,7 @@ export default function Results() {
   // when animation is tapped, reset to exhale state
   const handleTap = () => {
     animationRef.current?.stop();
-    fadeOutSVG.setValue(0); // fully exhaled
+    fadeOutSVG.setValue(1); // fully exhaled
     startBreathing();       // restart cycle
   };
 
