@@ -139,7 +139,7 @@ export default function Settings() {
                   <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                  {!UploadSingleRecord && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
+                  {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
                 </View>
               </View>
             )}
