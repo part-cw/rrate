@@ -1,16 +1,50 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Alert } from 'react-native';
+import { useState } from 'react';
 import { Button } from 'react-native-paper';
-import { GlobalStyles as Style } from '../assets/styles';
 import { useGlobalVariables } from './globalContext';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import useTranslation from '@/hooks/useTranslation';
+import { uploadRecordToREDCap, getNextRecordID } from '../services/redcap';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
-  const { rrate, tapTimestamps } = useGlobalVariables();
   const router = useRouter();
   const { t } = useTranslation();
+  const [response, setResponse] = useState<string | null>(null);
+
+  const { REDCapAPI, REDCapURL, rr_taps, rrate, rr_time, tapTimestamps } = useGlobalVariables();
+
+  const handleUpload = async () => {
+    if (!REDCapURL || !REDCapAPI) {
+      Alert.alert('Missing Info', 'Please enter your REDCap URL and API token in Settings first.');
+      return;
+    }
+
+    try {
+      // Fetch the most recent record id 
+      const nextRecordId = await getNextRecordID({ apiUrl: REDCapURL, apiToken: REDCapAPI });
+
+      // The new record to upload
+      const record = [
+        {
+          record_id: nextRecordId,
+          rrate_rate: rrate,
+          rrate_time: rr_time,
+          rrate_taps: rr_taps
+        },
+      ];
+
+      const result = await uploadRecordToREDCap({
+        apiUrl: REDCapURL,
+        apiToken: REDCapAPI,
+        recordData: record,
+      });
+      setResponse('Upload successful!');
+    } catch (error: any) {
+      setResponse('Upload failed:\n' + error.message);
+    }
+  };
 
   return (
     <View style={{ margin: 30, paddingTop: 20, flexGrow: 1, justifyContent: 'center', alignItems: 'center', }}>
@@ -26,10 +60,15 @@ export default function SaveDataToREDCap() {
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
           </Button>
-          <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => console.log("Save to REDCap functionality not implemented yet")}>
+          <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleUpload()}>
             {t("SAVE")}
           </Button>
         </View>
+        {response && (
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ fontSize: 16 }}>{response}</Text>
+          </View>
+        )}
       </View>
     </View >
   )

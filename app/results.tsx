@@ -47,7 +47,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps, UploadSingleRecord } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   // Variables for the baby animation
@@ -170,13 +170,18 @@ export default function Results() {
               <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   { /* TEST REDCap BUTTON */}
-                  <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/saveDataToREDCap")}> REDCap </Button>
+                  {UploadSingleRecord && (
+                    <Button mode="contained"
+                      buttonColor={Theme.colors.secondary}
+                      style={{ paddingHorizontal: 30, marginRight: 10 }}
+                      onPress={() => router.push("/saveDataToREDCap")}> REDCap </Button>
+                  )}
                   <Button
                     icon="arrow-u-right-bottom"
                     buttonColor={Theme.colors["neutral-bttn"]}
                     mode="contained"
                     onPress={() => router.push("/")}
-                    style={{ paddingHorizontal: 20 }}>
+                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
                     {t("RESTART")}
                   </Button>
                 </View>
