@@ -6,7 +6,7 @@ import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import useTranslation from '@/hooks/useTranslation';
 
-
+// Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
   const { rrate, tapTimestamps } = useGlobalVariables();
   const router = useRouter();

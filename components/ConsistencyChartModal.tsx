@@ -2,7 +2,6 @@ import { Modal, View, Text } from "react-native";
 import { PropsWithChildren } from 'react';
 import { GlobalStyles as Style } from "@/assets/styles";
 import { IconButton } from 'react-native-paper';
-import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
 import ConsistencyChart from "./ConsistencyChart";
 import { useGlobalVariables } from "@/app/globalContext";
@@ -27,12 +26,11 @@ export default function ConsistencyChartModal({ isVisible, onClose }: Props) {
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View style={Style.modalOverlay}>
         <View style={Style.modalContent}>
-
           <IconButton icon="close" size={30} style={{
             position: 'absolute',
             top: 2,
             right: 5,
-            zIndex: 1, // just in case other elements try to cover it
+            zIndex: 1,
           }} onPress={handleClose} />
           <Text style={[Style.heading, { paddingTop: 15 }]}>Consistency Analysis</Text>
           <Text style={{ marginHorizontal: 15, marginVertical: 20, textAlign: 'center' }}>A tap is consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median interval.

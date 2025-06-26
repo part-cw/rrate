@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { Theme } from '@/assets/theme';
@@ -23,12 +19,10 @@ export default function DropdownList({ label, data, onSelect }: { label: string;
 
   return (
     <View>
-
       <TouchableOpacity style={Style.dropdownBox} onPress={toggleDropdown}>
         <Text style={{ color: selected == "Set Age" ? Theme.colors['neutral-bttn'] : "black" }}> {selected}</Text>
         <MaterialIcons name={open ? "keyboard-arrow-up" : "keyboard-arrow-down"} size={24} />
       </TouchableOpacity>
-
 
       {open && (
         <View style={Style.dropdownList}>

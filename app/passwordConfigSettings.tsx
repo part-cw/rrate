@@ -4,9 +4,10 @@ import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '../assets/theme';
-import useTranslation from '@/hooks/useTranslation';
 import { useGlobalVariables } from './globalContext';
+import useTranslation from '@/hooks/useTranslation';
 
+// Page for entering the password to access configuration settings
 export default function PasswordPage() {
   const router = useRouter();
   const { t } = useTranslation();
@@ -36,8 +37,6 @@ export default function PasswordPage() {
         alignItems: 'center',
       }}>
         < View style={{ alignItems: 'center', justifyContent: 'center' }}>
-
-
           <MaterialCommunityIcons
             name="lock-outline"
             size={30}

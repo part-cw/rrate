@@ -53,7 +53,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
     let isConsistent: boolean;
 
     if (i === 0) {
-      y = getY(median); // first point always lies on the median line
+      y = getY(median); // first point always lies on the median line and is consistent
       isConsistent = true;
     } else {
       const interval = tapTimestamps[i] - tapTimestamps[i - 1];

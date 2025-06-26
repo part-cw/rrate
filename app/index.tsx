@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-paper";
@@ -211,6 +211,7 @@ export default function Index() {
             </Button>
           </View>
 
+          {/* Show either the Tap Count or Timer, depending on the user's settings for the measurement method. */}
           <View style={[Style.componentContainer, { flexGrow: 1 }]}>
             {measurementMethod === 'tap' ?
               <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />

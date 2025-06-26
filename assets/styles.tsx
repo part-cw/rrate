@@ -10,7 +10,6 @@ export const GlobalStyles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: Platform.OS === 'web' ? 20 : 0
   },
-
   innerContainer: {
     width: '100%',
     maxWidth: 500,
@@ -18,11 +17,9 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     minHeight: '100%',
   },
-
   componentContainer: {
     marginVertical: 10,
   },
-
   floatingContainer: {
     padding: 30,
     marginVertical: 15,
@@ -30,13 +27,11 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor: "#f5f6f7",
     width: '100%',
     maxWidth: 500,
-
     // iOS 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-
     // Android 
     elevation: 5,
   },

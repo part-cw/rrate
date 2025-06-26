@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
-import useTranslation from '@/hooks/useTranslation';
 import { Theme } from "../assets/theme";
+import useTranslation from '@/hooks/useTranslation';
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";
@@ -27,7 +27,7 @@ export default function Settings() {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
 
-  // ADD THIS IN FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
+  // ADD THIS FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
   // const languages = [
   //   'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
   //   'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
@@ -128,10 +128,8 @@ export default function Settings() {
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
                   {!UploadSingleRecord && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
                 </View>
-
               </View>
             )}
-
           </View>
 
           {/* Configuration Settings */}

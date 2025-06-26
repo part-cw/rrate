@@ -1,10 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Animated,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { GlobalStyles as Style } from '../assets/styles';
 
 type SliderProps = {
@@ -18,7 +13,7 @@ export default function Slider({ values, defaultValue, onSelect }: SliderProps) 
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const selectedIndex = values.indexOf(selectedValue);
 
-  const sliderWidth = 230;
+  const sliderWidth = 230; // static width
   const stepWidth = sliderWidth / (values.length - 1);
 
   const trianglePosition = useRef(new Animated.Value(selectedIndex * stepWidth)).current;

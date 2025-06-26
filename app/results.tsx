@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Animated, Text, Pressable, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, Pressable, ScrollView, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
@@ -45,19 +45,16 @@ export default function Results() {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
 
-
   const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
-  // Sets the baby SVGs based on the selected animation from the Settings page
+  // Variables for the baby animation
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
   const DeflateSVG = babySVGMap[babyAnimation]?.deflate;
-
   const [isInhaling, setIsInhaling] = useState(false);
   const animationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
 
   // Calculate breaths/min for animation timing 
   const rate = Number(rrate) === 0 ? 40 : Number(rrate); // 40 is default rate for animation
@@ -72,7 +69,6 @@ export default function Results() {
     }, halfCycle);
   };
 
-
   // On mount, begin the animation
   React.useEffect(() => {
     startBreathing();
@@ -83,18 +79,16 @@ export default function Results() {
     };
   }, []);
 
-
-  // when animation is tapped, reset to peak of inhalation state
+  // when animation is tapped, reset to start of exhalation state
   const handleTap = () => {
     if (animationIntervalRef.current) {
       clearInterval(animationIntervalRef.current);
     }
-    setIsInhaling(true); // reset to peak of inhalation
-    startBreathing();     // restart loop
+    setIsInhaling(true);
+    startBreathing();
   };
 
-
-  // Determine the color of the respiratory rate value based on age and rate
+  // Determine the colour of the respiratory rate value based on age and rate
   let rrateColour;
   let rrateSeverity = 'normal';
 
@@ -124,9 +118,8 @@ export default function Results() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
       <ScrollView contentContainerStyle={Style.screenContainer}>
-        {/* <View style={Style.screenContainer}> */}
         <View style={Style.innerContainer}>
-
+          {/* RRate Display */}
           <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, marginVertical: 0, paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
             <View style={Style.leftColumn}>
               <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
@@ -147,10 +140,10 @@ export default function Results() {
                 </View>
               </View>
               }
-
             </View>
           </View>
 
+          {/* Baby Animation and Consistency Chart */}
           <View>
             <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
               <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
@@ -171,7 +164,7 @@ export default function Results() {
             {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
             {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
 
-            {/* Sets bottom buttons based on whether user has confirmed rate or not  */}
+            {/* Sets bottom buttons based on whether user has confirmed rate or not */}
             {rrateConfirmed ? (
 
               <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
@@ -208,7 +201,6 @@ export default function Results() {
                     mode="contained"
                     onPress={() => {
                       router.push("/");
-                      set_rrTaps(''); // Reset rr_taps in global context
                     }}
                     style={{ paddingHorizontal: 30, marginLeft: 10 }}>
                     {t("NO")}

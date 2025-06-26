@@ -44,7 +44,6 @@ export async function uploadRecordToREDCap({
   }
 }
 
-
 // How to use: 
 // const result = await uploadRecordToREDCap({
 //         apiUrl: url,

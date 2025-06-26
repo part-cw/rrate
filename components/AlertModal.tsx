@@ -13,7 +13,7 @@ type Props = PropsWithChildren<{
   onClose: () => void;
 }>;
 
-// Pop-up alert screen
+// Pop-up modal alert screen
 export default function AlertModal({ isVisible, message, onClose }: Props) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
     router.push('/');
   };
 
-  const handleSettings = () => {
+  const handleIgnore = () => {
     onClose();
     router.push('/results');
   };
@@ -52,7 +52,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
               icon="minus-circle-outline"
               buttonColor={Theme.colors["neutral-bttn"]}
               mode="contained"
-              onPress={handleSettings}
+              onPress={handleIgnore}
             >
               {t("IGNORE")}
             </Button> */}
