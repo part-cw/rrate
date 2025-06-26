@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 type MeasurementMethod = 'tap' | 'timer';
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
@@ -106,12 +107,35 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [REDCap, _setREDCap] = useState(false);
   const [REDCapHost, _setREDCapHost] = useState('');
   const [REDCapURL, _setREDCapURL] = useState('');
-  const [REDCapAPI, setREDCapAPI] = useState('');
+  const [REDCapAPI, _setREDCapAPI] = useState('');
   const [LongitudinalStudy, _setLongitudinalStudy] = useState(false);
   const [LongitudinalStudyEvent, _setLongitudinalStudyEvent] = useState('Event');
   const [UsingRepeatableInstruments, _setUsingRepeatableInstruments] = useState(false);
   const [RepeatableInstrument, _setRepeatableInstrument] = useState('Instrument');
   const [UploadSingleRecord, _setUploadSingleRecord] = useState(false);
+
+  // Save and load to Expo SecureStore for REDCap API token
+  const setREDCapAPI = async (token: string) => {
+    _setREDCapAPI(token);
+    try {
+      await SecureStore.setItemAsync('apiToken', token);
+    } catch (e) {
+      console.error('Error saving API token:', e);
+    }
+  };
+
+  const loadREDCapAPI = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('apiToken');
+      _setREDCapAPI(token || '');
+      return token;
+    } catch (e) {
+      console.error('Error retrieving API token:', e);
+      _setREDCapAPI('');
+      return null;
+    }
+  };
+
 
   // Helper function that loads settings from AsyncStorage, and defaults to fallback value if not found
   async function loadWithFallback<T>(
@@ -151,6 +175,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadWithFallback<boolean>(STORAGE_KEYS.UsingRepeatableInstruments, _setUsingRepeatableInstruments, false, v => v === 'true'),
         loadWithFallback<string>(STORAGE_KEYS.RepeatableInstrument, _setRepeatableInstrument, 'Instrument'),
         loadWithFallback<boolean>(STORAGE_KEYS.UploadSingleRecord, _setUploadSingleRecord, false, v => v === 'true'),
+        loadREDCapAPI()
       ]);
     })();
   }, []);
