@@ -146,16 +146,16 @@ export default function Results() {
           {/* Baby Animation and Consistency Chart */}
           <View>
             <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
-              <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 320, height: measurementMethod === 'timer' ? 390 : 350 }]}>
+              <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 310, height: measurementMethod === 'timer' ? 390 : 340 }]}>
                 {isInhaling && InflateSVG &&
                   <InflateSVG
-                    width={measurementMethod === 'timer' ? 360 : 320}
-                    height={measurementMethod === 'timer' ? 390 : 350}
+                    width={measurementMethod === 'timer' ? 360 : 310}
+                    height={measurementMethod === 'timer' ? 390 : 340}
                   />}
                 {!isInhaling && DeflateSVG &&
                   <DeflateSVG
-                    width={measurementMethod === 'timer' ? 360 : 320}
-                    height={measurementMethod === 'timer' ? 390 : 350}
+                    width={measurementMethod === 'timer' ? 360 : 310}
+                    height={measurementMethod === 'timer' ? 390 : 340}
                   />}
               </View>
 
@@ -170,7 +170,7 @@ export default function Results() {
               <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   { /* TEST REDCap BUTTON */}
-                  {/* <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/REDCapUpload")}> REDCap </Button> */}
+                  <Button mode="contained" buttonColor={Theme.colors.secondary} onPress={() => router.push("/saveDataToREDCap")}> REDCap </Button>
                   <Button
                     icon="arrow-u-right-bottom"
                     buttonColor={Theme.colors["neutral-bttn"]}
