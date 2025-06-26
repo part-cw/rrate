@@ -34,8 +34,8 @@ type globalContextType = {
   LongitudinalStudyEvent: string;
   setLongitudinalStudyEvent: (value: string) => void;
 
-  RepeatableInstruments: boolean;
-  setRepeatableInstruments: (value: boolean) => void;
+  UsingRepeatableInstruments: boolean;
+  setUsingRepeatableInstruments: (value: boolean) => void;
 
   RepeatableInstrument: string;
   setRepeatableInstrument: (value: string) => void;
@@ -78,13 +78,13 @@ const STORAGE_KEYS = {
   babyAnimation: 'babyAnimation',
   measurementMethod: 'measurementMethod',
   consistencyThreshold: 'consistencyThreshold',
+  tapCountRequired: 'tapCountRequired',
   REDCap: 'REDCap',
   REDCapHost: 'REDCapHost',
   REDCapURL: 'REDCapURL',
-  REDCapAPI: 'REDCapAPI',
   LongitudinalStudy: 'LongitudinalStudy',
   LongitudinalStudyEvent: 'LongitudinalStudyEvent',
-  RepeatableInstruments: 'RepeatableInstruments',
+  UsingRepeatableInstruments: 'UsingRepeatableInstruments',
   RepeatableInstrument: 'RepeatableInstrument',
   UploadSingleRecord: 'UploadSingleRecord',
 };
@@ -92,47 +92,101 @@ const STORAGE_KEYS = {
 const GlobalContext = createContext<globalContextType | null>(null);
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedLanguage, setSelectedLanguageState] = useState('English');
-  const [ageThresholdEnabled, setAgeThresholdEnabled] = useState(false);
-  const [babyAnimation, setBabyAnimation] = useState<BabyAnimationOption>(1);
+  const [selectedLanguage, _setSelectedLanguage] = useState('English');
+  const [ageThresholdEnabled, _setAgeThresholdEnabled] = useState(false);
+  const [babyAnimation, _setBabyAnimation] = useState<BabyAnimationOption>(1);
   const password = "1234";
-  const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('tap');
-  const [consistencyThreshold, setConsistencyThreshold] = useState(13);
-  const [tapCountRequired, setTapCountRequired] = useState(5);
+  const [measurementMethod, _setMeasurementMethod] = useState<MeasurementMethod>('tap');
+  const [consistencyThreshold, _setConsistencyThreshold] = useState(13);
+  const [tapCountRequired, _setTapCountRequired] = useState(5);
   const [rrate, setRRate] = useState('0');
   const [rr_time, set_rrTime] = useState('');
   const [rr_taps, set_rrTaps] = useState('');
   const [tapTimestamps, setTapTimestaps] = useState<number[]>([]);
-  const [REDCap, setREDCap] = useState(false);
-  const [REDCapHost, setREDCapHost] = useState('');
-  const [REDCapURL, setREDCapURL] = useState('');
+  const [REDCap, _setREDCap] = useState(false);
+  const [REDCapHost, _setREDCapHost] = useState('');
+  const [REDCapURL, _setREDCapURL] = useState('');
   const [REDCapAPI, setREDCapAPI] = useState('');
-  const [LongitudinalStudy, setLongitudinalStudy] = useState(false);
-  const [LongitudinalStudyEvent, setLongitudinalStudyEvent] = useState('Event');
-  const [RepeatableInstruments, setRepeatableInstruments] = useState(false);
-  const [RepeatableInstrument, setRepeatableInstrument] = useState('Instrument');
-  const [UploadSingleRecord, setUploadSingleRecord] = useState(false);
+  const [LongitudinalStudy, _setLongitudinalStudy] = useState(false);
+  const [LongitudinalStudyEvent, _setLongitudinalStudyEvent] = useState('Event');
+  const [UsingRepeatableInstruments, _setUsingRepeatableInstruments] = useState(false);
+  const [RepeatableInstrument, _setRepeatableInstrument] = useState('Instrument');
+  const [UploadSingleRecord, _setUploadSingleRecord] = useState(false);
 
-  useEffect(() => {
-    const loadLanguage = async () => {
-      try {
-        const saved = await AsyncStorage.getItem(STORAGE_KEYS.selectedLanguage);
-        if (saved) setSelectedLanguageState(saved);
-      } catch (e) {
-        console.error('Failed to load language:', e);
+  // Helper function that loads settings from AsyncStorage, and defaults to fallback value if not found
+  async function loadWithFallback<T>(
+    key: string,
+    setState: React.Dispatch<React.SetStateAction<T>>,
+    fallback: T,
+    parse: (value: string) => T = (v) => v as unknown as T
+  ) {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value !== null) {
+        setState(parse(value));
+      } else {
+        setState(fallback);
       }
-    };
-    loadLanguage();
+    } catch (e) {
+      console.error(`Failed to load ${key}:`, e);
+      setState(fallback);
+    }
+  }
+
+  // Load settings from AsyncStorage using helper function
+  useEffect(() => {
+    (async () => {
+      await Promise.all([
+        loadWithFallback<string>(STORAGE_KEYS.selectedLanguage, _setSelectedLanguage, 'English'),
+        loadWithFallback<boolean>(STORAGE_KEYS.ageThresholdEnabled, _setAgeThresholdEnabled, false, v => v === 'true'),
+        loadWithFallback<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, _setBabyAnimation, 1, v => Number(v) as BabyAnimationOption),
+        loadWithFallback<MeasurementMethod>(STORAGE_KEYS.measurementMethod, _setMeasurementMethod, 'tap', v => v as MeasurementMethod),
+        loadWithFallback<number>(STORAGE_KEYS.consistencyThreshold, _setConsistencyThreshold, 13, v => Number(v)),
+        loadWithFallback<number>(STORAGE_KEYS.tapCountRequired, _setTapCountRequired, 5, v => Number(v)),
+        loadWithFallback<boolean>(STORAGE_KEYS.REDCap, _setREDCap, false, v => v === 'true'),
+        loadWithFallback<string>(STORAGE_KEYS.REDCapHost, _setREDCapHost, ''),
+        loadWithFallback<string>(STORAGE_KEYS.REDCapURL, _setREDCapURL, ''),
+        loadWithFallback<boolean>(STORAGE_KEYS.LongitudinalStudy, _setLongitudinalStudy, false, v => v === 'true'),
+        loadWithFallback<string>(STORAGE_KEYS.LongitudinalStudyEvent, _setLongitudinalStudyEvent, 'Event'),
+        loadWithFallback<boolean>(STORAGE_KEYS.UsingRepeatableInstruments, _setUsingRepeatableInstruments, false, v => v === 'true'),
+        loadWithFallback<string>(STORAGE_KEYS.RepeatableInstrument, _setRepeatableInstrument, 'Instrument'),
+        loadWithFallback<boolean>(STORAGE_KEYS.UploadSingleRecord, _setUploadSingleRecord, false, v => v === 'true'),
+      ]);
+    })();
   }, []);
 
-  const setSelectedLanguage = async (lang: string) => {
-    setSelectedLanguageState(lang);
-    try {
-      await AsyncStorage.setItem(STORAGE_KEYS.selectedLanguage, lang);
-    } catch (e) {
-      console.error('Failed to save language:', e);
-    }
-  };
+
+  // Helper function that tries to set a value in AsyncStorage
+  function createPersistentSetter<T>(
+    key: string,
+    setState: React.Dispatch<React.SetStateAction<T>>,
+    serialize: (value: T) => string = (value) => String(value)
+  ): (value: T) => void {
+    return async (value: T) => {
+      setState(value);
+      try {
+        await AsyncStorage.setItem(key, serialize(value));
+      } catch (e) {
+        console.error(`Failed to persist ${key}:`, e);
+      }
+    };
+  }
+
+  // Apply setter to every setting needing to be saved to AsyncStorage
+  const setSelectedLanguage = createPersistentSetter(STORAGE_KEYS.selectedLanguage, _setSelectedLanguage);
+  const setAgeThresholdEnabled = createPersistentSetter(STORAGE_KEYS.ageThresholdEnabled, _setAgeThresholdEnabled, v => v.toString());
+  const setBabyAnimation = createPersistentSetter(STORAGE_KEYS.babyAnimation, _setBabyAnimation, v => v.toString());
+  const setMeasurementMethod = createPersistentSetter(STORAGE_KEYS.measurementMethod, _setMeasurementMethod);
+  const setConsistencyThreshold = createPersistentSetter(STORAGE_KEYS.consistencyThreshold, _setConsistencyThreshold);
+  const setTapCountRequired = createPersistentSetter(STORAGE_KEYS.tapCountRequired, _setTapCountRequired);
+  const setREDCap = createPersistentSetter(STORAGE_KEYS.REDCap, _setREDCap);
+  const setREDCapHost = createPersistentSetter(STORAGE_KEYS.REDCapHost, _setREDCapHost);
+  const setREDCapURL = createPersistentSetter(STORAGE_KEYS.REDCapURL, _setREDCapURL);
+  const setLongitudinalStudy = createPersistentSetter(STORAGE_KEYS.LongitudinalStudy, _setLongitudinalStudy);
+  const setLongitudinalStudyEvent = createPersistentSetter(STORAGE_KEYS.LongitudinalStudyEvent, _setLongitudinalStudyEvent);
+  const setUsingRepeatableInstruments = createPersistentSetter(STORAGE_KEYS.UsingRepeatableInstruments, _setUsingRepeatableInstruments);
+  const setRepeatableInstrument = createPersistentSetter(STORAGE_KEYS.RepeatableInstrument, _setRepeatableInstrument);
+  const setUploadSingleRecord = createPersistentSetter(STORAGE_KEYS.UploadSingleRecord, _setUploadSingleRecord)
 
   return (
     <GlobalContext.Provider
@@ -170,8 +224,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setLongitudinalStudy,
         LongitudinalStudyEvent,
         setLongitudinalStudyEvent,
-        RepeatableInstruments,
-        setRepeatableInstruments,
+        UsingRepeatableInstruments,
+        setUsingRepeatableInstruments,
         RepeatableInstrument,
         setRepeatableInstrument,
         UploadSingleRecord,

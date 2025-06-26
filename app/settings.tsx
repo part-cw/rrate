@@ -19,7 +19,7 @@ export default function Settings() {
 
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
-    LongitudinalStudy, setLongitudinalStudy, RepeatableInstruments, setRepeatableInstruments,
+    LongitudinalStudy, setLongitudinalStudy, UsingRepeatableInstruments, setUsingRepeatableInstruments,
     UploadSingleRecord, setUploadSingleRecord, LongitudinalStudyEvent, setLongitudinalStudyEvent, RepeatableInstrument, setRepeatableInstrument
   } = useGlobalVariables();
 
@@ -106,7 +106,7 @@ export default function Settings() {
                     </View>
                     {LongitudinalStudy && (
                       <TextInput
-                        label={LongitudinalStudyEvent}
+                        label=""
                         onChangeText={text => setLongitudinalStudyEvent(text)} />)}
                   </View>
                 </View>
@@ -114,11 +114,11 @@ export default function Settings() {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ flexDirection: 'column' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Checkbox label={t("REP_EVENTS")} checked={RepeatableInstruments} onChange={() => setRepeatableInstruments(!RepeatableInstruments)} />
+                      <Checkbox label={t("REP_EVENTS")} checked={UsingRepeatableInstruments} onChange={() => setUsingRepeatableInstruments(!UsingRepeatableInstruments)} />
                     </View>
-                    {RepeatableInstruments && (
+                    {UsingRepeatableInstruments && (
                       <TextInput
-                        label={RepeatableInstrument}
+                        label=""
                         onChangeText={text => setRepeatableInstrument(text)} />)}
                   </View>
                 </View>
