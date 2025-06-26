@@ -16,7 +16,7 @@ import Timer from '../components/Timer';
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
   const router = useRouter();
-  const { t } = useTranslation(); // use the function to get translations; pass in the keyword 
+  const { t } = useTranslation(); // use this function to get translations; pass in the keyword 
 
   // LOCAL VARIABLES
   const [timestamps, setTimestamps] = useState<number[]>([]);
@@ -28,7 +28,7 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, rr_taps, set_rrTime, set_rrTaps, measurementMethod } = useGlobalVariables();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, set_rrTime, set_rrTaps, measurementMethod } = useGlobalVariables();
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -38,9 +38,7 @@ export default function Index() {
 
   // MODAL DIALOG PAGE LOGIC
   const tapsTooFast = () => setTapsTooFastModalVisible(true);
-
   const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
-
   const notEnoughTaps = () => {
     if (!notEnoughTapsModalVisible) {
       if (timeoutRef.current !== null) {
@@ -50,25 +48,22 @@ export default function Index() {
     }
   };
 
-  // Updates the reference for whether the Not Enough Taps modal is visible
+  // Updates the reference of the Not Enough Taps modal whenever modal visibility changes
   useEffect(() => {
     notEnoughTapsVisibleRef.current = notEnoughTapsModalVisible;
   }, [notEnoughTapsModalVisible]);
 
-  // Sets up a timeout to trigger the Not Enough Taps modal if no taps are recorded within 60 seconds
+  // Sets up a timeout to trigger the Not Enough Taps modal if the interval from the last tap is greater than 60 seconds
   useFocusEffect(
     useCallback(() => {
-      console.log("Method:" + { measurementMethod });
       if (timestamps.length === 0 || notEnoughTapsModalVisible) return;
 
-      // Set the timeout
       timeoutRef.current = setTimeout(() => {
         if (!notEnoughTapsModalVisible && !tapsTooFastModalVisible && !tapsInconsistentModalVisible && measurementMethod === 'tap') {
           notEnoughTaps();
         }
       }, 60000);
 
-      // Cleanup when screen is unfocused or timestamps change
       return () => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
@@ -77,13 +72,51 @@ export default function Index() {
     }, [timestamps, notEnoughTapsModalVisible])
   );
 
-  // Start timer when first tap occurs; only if measurement method is set to 'tap for one minute'
+  // Reset all variables and intervals when the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      // Reset all relevant variables whenever the screen is focused (entered)
+      tapCountRef.current = 0;
+      setTime(0);
+      setTimestamps([]);
+      setTimerRunning(false);
+      set_rrTaps('');
+      setRRate('');
+      setTapTimestaps([]);
+      set_rrTime('');
+
+      // Clear any timers just in case
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+
+      return () => {
+        //Clear on screen unmount to prevent the timers from continuing in the background
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+      };
+    }, [])
+  );
+
+  // Start timer when first tap occurs, only occurs when measurement method is set to 'tap for one minute'
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
       setTime(prev => {
         if (prev >= 59) {
           clearInterval(intervalRef.current!);
-
           setRRate(tapCountRef.current.toString());
           setTapTimestaps(timestamps);
           router.push("/results");
@@ -125,13 +158,13 @@ export default function Index() {
   }
 
   // calculates consistency of taps; proceeds to results page if rate is below 140 and consistent
-  const consistencyCalculation = () => {
+  function consistencyCalculation() {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
     setTimestamps(updated); // timestamps is an array of timestamps in seconds since start
     set_rrTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
 
-    if (updated.length < tapCountRequired) return; // ADDED THIS
+    if (updated.length < tapCountRequired) return;
 
     const result = evaluateRecentTaps({ timestamps: updated, tapCountRequired, consistencyThreshold });
     setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
@@ -173,25 +206,7 @@ export default function Index() {
               buttonColor={Theme.colors["neutral-bttn"]}
               mode="contained"
               style={{ justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => {
-                if (intervalRef.current) {
-                  clearInterval(intervalRef.current);
-                  intervalRef.current = null;
-                }
-
-                if (timeoutRef.current) {
-                  clearTimeout(timeoutRef.current);
-                  timeoutRef.current = null;
-                }
-                tapCountRef.current = 0;
-                setTime(0);
-                setTimestamps([]);
-                setTimerRunning(false);
-                set_rrTaps('');
-                router.push("/settings");
-              }
-              }
-            >
+              onPress={() => { router.push("/settings"); }}>
               <Text>{t("SETTINGS")}</Text>
             </Button>
           </View>

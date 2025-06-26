@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-paper';
 import useTranslation from '@/hooks/useTranslation';
 import { useGlobalVariables } from './globalContext';
 
+// Page for testing upload to REDCap - NOT FOR PRODUCTION 
 export default function REDCapUpload() {
   const [REDCapAPI, setREDCapAPI] = useState<string>("");
   const [REDCapURL, setREDCapURL] = useState<string>("");
@@ -66,8 +67,8 @@ export default function REDCapUpload() {
         onChangeText={text => setREDCapAPI(text)}
       />
 
+      {/* Upload Button */}
       <Button title={isLoading ? 'Uploading...' : 'Upload Sample Record'} onPress={handleUpload} disabled={isLoading} />
-
 
       {response && (
         <View style={{ marginTop: 20 }}>
