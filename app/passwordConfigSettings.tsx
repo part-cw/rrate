@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '../assets/theme';
 import { useGlobalVariables } from './globalContext';
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
 
 // Page for entering the password to access configuration settings
 export default function PasswordPage() {

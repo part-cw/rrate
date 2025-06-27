@@ -6,14 +6,14 @@ import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 
 // The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and 
 // the consistency threshold.
-export default function configSettings() {
+export default function ConfigSettings() {
   const router = useRouter();
   const { t } = useTranslation();
 

@@ -3,7 +3,7 @@ import { View, Text, Button, ScrollView, Alert } from 'react-native';
 import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
 import { GlobalStyles as Style } from '../assets/styles';
 import { TextInput } from 'react-native-paper';
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
 import { useGlobalVariables } from './globalContext';
 
 // Page for testing upload to REDCap - NOT FOR PRODUCTION 
@@ -13,7 +13,7 @@ export default function REDCapUpload() {
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
-  const { rrate, rr_time, rr_taps } = useGlobalVariables();
+  const { rrate, rrTime, rrTaps } = useGlobalVariables();
 
   const handleUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
@@ -32,8 +32,8 @@ export default function REDCapUpload() {
         {
           record_id: nextRecordId,
           rrate_rate: rrate,
-          rrate_time: rr_time,
-          rrate_taps: rr_taps
+          rrate_time: rrTime,
+          rrate_taps: rrTaps
         },
       ];
 

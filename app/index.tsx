@@ -7,7 +7,7 @@ import { Theme } from "../assets/theme";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
@@ -28,7 +28,7 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, set_rrTime, set_rrTaps, measurementMethod } = useGlobalVariables();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod } = useGlobalVariables();
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -80,10 +80,10 @@ export default function Index() {
       setTime(0);
       setTimestamps([]);
       setTimerRunning(false);
-      set_rrTaps('');
+      setRRTaps('');
       setRRate('');
       setTapTimestaps([]);
-      set_rrTime('');
+      setRRTime('');
 
       // Clear any timers just in case
       if (intervalRef.current) {
@@ -150,7 +150,7 @@ export default function Index() {
 
       const updated = [...timestamps, now];
       setTimestamps(updated);
-      set_rrTaps(generateRRTapString(updated));
+      setRRTaps(generateRRTapString(updated));
     } else if (measurementMethod === 'tap') {
       // Assess the consistency of taps to determine whether to proceed to results page
       consistencyCalculation();
@@ -162,7 +162,7 @@ export default function Index() {
     const now = Date.now() / 1000;
     const updated = [...timestamps, now];
     setTimestamps(updated); // timestamps is an array of timestamps in seconds since start
-    set_rrTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
+    setRRTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
 
     if (updated.length < tapCountRequired) return;
 
@@ -170,8 +170,8 @@ export default function Index() {
     setRRate(result.rate.toString()); // set the respiratory rate in the global context so it can be used in other components
     setTapTimestaps(updated); // store timestamps in the global context
     const rrTaps = generateRRTapString(updated); // generate the string for REDCap
-    set_rrTaps(rrTaps);
-    set_rrTime(rrTaps.split(';')[0]);
+    setRRTaps(rrTaps);
+    setRRTime(rrTaps.split(';')[0]);
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {

@@ -8,7 +8,7 @@ import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from './globalContext';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
 
 // LOCAL VARIABLES
 const ages = ['<2 months', '2–12 months', '>1 year'];
@@ -47,7 +47,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, set_rrTaps, UploadSingleRecord } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, UploadSingleRecord } = useGlobalVariables();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   // Variables for the baby animation

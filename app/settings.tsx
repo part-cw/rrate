@@ -5,9 +5,9 @@ import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
 import { Theme } from "../assets/theme";
-import useTranslation from '@/utils/useTranslation';
-import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import useTranslation from '../utils/useTranslation';
+import DropDown from "../components/DropdownList";
 import Copyright from "../components/Copyright";
 import PatientModelPicker from "../components/PatientModelPicker";
 import Checkbox from "../components/Checkbox";
@@ -119,7 +119,7 @@ export default function Settings() {
                     </View>
                     {LongitudinalStudy && (
                       <TextInput
-                        label=""
+                        label="Event"
                         onChangeText={text => setLongitudinalStudyEvent(text)} />)}
                   </View>
                 </View>
@@ -127,11 +127,11 @@ export default function Settings() {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ flexDirection: 'column' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Checkbox label={t("REP_EVENTS")} checked={UsingRepeatableInstruments} onChange={() => setUsingRepeatableInstruments(!UsingRepeatableInstruments)} />
+                      <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => setUsingRepeatableInstruments(!UsingRepeatableInstruments)} />
                     </View>
                     {UsingRepeatableInstruments && (
                       <TextInput
-                        label=""
+                        label="Instrument"
                         onChangeText={text => setRepeatableInstrument(text)} />)}
                   </View>
                 </View>

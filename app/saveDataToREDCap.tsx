@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 import { useGlobalVariables } from './globalContext';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
 
 // Page for saving single measurement to REDCap
@@ -13,7 +13,7 @@ export default function SaveDataToREDCap() {
   const { t } = useTranslation();
   const [response, setResponse] = useState<string | null>(null);
 
-  const { REDCapAPI, REDCapURL, rr_taps, rrate, rr_time, tapTimestamps } = useGlobalVariables();
+  const { REDCapAPI, REDCapURL, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
   const handleUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
@@ -30,8 +30,8 @@ export default function SaveDataToREDCap() {
         {
           record_id: nextRecordId,
           rrate_rate: rrate,
-          rrate_time: rr_time,
-          rrate_taps: rr_taps
+          rrate_time: rrTime,
+          rrate_taps: rrTaps
         },
       ];
 
