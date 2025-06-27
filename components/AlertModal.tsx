@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 
 type Props = PropsWithChildren<{
   isVisible: boolean;

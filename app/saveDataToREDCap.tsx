@@ -4,8 +4,8 @@ import { Button } from 'react-native-paper';
 import { useGlobalVariables } from './globalContext';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
-import useTranslation from '@/hooks/useTranslation';
-import { uploadRecordToREDCap, getNextRecordID } from '../services/redcap';
+import useTranslation from '@/utils/useTranslation';
+import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {

@@ -5,7 +5,7 @@ import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
 import { Theme } from "../assets/theme";
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 import DropDown from "../components/DropdownList";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Copyright from "../components/Copyright";

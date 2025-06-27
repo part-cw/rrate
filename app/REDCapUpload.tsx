@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Button, ScrollView, Alert } from 'react-native';
-import { uploadRecordToREDCap, getNextRecordID } from '../services/redcap';
+import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
 import { GlobalStyles as Style } from '../assets/styles';
 import { TextInput } from 'react-native-paper';
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 import { useGlobalVariables } from './globalContext';
 
 // Page for testing upload to REDCap - NOT FOR PRODUCTION 

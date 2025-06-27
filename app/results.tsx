@@ -8,7 +8,7 @@ import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from './globalContext';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 
 // LOCAL VARIABLES
 const ages = ['<2 months', '2–12 months', '>1 year'];

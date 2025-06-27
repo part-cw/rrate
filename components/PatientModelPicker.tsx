@@ -3,7 +3,7 @@ import { GlobalStyles as Style } from '@/assets/styles';
 import { IconButton } from 'react-native-paper';
 import { useGlobalVariables } from '@/app/globalContext';
 import React, { useState } from 'react';
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 

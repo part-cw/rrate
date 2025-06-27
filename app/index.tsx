@@ -7,7 +7,7 @@ import { Theme } from "../assets/theme";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";

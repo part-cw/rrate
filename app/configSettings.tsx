@@ -6,7 +6,7 @@ import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "./globalContext";
-import useTranslation from '@/hooks/useTranslation';
+import useTranslation from '@/utils/useTranslation';
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";
 import RadioButtonGroup from "../components/RadioButtonGroup";
