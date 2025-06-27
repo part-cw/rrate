@@ -1,11 +1,12 @@
 import { View, Text, Image, Alert } from 'react-native';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
-import { useGlobalVariables } from './globalContext';
+import { useGlobalVariables } from '../utils/globalContext';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
+import { GlobalStyles as Style } from '@/assets/styles';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
@@ -47,16 +48,16 @@ export default function SaveDataToREDCap() {
   };
 
   return (
-    <View style={{ margin: 30, paddingTop: 20, flexGrow: 1, justifyContent: 'center', alignItems: 'center', }}>
+    <View style={Style.redirectScreenContainer}>
       <View style={{ alignItems: 'center', justifyContent: 'center', width: 350 }}>
         <Image
           source={require('@/assets/images/REDCap-icon.png')}
           style={{ width: 67, height: 70, marginBottom: 20 }}
         />
-        <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Save Data to REDCap</Text>
+        <Text style={Style.pageTitle}>Save Data to REDCap</Text>
         <Text style={{ paddingBottom: 10 }}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
         <Text> <Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
-        <View style={{ paddingVertical: 20, margin: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View style={Style.lightButtonContainer}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
           </Button>

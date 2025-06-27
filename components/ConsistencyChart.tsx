@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Line } from 'react-native-svg';
-import { useGlobalVariables } from '../app/globalContext';
+import { useGlobalVariables } from '../utils/globalContext';
 import ConsistencyChartModal from '../components/ConsistencyChartModal';
 import { getMedian } from '../utils/consistencyFunctions';
+import { GlobalStyles as Style } from '../assets/styles';
 import { Theme } from '../assets/theme';
 
 // Show info button on results page and labels on modal dialog
@@ -70,17 +71,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
       <View style={{ backgroundColor: "fff", height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
         {/* Background Threshold Band */}
         <View
-          style={{
-            position: 'absolute',
-            top: grayTop,
-            height: grayHeight,
-            left: 0,
-            right: 0,
-            backgroundColor: '#E4E4E4',
-            borderRadius: 10,
-            zIndex: 0,
-          }}
-        />
+          style={[Style.backgroundThresholdBand, { top: grayTop, height: grayHeight, }]} />
 
         {/* SVG Chart */}
         <Svg width={chartWidth} height={chartHeight} style={{ alignSelf: 'center', zIndex: 1 }}>

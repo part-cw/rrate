@@ -35,6 +35,32 @@ export const GlobalStyles = StyleSheet.create({
     // Android 
     elevation: 5,
   },
+  redirectScreenContainer: {
+    margin: 30,
+    paddingTop: 20,
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20
+  },
+  darkButtonContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    backgroundColor: "#3F3D3D",
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  lightButtonContainer: {
+    paddingVertical: 20,
+    margin: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
 
   // Tap Count
   tapCircle: {
@@ -91,6 +117,11 @@ export const GlobalStyles = StyleSheet.create({
   },
 
   // Respiratory Rate Display
+  rrateContainer: {
+    flexDirection: 'row',
+    zIndex: 10,
+    marginVertical: 0,
+  },
   leftColumn: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -163,9 +194,13 @@ export const GlobalStyles = StyleSheet.create({
   },
 
   // Consistency Chart
-  outsideThreshold: {
-    backgroundColor: '#ffffff',
-    borderRadius: 5
+  backgroundThresholdBand: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    backgroundColor: '#E4E4E4',
+    borderRadius: 10,
+    zIndex: 0,
   },
   insideThreshold: {
     backgroundColor: '#E8E8E8',
@@ -246,5 +281,19 @@ export const GlobalStyles = StyleSheet.create({
     top: 0,
     left: 0,
   },
+  pressableContainer: {
+    zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  //SETTINGS
+  textField: {
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.30, shadowRadius: 3,
+    elevation: 3,
+    marginVertical: 10
+  }
 
 });

@@ -6,7 +6,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Theme } from "../assets/theme";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
-import { useGlobalVariables } from "./globalContext";
+import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";

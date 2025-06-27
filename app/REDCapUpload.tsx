@@ -4,7 +4,7 @@ import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
 import { GlobalStyles as Style } from '../assets/styles';
 import { TextInput } from 'react-native-paper';
 import useTranslation from '../utils/useTranslation';
-import { useGlobalVariables } from './globalContext';
+import { useGlobalVariables } from '../utils/globalContext';
 
 // Page for testing upload to REDCap - NOT FOR PRODUCTION 
 export default function REDCapUpload() {

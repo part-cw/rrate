@@ -4,7 +4,7 @@ import { GlobalStyles as Style } from "@/assets/styles";
 import { IconButton } from 'react-native-paper';
 import { useRouter } from "expo-router";
 import ConsistencyChart from "./ConsistencyChart";
-import { useGlobalVariables } from "@/app/globalContext";
+import { useGlobalVariables } from "@/utils/globalContext";
 
 type Props = PropsWithChildren<{
   isVisible: boolean;

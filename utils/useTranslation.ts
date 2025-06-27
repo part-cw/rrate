@@ -1,4 +1,4 @@
-import { useGlobalVariables } from '../app/globalContext';
+import { useGlobalVariables } from './globalContext';
 import translations from '../assets/translations';
 
 type Language = keyof typeof translations;

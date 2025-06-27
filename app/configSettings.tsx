@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
-import { useGlobalVariables } from "./globalContext";
+import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
 import Copyright from "../components/Copyright";
 import Slider from "../components/Slider";

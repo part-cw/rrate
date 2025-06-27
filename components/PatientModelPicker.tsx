@@ -1,7 +1,7 @@
 import { View, Text, Image, Pressable } from 'react-native';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { IconButton } from 'react-native-paper';
-import { useGlobalVariables } from '@/app/globalContext';
+import { useGlobalVariables } from '@/utils/globalContext';
 import React, { useState } from 'react';
 import useTranslation from '@/utils/useTranslation';
 

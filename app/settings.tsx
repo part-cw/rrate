@@ -3,7 +3,7 @@ import { Button, Switch, TextInput } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
-import { useGlobalVariables } from "./globalContext";
+import { useGlobalVariables } from "../utils/globalContext";
 import { Theme } from "../assets/theme";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import useTranslation from '../utils/useTranslation';
@@ -92,54 +92,33 @@ export default function Settings() {
 
             {REDCap && (
               <View >
-                <TextInput
-                  label={t("HOST")}
-                  value={REDCapHost}
-                  style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
-                  onChangeText={text => setREDCapHost(text)}
-                />
-                <TextInput
-                  label={t("URL")}
-                  value={REDCapURL}
-                  style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
-                  onChangeText={text => setREDCapURL(text)}
-                  placeholder="/redcap/api/"
-                />
-                <TextInput
-                  label={t("TOKEN")}
-                  value={REDCapAPI}
-                  style={{ shadowColor: '#000000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.30, shadowRadius: 3, elevation: 3, marginVertical: 10 }}
-                  onChangeText={text => setREDCapAPI(text)}
-                />
+                <TextInput label={t("HOST")} value={REDCapHost} style={Style.textField} onChangeText={text => setREDCapHost(text)} />
+                <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
+                <TextInput label={t("TOKEN")} value={REDCapAPI} style={Style.textField} onChangeText={text => setREDCapAPI(text)} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ flexDirection: 'column' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
-                    </View>
-                    {LongitudinalStudy && (
-                      <TextInput
-                        label="Event"
-                        onChangeText={text => setLongitudinalStudyEvent(text)} />)}
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
                   </View>
+                  {LongitudinalStudy && (
+                    <TextInput
+                      label="Event"
+                      onChangeText={text => setLongitudinalStudyEvent(text)} />)}
                 </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ flexDirection: 'column' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => setUsingRepeatableInstruments(!UsingRepeatableInstruments)} />
-                    </View>
-                    {UsingRepeatableInstruments && (
-                      <TextInput
-                        label="Instrument"
-                        onChangeText={text => setRepeatableInstrument(text)} />)}
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => setUsingRepeatableInstruments(!UsingRepeatableInstruments)} />
                   </View>
+                  {UsingRepeatableInstruments && (
+                    <TextInput label="Instrument" onChangeText={text => setRepeatableInstrument(text)} />)}
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                  {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (<Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
+                  {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (
+                    <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
                 </View>
               </View>
             )}

@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
-import { useGlobalVariables } from './globalContext';
+import { useGlobalVariables } from '../utils/globalContext';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
@@ -120,7 +120,7 @@ export default function Results() {
       <ScrollView contentContainerStyle={Style.screenContainer}>
         <View style={Style.innerContainer}>
           {/* RRate Display */}
-          <View style={[Style.floatingContainer, { flexDirection: 'row', zIndex: 10, marginVertical: 0, paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
+          <View style={[Style.floatingContainer, Style.rrateContainer, { paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
             <View style={Style.leftColumn}>
               <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
               {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
@@ -145,7 +145,7 @@ export default function Results() {
 
           {/* Baby Animation and Consistency Chart */}
           <View>
-            <Pressable onPress={handleTap} style={{ zIndex: 1, paddingTop: measurementMethod == 'timer' ? 30 : 0, justifyContent: 'center', alignItems: 'center' }}>
+            <Pressable onPress={handleTap} style={[Style.pressableContainer, { paddingTop: measurementMethod == 'timer' ? 30 : 0, }]}>
               <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 310, height: measurementMethod === 'timer' ? 390 : 340 }]}>
                 {isInhaling && InflateSVG &&
                   <InflateSVG
@@ -166,8 +166,7 @@ export default function Results() {
 
             {/* Sets bottom buttons based on whether user has confirmed rate or not */}
             {rrateConfirmed ? (
-
-              <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+              <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   { /* TEST REDCap BUTTON */}
                   {UploadSingleRecord && (
@@ -186,9 +185,8 @@ export default function Results() {
                   </Button>
                 </View>
               </View>
-
             ) : (
-              <View style={[Style.floatingContainer, { paddingHorizontal: 10, paddingVertical: 15, backgroundColor: "#3F3D3D", justifyContent: 'center', alignItems: 'center' }]}>
+              <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
                 <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
                 <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>Tap the animation to sync with exhalation.</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >

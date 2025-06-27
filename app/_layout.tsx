@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { PaperProvider } from 'react-native-paper';
 import { Theme } from "../assets/theme";
-import { SettingsProvider } from "./globalContext";
+import { SettingsProvider } from "../utils/globalContext";
 
 // Project root
 export default function RootLayout() {

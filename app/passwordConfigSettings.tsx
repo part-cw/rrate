@@ -4,7 +4,8 @@ import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '../assets/theme';
-import { useGlobalVariables } from './globalContext';
+import { GlobalStyles as Style } from '../assets/styles';
+import { useGlobalVariables } from '../utils/globalContext';
 import useTranslation from '../utils/useTranslation';
 
 // Page for entering the password to access configuration settings
@@ -31,11 +32,7 @@ export default function PasswordPage() {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 30 : 0} >
-      <ScrollView contentContainerStyle={{
-        margin: 30, paddingTop: 20, flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      <ScrollView contentContainerStyle={Style.redirectScreenContainer}>
         < View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <MaterialCommunityIcons
             name="lock-outline"
@@ -43,7 +40,7 @@ export default function PasswordPage() {
             color={'#000'}
             style={{ marginBottom: 10 }}
           />
-          <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Configuration Settings</Text>
+          <Text style={Style.pageTitle}>Configuration Settings</Text>
           <Text style={{ textAlign: 'center' }}> Please enter the admin password to access these settings. </Text>
           <TextInput
             label="Password"
@@ -54,7 +51,7 @@ export default function PasswordPage() {
             style={{ marginTop: 20, width: 300 }}
           />
           {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-          <View style={{ flexDirection: 'row', margin: 20 }} >
+          <View style={Style.lightButtonContainer} >
             <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
               {t("BACK")}
             </Button>
@@ -62,7 +59,6 @@ export default function PasswordPage() {
               Access Settings
             </Button>
           </View>
-
         </View >
       </ScrollView >
     </KeyboardAvoidingView>
