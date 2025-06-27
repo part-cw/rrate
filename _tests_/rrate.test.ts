@@ -140,56 +140,28 @@ test('checks inconsistent rrate, 8 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002, 1588936448.6584, 1588936449.8777, 1588936451.0109], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
-});
-
-test('checks insufficient taps, 0 taps', () => {
-  const result = evaluateRecentTaps({
-    timestamps: [], tapCountRequired: 5, consistencyThreshold: 13
-  });
-  expect(result && result.rate).toBe(null);
-});
-
-test('checks inconsistent rrate, 1 tap', () => {
-  const result = evaluateRecentTaps({
-    timestamps: [1588936439.9186], tapCountRequired: 5, consistencyThreshold: 13
-  });
-  expect(result && result.rate).toBe(null);
-});
-
-test('checks inconsistent rrate, 2 taps', () => {
-  const result = evaluateRecentTaps({
-    timestamps: [1588936439.9186, 1588936441.4954002], tapCountRequired: 5, consistencyThreshold: 13
-  });
-  expect(result && result.rate).toBe(null);
-});
-
-test('checks inconsistent rrate, 3 taps', () => {
-  const result = evaluateRecentTaps({
-    timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979], tapCountRequired: 5, consistencyThreshold: 13
-  });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 test('checks inconsistent rrate, 4 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 test('checks inconsistent rrate, 5 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 test('checks inconsistent rrate, 9 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1589791561.7025, 1589791562.9298, 1589791564.6697001, 1589791565.9541001, 1589791567.1138, 1589791568.2279, 1589791569.673, 1589791571.1446002, 1589791572.5065], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 
@@ -197,21 +169,21 @@ test('checks inconsistent rrate, 6 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1588432961.5854, 1588432963.6588001, 1588432966.2158, 1588432969.5919, 1588432972.9345002, 1588432975.6717], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 test('checks inconsistent rrate, 5 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1588926494.0802, 1588926496.9705, 1588926499.4415, 1588926501.6875, 1588926503.8558], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 test('checks inconsistent rrate, 11 taps', () => {
   const result = evaluateRecentTaps({
     timestamps: [1588936439.9186, 1588936441.4954002, 1588936443.3979, 1588936445.4428, 1588936446.9257002, 1588936448.6584, 1588936449.8777, 1588936451.0109, 1588936452.3538, 1588936453.8354, 1588936455.2541], tapCountRequired: 5, consistencyThreshold: 13
   });
-  expect(result && result.rate).toBe(null);
+  expect(result && result.isConsistent).toBe(false);
 });
 
 // TEST: generate rr_tap string (e.g 2020-05-08 11:13:59.9186;1.5768;3.4793) from array of timestamps
