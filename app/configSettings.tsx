@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
@@ -8,8 +8,8 @@ import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
 import Copyright from "../components/Copyright";
-import Slider from "../components/Slider";
 import RadioButtonGroup from "../components/RadioButtonGroup";
+import Slider from "@react-native-community/slider";
 
 // The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and 
 // the consistency threshold.
@@ -19,9 +19,6 @@ export default function ConfigSettings() {
 
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('tap') : React.useState('timer');
-
-  const numberOfTapsOptions = ["3", "4", "5", "6"];
-  const consistencyThresholdOptions = ["10%", "11%", "12%", "13%", "14%"];
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
@@ -57,9 +54,23 @@ export default function ConfigSettings() {
               <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <Slider values={numberOfTapsOptions} defaultValue={tapCountRequired.toString()} onSelect={(val) => {
-                setTapCountRequired(parseInt(val));
-              }} />
+              <Slider
+                style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
+                minimumValue={3}
+                maximumValue={6}
+                step={1}
+                value={tapCountRequired}
+                thumbTintColor={Theme.colors.primary}
+                minimumTrackTintColor="#000000"
+                maximumTrackTintColor="#000000"
+                tapToSeek={true}
+                StepMarker={({ stepMarked, index }) => (
+                  <View style={[Style.marker]}>
+                    <Text style={[stepMarked && Style.markerActive]}>{index}</Text>
+                  </View>
+                )}
+                onValueChange={(value) => setTapCountRequired(value)}
+              />
             </View>
           </View>
 
@@ -70,9 +81,23 @@ export default function ConfigSettings() {
               <Text>{t("CONSISTENCY_THRESH")}</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <Slider values={consistencyThresholdOptions} defaultValue={`${consistencyThreshold}%`} onSelect={(val) => {
-                setConsistencyThreshold(parseInt(val.replace('%', '')));
-              }} />
+              <Slider
+                style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
+                minimumValue={10}
+                maximumValue={14}
+                value={consistencyThreshold}
+                step={1}
+                thumbTintColor={Theme.colors.primary}
+                minimumTrackTintColor="#000000"
+                maximumTrackTintColor="#000000"
+                tapToSeek={true}
+                StepMarker={({ stepMarked, index }) => (
+                  <View style={[Style.marker]}>
+                    <Text style={[stepMarked && Style.markerActive]}>{index}%</Text>
+                  </View>
+                )}
+                onValueChange={(value) => setConsistencyThreshold(value)}
+              />
             </View>
           </View>
 

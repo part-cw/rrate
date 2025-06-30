@@ -110,53 +110,41 @@ export default function SettingsSlider({ values, defaultValue, onSelect }: Slide
 
   return (
     <View style={Style.container}>
-      <Slider
-        style={{ width: 200, height: 40 }}
-        minimumValue={0}
-        maximumValue={1}
-        minimumTrackTintColor="#FFFFFF"
-        maximumTrackTintColor="#000000"
+      <Animated.View
+        style={[
+          Style.triangle,
+          {
+            left: trianglePosition,
+            transform: [{ translateX: +3 }],
+          },
+        ]}
       />
+
+      <Pressable onPress={handleLinePress}>
+        <View style={[Style.sliderLine, { width: sliderWidth }]} />
+      </Pressable>
+
+      <View style={Style.numberRow}>
+        {values.map((val) => (
+          <TouchableOpacity
+            key={val}
+            onPress={() => {
+              setSelectedValue(val);
+              if (onSelect) onSelect(val);
+            }}
+            style={[Style.step, { width: stepWidth }]}
+          >
+            <Text
+              style={[
+                Style.label,
+                val === selectedValue && { fontWeight: 'bold' },
+              ]}
+            >
+              {val}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
-
-  // return (
-  //   <View style={Style.container}>
-  //     <Animated.View
-  //       style={[
-  //         Style.triangle,
-  //         {
-  //           left: trianglePosition,
-  //           transform: [{ translateX: +3 }],
-  //         },
-  //       ]}
-  //     />
-
-  //     <Pressable onPress={handleLinePress}>
-  //       <View style={[Style.sliderLine, { width: sliderWidth }]} />
-  //     </Pressable>
-
-  //     <View style={Style.numberRow}>
-  //       {values.map((val) => (
-  //         <TouchableOpacity
-  //           key={val}
-  //           onPress={() => {
-  //             setSelectedValue(val);
-  //             if (onSelect) onSelect(val);
-  //           }}
-  //           style={[Style.step, { width: stepWidth }]}
-  //         >
-  //           <Text
-  //             style={[
-  //               Style.label,
-  //               val === selectedValue && { fontWeight: 'bold' },
-  //             ]}
-  //           >
-  //             {val}
-  //           </Text>
-  //         </TouchableOpacity>
-  //       ))}
-  //     </View>
-  //   </View>
-  // );
 }

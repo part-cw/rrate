@@ -192,6 +192,15 @@ export const GlobalStyles = StyleSheet.create({
   label: {
     fontSize: 16
   },
+  marker: {
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  markerActive: {
+    color: '#000000',
+  },
 
   // Consistency Chart
   backgroundThresholdBand: {
