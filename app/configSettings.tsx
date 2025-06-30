@@ -56,7 +56,7 @@ export default function ConfigSettings() {
               selected={measurementMethodRadioButton}
               onSelect={(value) => {
                 setmeasurementMethodRadioButton(value);
-                setMeasurementMethod(value === 'tap' ? "tap" : "timer");
+                setMeasurementMethod(value);
                 console.log("Measurement Method set to: " + measurementMethod);
               }}
             />

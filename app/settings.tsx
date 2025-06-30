@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Platform, Pressable } from "react-native";
 import { Button, Switch, TextInput } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
@@ -76,15 +76,15 @@ export default function Settings() {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
               <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => {
                 // Reset all REDCap fields
-                if (!REDCap) {
-                  setREDCapHost("");
-                  setREDCapURL("");
-                  setREDCapAPI("");
-                  setLongitudinalStudy(false);
-                  setLongitudinalStudyEvent("");
-                  setUsingRepeatableInstruments(false);
-                  setRepeatableInstrument("");
-                }
+                // if (!REDCap) {
+                //   setREDCapHost("");
+                //   setREDCapURL("");
+                //   setREDCapAPI("");
+                //   setLongitudinalStudy(false);
+                //   setLongitudinalStudyEvent("");
+                //   setUsingRepeatableInstruments(false);
+                //   setRepeatableInstrument("");
+                // }
                 setREDCap(!REDCap)
               }
               } />
@@ -94,7 +94,16 @@ export default function Settings() {
               <View >
                 <TextInput label={t("HOST")} value={REDCapHost} style={Style.textField} onChangeText={text => setREDCapHost(text)} />
                 <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
-                <TextInput label={t("TOKEN")} value={REDCapAPI} style={Style.textField} onChangeText={text => setREDCapAPI(text)} />
+                <TextInput
+                  label={t("TOKEN")}
+                  value={REDCapAPI}
+                  style={Style.textField}
+                  onChangeText={text => {
+                    if (Platform.OS !== "web") {
+                      setREDCapAPI(text);
+                    }
+                  }}
+                />
 
                 <View style={{ flexDirection: 'column' }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>

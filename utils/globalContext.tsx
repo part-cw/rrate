@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
-type MeasurementMethod = 'tap' | 'timer';
 type BabyAnimationOption = 1 | 2 | 3 | 4 | 5 | 6;
 
+// Defines types and variables for global variables used across the app. 
 type globalContextType = {
   // GENERAL SETTINGS
   selectedLanguage: string;
@@ -50,8 +51,8 @@ type globalContextType = {
   // CONFIG SETTINGS
   password: string;
 
-  measurementMethod: MeasurementMethod;
-  setMeasurementMethod: (method: MeasurementMethod) => void;
+  measurementMethod: string;
+  setMeasurementMethod: (method: string) => void;
 
   consistencyThreshold: number; // e.g. 13 for 13%
   setConsistencyThreshold: (value: number) => void;
@@ -76,6 +77,9 @@ type globalContextType = {
   setTapTimestaps: (value: number[]) => void;
 };
 
+const GlobalContext = createContext<globalContextType | null>(null);
+
+// Keys for AsyncStorage
 const STORAGE_KEYS = {
   selectedLanguage: 'selectedLanguage',
   ageThresholdEnabled: 'ageThresholdEnabled',
@@ -93,15 +97,14 @@ const STORAGE_KEYS = {
   UploadSingleRecord: 'UploadSingleRecord',
 };
 
-const GlobalContext = createContext<globalContextType | null>(null);
-
+// Initialzies each variable to a default value and provides a setter for each variable state
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedLanguage, saveSelectedLanguage] = useState('English');
   const [ageThresholdEnabled, saveAgeThresholdEnabled] = useState(false);
   const [babyAnimation, saveBabyAnimation] = useState<BabyAnimationOption>(1);
   const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
   const password = "1234";
-  const [measurementMethod, saveMeasurementMethod] = useState<MeasurementMethod>('tap');
+  const [measurementMethod, saveMeasurementMethod] = useState<string>('tap');
   const [consistencyThreshold, saveConsistencyThreshold] = useState(13);
   const [tapCountRequired, saveTapCountRequired] = useState(5);
   const [rrate, setRRate] = useState('0');
@@ -140,24 +143,19 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
-
-  // Helper function that loads settings from AsyncStorage, and defaults to fallback value if not found
-  async function loadWithFallback<T>(
+  // Helper function that loads settings from AsyncStorage
+  async function loadFromStorage<T>(
     key: string,
     setState: React.Dispatch<React.SetStateAction<T>>,
-    fallback: T,
     parse: (value: string) => T = (v) => v as unknown as T
   ) {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
         setState(parse(value));
-      } else {
-        setState(fallback);
       }
     } catch (e) {
       console.error(`Failed to load ${key}:`, e);
-      setState(fallback);
     }
   }
 
@@ -165,25 +163,24 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   useEffect(() => {
     (async () => {
       await Promise.all([
-        loadWithFallback<string>(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage, 'English'),
-        loadWithFallback<boolean>(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, false, v => v === 'true'),
-        loadWithFallback<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, saveBabyAnimation, 1, v => Number(v) as BabyAnimationOption),
-        loadWithFallback<MeasurementMethod>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, 'tap', v => v as MeasurementMethod),
-        loadWithFallback<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, 13, v => Number(v)),
-        loadWithFallback<number>(STORAGE_KEYS.tapCountRequired, saveTapCountRequired, 5, v => Number(v)),
-        loadWithFallback<boolean>(STORAGE_KEYS.REDCap, saveREDCap, false, v => v === 'true'),
-        loadWithFallback<string>(STORAGE_KEYS.REDCapHost, saveREDCapHost, ''),
-        loadWithFallback<string>(STORAGE_KEYS.REDCapURL, saveREDCapURL, ''),
-        loadWithFallback<boolean>(STORAGE_KEYS.LongitudinalStudy, saveLongitudinalStudy, false, v => v === 'true'),
-        loadWithFallback<string>(STORAGE_KEYS.LongitudinalStudyEvent, saveLongitudinalStudyEvent, 'Event'),
-        loadWithFallback<boolean>(STORAGE_KEYS.UsingRepeatableInstruments, saveUsingRepeatableIntrument, false, v => v === 'true'),
-        loadWithFallback<string>(STORAGE_KEYS.RepeatableInstrument, saveRepeatableInstrument, 'Instrument'),
-        loadWithFallback<boolean>(STORAGE_KEYS.UploadSingleRecord, saveUploadSingleRecord, false, v => v === 'true'),
-        loadREDCapAPI()
+        loadFromStorage<string>(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage),
+        loadFromStorage<boolean>(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v === 'true'),
+        loadFromStorage<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => Number(v) as BabyAnimationOption),
+        loadFromStorage<string>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, v => v),
+        loadFromStorage<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, v => Number(v)),
+        loadFromStorage<number>(STORAGE_KEYS.tapCountRequired, saveTapCountRequired, v => Number(v)),
+        loadFromStorage<boolean>(STORAGE_KEYS.REDCap, saveREDCap, v => v === 'true'),
+        loadFromStorage<string>(STORAGE_KEYS.REDCapHost, saveREDCapHost),
+        loadFromStorage<string>(STORAGE_KEYS.REDCapURL, saveREDCapURL),
+        loadFromStorage<boolean>(STORAGE_KEYS.LongitudinalStudy, saveLongitudinalStudy),
+        loadFromStorage<string>(STORAGE_KEYS.LongitudinalStudyEvent, saveLongitudinalStudyEvent),
+        loadFromStorage<boolean>(STORAGE_KEYS.UsingRepeatableInstruments, saveUsingRepeatableIntrument, v => v === 'true'),
+        loadFromStorage<string>(STORAGE_KEYS.RepeatableInstrument, saveRepeatableInstrument),
+        loadFromStorage<boolean>(STORAGE_KEYS.UploadSingleRecord, saveUploadSingleRecord, v => v === 'true'),
+        (Platform.OS !== "web" ? [loadREDCapAPI()] : [])
       ]);
     })();
   }, []);
-
 
   // Helper function that tries to set a value in AsyncStorage
   function createPersistentSetter<T>(
