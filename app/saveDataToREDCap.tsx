@@ -1,11 +1,11 @@
 import { View, Text, Image, Alert } from 'react-native';
 import { useState } from 'react';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { useGlobalVariables } from '../utils/globalContext';
 import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
-import { uploadRecordToREDCap, getNextRecordID } from '../utils/redcap';
+import { uploadRecordToREDCap } from '../utils/redcap';
 import { GlobalStyles as Style } from '@/assets/styles';
 
 // Page for saving single measurement to REDCap
@@ -13,6 +13,7 @@ export default function SaveDataToREDCap() {
   const router = useRouter();
   const { t } = useTranslation();
   const [response, setResponse] = useState<string | null>(null);
+  const [recordID, setRecordID] = useState<string>("");
 
   const { REDCapAPI, REDCapURL, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
@@ -23,13 +24,10 @@ export default function SaveDataToREDCap() {
     }
 
     try {
-      // Fetch the most recent record id 
-      const nextRecordId = await getNextRecordID({ apiUrl: REDCapURL, apiToken: REDCapAPI });
-
       // The new record to upload
       const record = [
         {
-          record_id: nextRecordId,
+          record_id: recordID,
           rrate_rate: rrate,
           rrate_time: rrTime,
           rrate_taps: rrTaps
@@ -55,8 +53,14 @@ export default function SaveDataToREDCap() {
           style={{ width: 67, height: 70, marginBottom: 20 }}
         />
         <Text style={Style.pageTitle}>Save Data to REDCap</Text>
-        <Text style={{ paddingBottom: 10 }}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
-        <Text> <Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+        <Text style={{ paddingBottom: 10, fontSize: 16 }}><Text style={{ fontWeight: 'bold', fontSize: 16 }}>Rate:</Text> {rrate} breaths/min </Text>
+        <Text style={{ fontSize: 16 }}> <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+        <TextInput
+          label="Record ID"
+          value={recordID}
+          style={[Style.textField, { marginTop: 15, marginBottom: 0 }]}
+          onChangeText={text => setRecordID(text)}
+        />
         <View style={Style.lightButtonContainer}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
@@ -71,6 +75,6 @@ export default function SaveDataToREDCap() {
           </View>
         )}
       </View>
-    </View >
+    </View>
   )
 }
