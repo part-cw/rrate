@@ -16,6 +16,9 @@ type globalContextType = {
   babyAnimation: BabyAnimationOption;
   setBabyAnimation: (value: BabyAnimationOption) => void;
 
+  configSettingsUnlocked: boolean;
+  setConfigSettingsUnlocked: (unlocked: boolean) => void;
+
   // REDCap SETTINGS
   REDCap: boolean;
   setREDCap: (value: boolean) => void;
@@ -96,6 +99,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [selectedLanguage, saveSelectedLanguage] = useState('English');
   const [ageThresholdEnabled, saveAgeThresholdEnabled] = useState(false);
   const [babyAnimation, saveBabyAnimation] = useState<BabyAnimationOption>(1);
+  const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
   const password = "1234";
   const [measurementMethod, saveMeasurementMethod] = useState<MeasurementMethod>('tap');
   const [consistencyThreshold, saveConsistencyThreshold] = useState(13);
@@ -222,6 +226,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setAgeThresholdEnabled,
         babyAnimation,
         setBabyAnimation,
+        configSettingsUnlocked,
+        setConfigSettingsUnlocked,
         password,
         measurementMethod,
         setMeasurementMethod,

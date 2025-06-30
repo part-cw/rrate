@@ -1,5 +1,5 @@
-import * as React from "react";
-import { View, Text, ScrollView, Platform } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, ScrollView, Alert, Platform, InteractionManager } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
@@ -17,15 +17,30 @@ export default function ConfigSettings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold } = useGlobalVariables();
-  const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? React.useState('tap') : React.useState('timer');
+  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold, configSettingsUnlocked, setConfigSettingsUnlocked } = useGlobalVariables();
+  const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? useState('tap') : useState('timer');
+
+  // Only allow access if config settings are unlocked; prevents unauthorized access through URL manipulation.
+  useEffect(() => {
+    const task = InteractionManager.runAfterInteractions(() => {
+      if (!configSettingsUnlocked) {
+        router.replace('/passwordConfigSettings');
+        console.log("You must enter the password to access the configuration settings.")
+      }
+    });
+
+    return () => task.cancel();
+  }, [configSettingsUnlocked]);
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
       <ScrollView contentContainerStyle={Style.screenContainer}>
         <View style={Style.innerContainer}>
           <View style={{ alignItems: 'flex-start', width: 350 }}>
-            <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
+            <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => {
+              setConfigSettingsUnlocked(false);
+              router.back();
+            }}>
               {t("BACK")}
             </Button>
           </View>

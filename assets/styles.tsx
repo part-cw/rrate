@@ -27,6 +27,8 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor: "#f5f6f7",
     width: '100%',
     maxWidth: 500,
+    // Web 
+    boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
     // iOS 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -87,10 +89,14 @@ export const GlobalStyles = StyleSheet.create({
     padding: 14,
     backgroundColor: '#fafbfc',
     borderRadius: 8,
+    // Web 
+    boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
+    // iOS 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
-    shadowRadius: 3,
+    shadowRadius: 4,
+    // Android 
     elevation: 3,
   },
   dropdownList: {
@@ -103,7 +109,7 @@ export const GlobalStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     zIndex: 20,
-    elevation: 4, // Android shadow
+    elevation: 4,
   },
   dropdownItem: {
     paddingVertical: 12,
@@ -156,42 +162,6 @@ export const GlobalStyles = StyleSheet.create({
   },
 
   // Slider
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 250,
-
-  },
-  sliderLine: {
-    height: 2,
-    backgroundColor: 'black',
-    width: 250,
-    position: 'absolute',
-    top: 10,
-  },
-  triangle: {
-    position: 'absolute',
-    top: 7,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 6,
-    borderRightWidth: 6,
-    borderTopWidth: 10,
-    borderStyle: 'solid',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: 'black',
-  },
-  numberRow: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  step: {
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 16
-  },
   marker: {
     width: 16,
     height: 16,
@@ -298,9 +268,14 @@ export const GlobalStyles = StyleSheet.create({
 
   //SETTINGS
   textField: {
-    shadowColor: '#000000',
+    // Web 
+    boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
+    // iOS 
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.30, shadowRadius: 3,
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    // Android 
     elevation: 3,
     marginVertical: 10
   }

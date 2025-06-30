@@ -13,7 +13,7 @@ export default function PasswordPage() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { password } = useGlobalVariables();
+  const { password, setConfigSettingsUnlocked } = useGlobalVariables();
 
   const [passwordField, setPasswordField] = useState('');
   const [error, setError] = useState('');
@@ -22,6 +22,7 @@ export default function PasswordPage() {
   const handleSubmit = () => {
     if (passwordField === password) {
       setError('');
+      setConfigSettingsUnlocked(true);
       router.replace('/configSettings');
     } else {
       setError('Incorrect password');
