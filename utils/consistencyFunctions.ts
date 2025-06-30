@@ -34,12 +34,11 @@ export function generateRRTapString(timestamps: number[]): string {
 
   const start = timestamps[0];
 
-  const startDate = new Date(start * 1000); // convert seconds → milliseconds
+  const startDate = new Date(start * 1000); // Convert to milliseconds
+  const addPaddingZero = (num: number) => num.toString().padStart(2, '0');
 
-  const formattedStart = startDate.toISOString()
-    .replace('T', ' ')
-    .replace('Z', '')
-    .slice(0, 23);
+  const formattedStart = `${startDate.getFullYear()}-${addPaddingZero(startDate.getMonth() + 1)}-${addPaddingZero(startDate.getDate())}` +
+    ` ${addPaddingZero(startDate.getHours())}:${addPaddingZero(startDate.getMinutes())}:${addPaddingZero(startDate.getSeconds())}.${startDate.getMilliseconds()}`;
 
   const deltas = timestamps.slice(1).map(t => (t - start).toFixed(4));
 

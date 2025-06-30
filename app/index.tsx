@@ -159,7 +159,7 @@ export default function Index() {
 
   // calculates consistency of taps; proceeds to results page if rate is below 140 and consistent
   function consistencyCalculation() {
-    const now = Date.now() / 1000;
+    const now = Date.now() / 1000; // timestamp in seconds since epoch
     const updated = [...timestamps, now];
     setTimestamps(updated); // timestamps is an array of timestamps in seconds since start
     setRRTaps(generateRRTapString(updated)); // rr_taps is the string formatted for REDCap
@@ -175,6 +175,7 @@ export default function Index() {
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
+        console.log(updated);
         router.push("/results");
         return;
       } else {

@@ -192,10 +192,14 @@ test('checks if rrtaap string is generated correctly for empty string', () => {
   expect(result).toBe("");
 });
 
-test('checks if rrtaap string is generated correctly for non-empty string', () => {
+test('checks if rrtaap string is generated correctly for non-empty string in local timezone', () => {
   const result = generateRRTapString([1750181825.141, 1750181826.948, 1750181827.498, 1750181828.066, 1750181828.629, 1750181829.263, 1750181829.913]);
-  expect(result).toBe("2025-06-17 17:37:05.141;1.8070;2.3570;2.9250;3.4880;4.1220;4.7720");
+  expect(result).toBe("2025-06-17 10:37:05.141;1.8070;2.3570;2.9250;3.4880;4.1220;4.7720");
 });
 
+test('checks single millisecond timestamp in local timezone', () => {
+  const result = generateRRTapString([1751310781.943]);
+  expect(result).toBe("2025-06-30 12:13:01.943");
+});
 
 
