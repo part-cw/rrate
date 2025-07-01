@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from '../utils/redcap';
 import { GlobalStyles as Style } from '@/assets/styles';
+import { saveDatabase, saveSession } from '../utils/storeSessionData'
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
@@ -65,9 +66,14 @@ export default function SaveDataToREDCap() {
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
           </Button>
-          <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleUpload()}>
+          <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
+            saveSession(recordID, rrate, rrTime, rrTaps);
+          }}>
             {t("SAVE")}
           </Button>
+          {/* <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleUpload()}>
+            {t("UPLOAD")}
+          </Button> */}
         </View>
         {response && (
           <View style={{ marginTop: 20 }}>
