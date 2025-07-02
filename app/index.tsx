@@ -175,7 +175,6 @@ export default function Index() {
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
-        console.log(updated);
         router.push("/results");
         return;
       } else {

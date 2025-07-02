@@ -1,5 +1,5 @@
 import { View, Text, Image, Alert } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { useGlobalVariables } from '../utils/globalContext';
 import { Theme } from '../assets/theme';
@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from '../utils/redcap';
 import { GlobalStyles as Style } from '@/assets/styles';
-import { saveDatabase, saveSession } from '../utils/storeSessionData'
+import { saveSession, loadDatabase } from '../utils/storeSessionData';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
@@ -18,6 +18,16 @@ export default function SaveDataToREDCap() {
 
   const { REDCapAPI, REDCapURL, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
+  useEffect(() => {
+    async function debugDB() {
+      const db = await loadDatabase();
+      console.log('Current DB contents:', JSON.stringify(db, null, 2));
+    }
+
+    debugDB();
+  }, []);
+
+  // Handles upload of record ID, rate, time, and tap string to REDCap
   const handleUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
       Alert.alert('Missing Info', 'Please enter your REDCap URL and API token in Settings first.');
@@ -67,7 +77,12 @@ export default function SaveDataToREDCap() {
             {t("BACK")}
           </Button>
           <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
-            saveSession(recordID, rrate, rrTime, rrTaps);
+            try {
+              saveSession(recordID, rrate, rrTime, rrTaps);
+              setResponse("Session saved.");
+            } catch (error: any) {
+              setResponse("Error saving session: " + error.message);
+            }
           }}>
             {t("SAVE")}
           </Button>
@@ -76,7 +91,7 @@ export default function SaveDataToREDCap() {
           </Button> */}
         </View>
         {response && (
-          <View style={{ marginTop: 20 }}>
+          <View >
             <Text style={{ fontSize: 16 }}>{response}</Text>
           </View>
         )}

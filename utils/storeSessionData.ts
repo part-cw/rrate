@@ -1,6 +1,6 @@
-import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CDB_PATH = FileSystem.documentDirectory + 'data.cdb.json';
+const CDB_KEY = 'data.cdb.json';
 
 type Session = {
   rr_rate: string;
@@ -12,24 +12,29 @@ type RRateDatabase = {
   [recordNo: string]: Session[];
 };
 
-// Load from file or return empty object
+// Load from AsyncStorage or return an empty object
 export async function loadDatabase(): Promise<RRateDatabase> {
   try {
-    const data = await FileSystem.readAsStringAsync(CDB_PATH);
-    return JSON.parse(data);
+    const data = await AsyncStorage.getItem(CDB_KEY);
+    return data ? JSON.parse(data) : {};
   } catch (error) {
+    console.error('Failed to load database:', error);
     return {};
   }
 }
 
-// Save database object to file
+// Save entire database object to AsyncStorage
 export async function saveDatabase(db: RRateDatabase): Promise<void> {
-  const json = JSON.stringify(db, null, 2);
-  await FileSystem.writeAsStringAsync(CDB_PATH, json);
+  try {
+    const json = JSON.stringify(db, null, 2);
+    await AsyncStorage.setItem(CDB_KEY, json);
+  } catch (error) {
+    console.error('Failed to save database:', error);
+  }
 }
 
-// Save session data in the database
-export async function saveSession(recordNo: string, rate: string, time: string, taps: string) {
+// Save a new session to the database
+export async function saveSession(recordNo: string, rate: string, time: string, taps: string): Promise<void> {
   const db = await loadDatabase();
 
   const newSession: Session = {
@@ -41,16 +46,20 @@ export async function saveSession(recordNo: string, rate: string, time: string, 
   const existingSessions = db[recordNo] ?? [];
   db[recordNo] = [...existingSessions, newSession];
 
-  await saveDatabase(db);
+  const result = await saveDatabase(db);
 }
 
-// Delete temporary database file
+// Delete the entire database from AsyncStorage
 export async function deleteDatabase(): Promise<void> {
-  const fileInfo = await FileSystem.getInfoAsync(CDB_PATH);
-  if (fileInfo.exists) {
-    await FileSystem.deleteAsync(CDB_PATH);
-    console.log('Database file deleted.');
-  } else {
-    console.log('No database file found to delete.');
+  try {
+    const exists = await AsyncStorage.getItem(CDB_KEY);
+    if (exists !== null) {
+      await AsyncStorage.removeItem(CDB_KEY);
+      console.log('Database deleted.');
+    } else {
+      console.log('No database found to delete.');
+    }
+  } catch (error) {
+    console.error('Failed to delete database:', error);
   }
 }

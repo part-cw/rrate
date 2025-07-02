@@ -45,7 +45,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
   const grayHeight = grayBottom - grayTop;
 
   // DATA POINTS
-  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 5; // leaves padding on the right (arbitrarily set to 3px)
+  const pointSpacing = chartWidth / Math.max(1, tapTimestamps.length) - 7; // leaves padding on the right (arbitrarily set to 3px)
 
   const points = tapTimestamps.map((_, i) => {
     const x = i * pointSpacing + (i === 0 ? chartPadding : 0); // adds padding to the left of the first point

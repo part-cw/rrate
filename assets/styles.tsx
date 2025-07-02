@@ -58,7 +58,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   lightButtonContainer: {
     paddingVertical: 20,
-    margin: 20,
+    margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
