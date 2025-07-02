@@ -20,7 +20,7 @@ export default function Settings() {
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, UsingRepeatableInstruments, setUsingRepeatableInstruments,
-    UploadSingleRecord, setUploadSingleRecord, LongitudinalStudyEvent, setLongitudinalStudyEvent, RepeatableInstrument, setRepeatableInstrument
+    UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
   } = useGlobalVariables();
 
   const onToggleSwitch = () => {
