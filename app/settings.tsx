@@ -99,9 +99,7 @@ export default function Settings() {
                   value={REDCapAPI}
                   style={Style.textField}
                   onChangeText={text => {
-                    if (Platform.OS !== "web") {
-                      setREDCapAPI(text);
-                    }
+                    setREDCapAPI(text);
                   }}
                 />
 

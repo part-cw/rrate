@@ -15,6 +15,7 @@ export default function SaveDataToREDCap() {
   const { t } = useTranslation();
   const [response, setResponse] = useState<string | null>(null);
   const [recordID, setRecordID] = useState<string>("");
+  const [isRecordSaved, setIsRecordSaved] = useState<boolean>(false);
 
   const { REDCapAPI, REDCapURL, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
@@ -76,19 +77,22 @@ export default function SaveDataToREDCap() {
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
           </Button>
-          <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
-            try {
-              saveSession(recordID, rrate, rrTime, rrTaps);
-              setResponse("Session saved.");
-            } catch (error: any) {
-              setResponse("Error saving session: " + error.message);
-            }
-          }}>
-            {t("SAVE")}
-          </Button>
-          {/* <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleUpload()}>
-            {t("UPLOAD")}
-          </Button> */}
+          {isRecordSaved ?
+            <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleUpload()}>
+              {t("UPLOAD")}
+            </Button> :
+            <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
+              try {
+                saveSession(recordID, rrate, rrTime, rrTaps);
+                setResponse("Session saved.");
+                setIsRecordSaved(true);
+              } catch (error: any) {
+                setResponse("Error saving session: " + error.message);
+              }
+            }}>
+              {t("SAVE")}
+            </Button>
+          }
         </View>
         {response && (
           <View >

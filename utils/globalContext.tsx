@@ -124,22 +124,36 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   // Save and load to Expo SecureStore for REDCap API token
   const setREDCapAPI = async (token: string) => {
     saveREDCapAPI(token);
-    try {
-      await SecureStore.setItemAsync('apiToken', token);
-    } catch (e) {
-      console.error('Error saving API token:', e);
+    if (Platform.OS === "web") {
+      // Since Expo Secure Store is not available on web, use localStorage
+      localStorage.setItem('apiToken', token);
+      return;
+    } else {
+      try {
+        await SecureStore.setItemAsync('apiToken', token);
+      } catch (e) {
+        console.error('Error saving API token:', e);
+      }
     }
+
   };
 
   const loadREDCapAPI = async () => {
-    try {
-      const token = await SecureStore.getItemAsync('apiToken');
+    // Since Expo Secure Store is not available on web, use localStorage
+    if (Platform.OS === "web") {
+      const token = localStorage.getItem('apiToken');
       saveREDCapAPI(token || '');
       return token;
-    } catch (e) {
-      console.error('Error retrieving API token:', e);
-      saveREDCapAPI('');
-      return null;
+    } else {
+      try {
+        const token = await SecureStore.getItemAsync('apiToken');
+        saveREDCapAPI(token || '');
+        return token;
+      } catch (e) {
+        console.error('Error retrieving API token:', e);
+        saveREDCapAPI('');
+        return null;
+      }
     }
   };
 
@@ -177,7 +191,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<boolean>(STORAGE_KEYS.UsingRepeatableInstruments, saveUsingRepeatableIntrument, v => v === 'true'),
         loadFromStorage<string>(STORAGE_KEYS.RepeatableInstrument, saveRepeatableInstrument),
         loadFromStorage<boolean>(STORAGE_KEYS.UploadSingleRecord, saveUploadSingleRecord, v => v === 'true'),
-        (Platform.OS !== "web" ? [loadREDCapAPI()] : [])
+        loadREDCapAPI()
       ]);
     })();
   }, []);
