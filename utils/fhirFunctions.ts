@@ -1,28 +1,28 @@
 import { getFHIRObservation } from "./fhirObservation";
-import { useGlobalVariables } from "./globalContext";
 import * as Linking from 'expo-linking';
 
-export async function sendFHIRObservation(fhirBaseUrl: string, accessToken: string, patientId: string) {
-  const { rrate, rrTime } = useGlobalVariables();
+// Send the FHIR observation to the FHIR sever and redirect back to PARA if successful
+export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string) {
+  const timestamp = new Date().toISOString();
 
-  const result = await fetch(`${fhirBaseUrl}/Observation`, {
+  // const result = await fetch(`${fhirBaseUrl}/Observation`, {
+
+  const result = await fetch(`${fhirBaseUrl}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/fhir+json',
-      ...(accessToken && {
-        Authorization: `Bearer ${accessToken}`,
-      }),
+      'Content-Type': 'application/fhir+json'
     },
     body: JSON.stringify(getFHIRObservation({
       patientId,
       rrate,
-      timestamp: rrTime,
+      timestamp
     })),
   });
 
   if (result.ok) {
     // go back to Para
     // Linking.openURL({PARA_CUSTOM_URL});
+    console.log('FHIR Observation uploaded successfully');
   } else {
     const errorText = await result.text();
     console.error('FHIR Observation upload failed:', errorText);

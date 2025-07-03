@@ -31,7 +31,7 @@ export function getFHIRObservation({
     },
     effectiveDateTime: timestamp,
     valueQuantity: {
-      value: rrate.toString(),
+      value: parseFloat(rrate),
       unit: "breaths/minute",
       system: "http://unitsofmeasure.org",
       code: "/min",

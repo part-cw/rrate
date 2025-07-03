@@ -91,12 +91,12 @@ export default function Results() {
     startBreathing();
   };
 
+  // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
   const handleCorrectMeasurement = () => {
     setRRateConfirmed(true);
     if (launchType == 'para') {
-      sendFHIRObservation(fhirBaseURL, patientId, accessToken);
+      sendFHIRObservation('https://hapi.fhir.org/baseR4/Observation', patientId, rrate);
     }
-
   }
 
   // Determine the colour of the respiratory rate value based on age and rate
@@ -143,7 +143,6 @@ export default function Results() {
 
               {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={Style.divider} />
-
                 <View style={Style.dropdownContainer}>
                   <View style={{ width: 150 }}>
                     <DropdownList label={age} data={ages} onSelect={setAge} />

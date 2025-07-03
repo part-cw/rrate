@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Types used for FHIR context and authentication
 type fhirContextType = {
@@ -35,10 +36,10 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
   // Load initial values from storage
   useEffect(() => {
     const loadInitialValues = async () => {
-      const storedLaunchType = await SecureStore.getItem(STORAGE_KEYS.FHIR_LAUNCH_TYPE);
-      const storedBaseURL = await SecureStore.getItem(STORAGE_KEYS.FHIR_BASE_URL);
-      const storedAccessToken = await SecureStore.getItem(STORAGE_KEYS.FHIR_ACCESS_TOKEN);
-      const storedPatientId = await SecureStore.getItem(STORAGE_KEYS.FHIR_PATIENT_ID);
+      const storedLaunchType = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_LAUNCH_TYPE);
+      const storedBaseURL = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_BASE_URL);
+      const storedAccessToken = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_ACCESS_TOKEN);
+      const storedPatientId = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_PATIENT_ID);
 
       if (storedLaunchType) setLaunchType(storedLaunchType as 'standalone' | 'para' | 'emr');
       if (storedBaseURL) setFHIRBaseURL(storedBaseURL);
