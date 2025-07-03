@@ -1,13 +1,11 @@
 // Formats the respiratory rate as a Vital Signs Observation, compatible with FHIR standards. 
-export function buildRespiratoryRateObservation({
+export function getFHIRObservation({
   patientId,
-  performerId,
-  respiratoryRate,
+  rrate,
   timestamp,
 }: {
   patientId: string;
-  performerId?: string;
-  respiratoryRate: number;
+  rrate: string;
   timestamp: string;
 }) {
   return {
@@ -33,13 +31,10 @@ export function buildRespiratoryRateObservation({
     },
     effectiveDateTime: timestamp,
     valueQuantity: {
-      value: respiratoryRate,
+      value: rrate.toString(),
       unit: "breaths/minute",
       system: "http://unitsofmeasure.org",
       code: "/min",
     },
-    ...(performerId && {
-      performer: [{ reference: `Practitioner/${performerId}` }],
-    }),
   };
 }

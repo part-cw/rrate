@@ -6,6 +6,8 @@ import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
+import { useFHIRContext } from '../utils/fhirContext';
+import { sendFHIRObservation } from '../utils/fhirFunctions';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
@@ -48,6 +50,7 @@ export default function Results() {
   const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, UploadSingleRecord } = useGlobalVariables();
+  const { launchType, patientId, fhirBaseURL, accessToken } = useFHIRContext();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   // Variables for the baby animation
@@ -87,6 +90,14 @@ export default function Results() {
     setIsInhaling(true);
     startBreathing();
   };
+
+  const handleCorrectMeasurement = () => {
+    setRRateConfirmed(true);
+    if (launchType == 'para') {
+      sendFHIRObservation(fhirBaseURL, patientId, accessToken);
+    }
+
+  }
 
   // Determine the colour of the respiratory rate value based on age and rate
   let rrateColour;
@@ -194,7 +205,9 @@ export default function Results() {
                     icon="check"
                     mode="contained"
                     buttonColor={Theme.colors.secondary}
-                    onPress={() => setRRateConfirmed(true)}
+                    onPress={() => {
+                      handleCorrectMeasurement();
+                    }}
                     style={{ paddingHorizontal: 30, marginRight: 10 }}>
                     {t("YES")}
                   </Button>
