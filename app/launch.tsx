@@ -10,8 +10,6 @@ export default function Launch() {
 
   useEffect(() => {
     const task = InteractionManager.runAfterInteractions(() => {
-      console.log("Step 1");
-
       // Launched from EMR
       if (iss && launch) {
         setLaunchType('emr');
@@ -46,11 +44,8 @@ export default function Launch() {
         }
       }
 
-      console.log("Step 2");
-
       // Launched from PARA 
       if (launchType === 'para' && fhirBase && patient) {
-        console.log("Step 3");
         setLaunchType('para');
         setPatientId(patient ? patient.toString() : '');
         setFHIRBaseURL(fhirBase[0]);

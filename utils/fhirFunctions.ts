@@ -5,8 +5,6 @@ import * as Linking from 'expo-linking';
 export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string) {
   const timestamp = new Date().toISOString();
 
-  // const result = await fetch(`${fhirBaseUrl}/Observation`, {
-
   const result = await fetch(`${fhirBaseUrl}`, {
     method: 'POST',
     headers: {

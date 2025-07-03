@@ -95,7 +95,7 @@ export default function Results() {
   const handleCorrectMeasurement = () => {
     setRRateConfirmed(true);
     if (launchType == 'para') {
-      sendFHIRObservation('https://hapi.fhir.org/baseR4/Observation', patientId, rrate);
+      sendFHIRObservation(fhirBaseURL, patientId, rrate);
     }
   }
 
