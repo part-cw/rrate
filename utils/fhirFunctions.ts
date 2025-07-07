@@ -20,8 +20,6 @@ export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string
   });
 
   if (result.ok) {
-    // go back to Para
-    // Linking.openURL({PARA_CUSTOM_URL});
     console.log('FHIR Observation uploaded successfully');
   } else {
     const errorText = await result.text();

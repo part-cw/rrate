@@ -3,7 +3,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '@/utils/fhirContext';
 
-const TOKEN_ENDPOINT = 'https://r4.smarthealthit.org/token';
+const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r4/token';
 const CLIENT_ID = 'my-smart-app'; // match your registered client_id
 
 // This screen handles the OAuth callback after the user has authenticated
