@@ -9,7 +9,7 @@ const CLIENT_ID = 'my-smart-app'; // match your registered client_id
 // This screen handles the OAuth callback after the user has authenticated
 export default function CallbackScreen() {
   const router = useRouter();
-  const { code } = useLocalSearchParams();
+  const { code, iss } = useLocalSearchParams();
   const { setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
@@ -22,9 +22,15 @@ export default function CallbackScreen() {
 
     // const tokenUrl = `${iss}/token`;
 
+
     async function exchangeCodeForToken() {
       try {
-        const response = await fetch(TOKEN_ENDPOINT, {
+
+        const smartConfigRes = await fetch(`${iss}/.well-known/smart-configuration`);
+        const smartConfig = await smartConfigRes.json();
+        const tokenEndpoint = smartConfig.token_endpoint;
+
+        const response = await fetch(tokenEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
