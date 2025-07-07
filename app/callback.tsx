@@ -1,19 +1,26 @@
 import { useEffect } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { Text, View, ActivityIndicator, Platform } from 'react-native';
+import { useFHIRContext } from '@/utils/fhirContext';
 
 const TOKEN_ENDPOINT = 'https://r4.smarthealthit.org/token';
-const REDIRECT_URI = 'http://localhost:19006/callback'; // or yourapp://callback
 const CLIENT_ID = 'my-smart-app'; // match your registered client_id
 
 // This screen handles the OAuth callback after the user has authenticated
 export default function CallbackScreen() {
   const router = useRouter();
-  const { code, state } = useLocalSearchParams();
+  const { code } = useLocalSearchParams();
+  const { setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
     if (!code) return;
+
+    const redirectUri =
+      Platform.OS === 'web'
+        ? "http://localhost:8081/callback"
+        : "rrate://callback";
+
+    // const tokenUrl = `${iss}/token`;
 
     async function exchangeCodeForToken() {
       try {
@@ -25,7 +32,7 @@ export default function CallbackScreen() {
           body: new URLSearchParams({
             grant_type: 'authorization_code',
             code: code.toString(),
-            redirect_uri: REDIRECT_URI,
+            redirect_uri: redirectUri,
             client_id: CLIENT_ID,
           }).toString(),
         });
@@ -37,20 +44,18 @@ export default function CallbackScreen() {
           throw new Error(tokenJson.error_description || 'Token exchange failed');
         }
 
-        const { access_token, patient, id_token, scope } = tokenJson;
+        const { access_token, patient } = tokenJson;
 
-        // Store what you need
-        await SecureStore.setItemAsync('accessToken', access_token);
-        if (patient) {
-          await SecureStore.setItemAsync('patientId', patient);
-        }
+        // Store relevant FHIR variables
+        setAccessToken(access_token);
+        setPatientId(patient);
 
         // Navigate to main app screen
         router.replace('/');
 
       } catch (err) {
         console.error('OAuth error:', err);
-        // Handle gracefully or show an error message
+        // Pop-up here?
       }
     }
 

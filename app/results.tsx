@@ -96,6 +96,8 @@ export default function Results() {
     setRRateConfirmed(true);
     if (launchType == 'para') {
       saveFHIRObservationToFile(patientId, rrate);
+    } else if (launchType === 'emr') {
+      sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
     }
   }
 

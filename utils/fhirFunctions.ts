@@ -3,12 +3,13 @@ import * as Linking from 'expo-linking';
 import * as FileSystem from 'expo-file-system';
 
 // Send the FHIR observation to the FHIR sever and redirect back to PARA if successful
-export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string) {
+export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string, authToken?: string) {
   const timestamp = new Date().toISOString();
 
   const result = await fetch(`${fhirBaseUrl}`, {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${authToken}`,
       'Content-Type': 'application/fhir+json'
     },
     body: JSON.stringify(getFHIRObservation({

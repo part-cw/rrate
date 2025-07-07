@@ -5,8 +5,8 @@ import { useFHIRContext } from '../utils/fhirContext';
 
 export default function Launch() {
   const { iss, launch, launchType, fhirBase, patient, accessToken } = useLocalSearchParams(); // e.g., from EMR or PARA
-  const router = useRouter();
   const { setFHIRBaseURL, setLaunchType, setPatientId, setAccessToken } = useFHIRContext();
+  const router = useRouter();
 
   useEffect(() => {
     const task = InteractionManager.runAfterInteractions(() => {
@@ -14,28 +14,22 @@ export default function Launch() {
       if (iss && launch) {
         setLaunchType('emr');
 
-        // authentication 
+        // authentication variables
         const clientId = "my-smart-app";
         const redirectUri =
           Platform.OS === 'web'
-            ? "http://localhost:19006/callback"
-            : "myapp://callback";
+            ? "http://localhost:8081/callback"
+            : "rrate://callback";
 
-        const scope = "launch openid fhirUser patient/*.read patient/Observation.write";
+        const scope = "launch patient/Observation.write openid fhirUser";
 
-        const params = new URLSearchParams({
-          response_type: "code",
-          client_id: clientId,
-          redirect_uri: redirectUri,
-          scope,
-          aud: Array.isArray(iss) ? iss[0] : iss,
-        });
-
-        if (launch) {
-          params.set("launch", launch.toString());
-        }
-
-        const authorizeUrl = `${iss}/auth/authorize?${params.toString()}`;
+        const authorizeUrl = `${iss}/auth/authorize?` +
+          `response_type=code&` +
+          `client_id=${encodeURIComponent(clientId)}&` +
+          `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+          `scope=${encodeURIComponent(scope)}&` +
+          `aud=${encodeURIComponent(iss[0])}&` +
+          `launch=${launch}`;
 
         if (Platform.OS === 'web') {
           window.location.href = authorizeUrl;
