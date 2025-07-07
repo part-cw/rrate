@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
 import { useFHIRContext } from '../utils/fhirContext';
-import { sendFHIRObservation } from '../utils/fhirFunctions';
+import { sendFHIRObservation, saveFHIRObservationToFile } from '../utils/fhirFunctions';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
@@ -95,7 +95,7 @@ export default function Results() {
   const handleCorrectMeasurement = () => {
     setRRateConfirmed(true);
     if (launchType == 'para') {
-      sendFHIRObservation(fhirBaseURL, patientId, rrate);
+      saveFHIRObservationToFile(patientId, rrate);
     }
   }
 
