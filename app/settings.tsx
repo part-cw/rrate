@@ -74,20 +74,7 @@ export default function Settings() {
           <View style={Style.floatingContainer}>
             <Text style={Style.heading}> REDCap</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-              <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => {
-                // Reset all REDCap fields
-                // if (!REDCap) {
-                //   setREDCapHost("");
-                //   setREDCapURL("");
-                //   setREDCapAPI("");
-                //   setLongitudinalStudy(false);
-                //   setLongitudinalStudyEvent("");
-                //   setUsingRepeatableInstruments(false);
-                //   setRepeatableInstrument("");
-                // }
-                setREDCap(!REDCap)
-              }
-              } />
+              <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
             </View>
 
             {REDCap && (

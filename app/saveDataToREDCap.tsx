@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from '../utils/redcap';
 import { GlobalStyles as Style } from '@/assets/styles';
-import { saveSession, loadDatabase } from '../utils/storeSessionData';
+import { saveSession, loadDatabase, deleteDatabase } from '../utils/storeSessionData';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
@@ -19,6 +19,7 @@ export default function SaveDataToREDCap() {
 
   const { REDCapAPI, REDCapURL, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
+  // Load the database of saved sessions when the page loads
   useEffect(() => {
     async function debugDB() {
       const db = await loadDatabase();
@@ -36,22 +37,43 @@ export default function SaveDataToREDCap() {
     }
 
     try {
-      // The new record to upload
-      const record = [
-        {
-          record_id: recordID,
-          rrate_rate: rrate,
-          rrate_time: rrTime,
-          rrate_taps: rrTaps
-        },
-      ];
+      // Access saved measurements that need to be uploaded to REDCap
+      const db = await loadDatabase();
+      const recordNums = Object.keys(db);
 
-      const result = await uploadRecordToREDCap({
-        apiUrl: REDCapURL,
-        apiToken: REDCapAPI,
-        recordData: record,
-      });
-      setResponse('Upload successful!');
+      if (recordNums.length === 0) {
+        setResponse('No saved sessions requiring upload.');
+      }
+
+      for (const recordNum of recordNums) {
+        const sessions = db[recordNum];
+        const session = sessions[0];
+
+        if (!session) {
+          continue; // Skip if no session data
+        }
+
+        // The new record to upload
+        const record = [
+          {
+            record_id: recordID,
+            rrate_rate: session.rr_rate,
+            rrate_time: session.rr_time,
+            rrate_taps: session.rr_taps
+          },
+        ];
+
+        const result = await uploadRecordToREDCap({
+          apiUrl: REDCapURL,
+          apiToken: REDCapAPI,
+          recordData: record,
+        });
+
+        console.log('Upload result for Record ID ' + recordID + ':' + result);
+      }
+
+      await deleteDatabase();
+      setResponse('All sessions uploaded successfully and local database cleared.');
     } catch (error: any) {
       setResponse('Upload failed:\n' + error.message);
     }
