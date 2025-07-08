@@ -19,6 +19,7 @@ export default function Launch() {
           Platform.OS === 'web'
             ? "http://localhost:8081/callback"
             : "rrate://callback";
+
         const scope = "launch patient/Observation.write openid fhirUser";
         const simpleIss = Array.isArray(iss) ? iss[0] : iss; // sometimes iss is an array, handle that case
 

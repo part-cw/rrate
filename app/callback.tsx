@@ -9,7 +9,7 @@ const CLIENT_ID = 'my-smart-app'; // match your registered client_id
 // This screen handles the OAuth callback after the user has authenticated
 export default function CallbackScreen() {
   const router = useRouter();
-  const { code, iss } = useLocalSearchParams();
+  const { code } = useLocalSearchParams();
   const { setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
@@ -20,34 +20,45 @@ export default function CallbackScreen() {
         ? "http://localhost:8081/callback"
         : "rrate://callback";
 
-    // const tokenUrl = `${iss}/token`;
-
-
     async function exchangeCodeForToken() {
       try {
 
-        const smartConfigRes = await fetch(`${iss}/.well-known/smart-configuration`);
-        const smartConfig = await smartConfigRes.json();
-        const tokenEndpoint = smartConfig.token_endpoint;
+        const isWeb = Platform.OS === 'web';
+        const tokenUrl = isWeb
+          ? '/.netlify/functions/exchange-token'
+          : 'https://auth.smarthealthit.org/token';
 
-        const response = await fetch(tokenEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            grant_type: 'authorization_code',
-            code: code.toString(),
-            redirect_uri: redirectUri,
-            client_id: CLIENT_ID,
-          }).toString(),
-        });
+        const requestOptions = isWeb
+          ? {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              code: code.toString(),
+              redirect_uri: redirectUri,
+              client_id: CLIENT_ID,
+            }),
+          }
+          : {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              grant_type: 'authorization_code',
+              code: code.toString(),
+              redirect_uri: redirectUri,
+              client_id: CLIENT_ID,
+            }).toString(),
+          };
 
+        const response = await fetch(tokenUrl, requestOptions);
         const tokenJson = await response.json();
 
         if (!response.ok) {
           console.error('Token error:', tokenJson);
-          throw new Error(tokenJson.error_description || 'Token exchange failed');
+          throw new Error(tokenJson.error_description || tokenJson.error || 'Token exchange failed');
         }
 
         const { access_token, patient } = tokenJson;
