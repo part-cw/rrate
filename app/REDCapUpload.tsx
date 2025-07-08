@@ -25,12 +25,12 @@ export default function REDCapUpload() {
       setIsLoading(true);
 
       // Fetch the most recent record id 
-      const nextRecordId = await getNextRecordID({ apiUrl: REDCapURL, apiToken: REDCapAPI });
+      // const nextRecordId = await getNextRecordID({ apiUrl: REDCapURL, apiToken: REDCapAPI });
 
       // The new record to upload
       const record = [
         {
-          record_id: nextRecordId,
+          record_id: '2',
           rrate_rate: rrate,
           rrate_time: rrTime,
           rrate_taps: rrTaps
@@ -38,12 +38,13 @@ export default function REDCapUpload() {
       ];
 
       const result = await uploadRecordToREDCap({
-        apiUrl: REDCapURL,
-        apiToken: REDCapAPI,
+        apiUrl: 'https://rc-demo.bcchr.ca/redcap_demo/api/', // HARDCODED
+        apiToken: '64E3843F0A1B388A4FEFEF29CE3F206E',
         recordData: record,
-        recordID: nextRecordId,
-        event: 'Event 1',
-        repeatInstrument: 'Instrument 1',
+        event: 'testevent_arm_1',
+        recordID: '19',
+        repeatableEvent: true,
+        repeatInstrument: 'form_1',
       });
       setResponse('Upload successful!');
     } catch (error: any) {

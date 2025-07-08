@@ -5,6 +5,7 @@ export async function uploadRecordToREDCap({
   recordData,
   recordID,
   event = '',
+  repeatableEvent,
   repeatInstrument = '',
 }: {
   apiUrl: string;
@@ -12,29 +13,60 @@ export async function uploadRecordToREDCap({
   recordData: any[];
   recordID: string;
   event?: string;
+  repeatableEvent?: boolean;
   repeatInstrument?: string;
 }): Promise<string> {
   const formData = new FormData();
 
-  // Modify record data if a repeat instrument is specified
-  const finalData = recordData.map(record => {
-    if (repeatInstrument) {
-      const repeatInstance = getNextRepeatInstance({ apiUrl, apiToken, recordID, event, repeatInstrument });
-      return {
-        ...record,
-        redcap_repeat_instrument: repeatInstrument,
-        redcap_repeat_instance: repeatInstance,
-        ...(event && { redcap_event_name: event }),
-      };
-    } else if (event) {
-      return {
-        ...record,
-        redcap_event_name: event,
-      };
-    }
-    return record;
-  });
+  // Modify record data if a repeat instrument is specified or project is a longitudinal study
+  const finalData = await Promise.all(
+    recordData.map(async (record) => {
+      // CASE 1: Repeating Instrument (possibly longitudinal)
+      if (repeatInstrument) {
+        const repeatInstance = await getNextRepeatInstance({
+          apiUrl,
+          apiToken,
+          recordID,
+          event,
+          repeatInstrument,
+        });
 
+        return {
+          ...record,
+          redcap_repeat_instrument: repeatInstrument,
+          redcap_repeat_instance: repeatInstance,
+          ...(event && { redcap_event_name: event }),
+        };
+      }
+
+      // CASE 2: Repeating Event (no repeatable instrument)
+      if (repeatableEvent && event) {
+        const repeatInstance = await getNextRepeatInstance({
+          apiUrl,
+          apiToken,
+          recordID,
+          event,
+        });
+
+        return {
+          ...record,
+          redcap_event_name: event,
+          redcap_repeat_instance: repeatInstance,
+        };
+      }
+
+      // CASE 3: Longitudinal only (no repetition)
+      if (event) {
+        return {
+          ...record,
+          redcap_event_name: event,
+        };
+      }
+
+      // CASE 4: Classic, no longitudinal or repetition
+      return record;
+    })
+  );
 
   // Fields taken from BCCHR REDCap API documentation for "Import Records" endpoint
   formData.append('token', apiToken);
