@@ -25,7 +25,7 @@ export default function CallbackScreen() {
 
         const isWeb = Platform.OS === 'web';
         const tokenUrl = isWeb
-          ? '/netlify/functions/exchange-token'
+          ? '/.netlify/functions/exchange-token'
           : 'https://auth.smarthealthit.org/token';
 
         const requestOptions = isWeb
