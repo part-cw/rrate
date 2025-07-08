@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator, Platform } from 'react-native';
-import { useFHIRContext } from '@/utils/fhirContext';
+import { useFHIRContext } from '../utils/fhirContext';
 
 const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r4/token';
 const CLIENT_ID = 'my-smart-app'; // match your registered client_id
@@ -25,7 +25,7 @@ export default function CallbackScreen() {
 
         const isWeb = Platform.OS === 'web';
         const tokenUrl = isWeb
-          ? '/.netlify/functions/exchange-token'
+          ? '/netlify/functions/exchange-token'
           : 'https://auth.smarthealthit.org/token';
 
         const requestOptions = isWeb

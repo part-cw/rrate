@@ -36,7 +36,7 @@ yarn-error.*
 *.tsbuildinfo
 
 # Local Netlify folder
-# .netlify
+.netlify
 
 # JSON key for Google Services
 phoenix-sepsis-b0e19149d16d.json
