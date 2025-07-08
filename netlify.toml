@@ -3,8 +3,8 @@
   node_bundler = "esbuild"
 
 [build]
-  command = "expo export:web"
-  publish = "dist"
+  command = "expo export"
+  publish = "dist/web"
 
 [[redirects]]
   from = "/*"

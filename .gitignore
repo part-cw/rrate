@@ -46,3 +46,4 @@ phoenix-sepsis-b0e19149d16d.json
 
 expo-env.d.ts
 # @end expo-cli
+.netlify/netlify.toml
