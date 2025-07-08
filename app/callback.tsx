@@ -17,7 +17,7 @@ export default function CallbackScreen() {
 
     const redirectUri =
       Platform.OS === 'web'
-        ? "http://localhost:8081/callback"
+        ? "https://rrate.netlify.app/callback"
         : "rrate://callback";
 
     async function exchangeCodeForToken() {

@@ -1,0 +1,32 @@
+headersOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "/Users/annafriesen/RRate/rrate/netlify/functions"
+functionsDirectoryOrigin = "config"
+headers = []
+redirects = []
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[build]
+publish = "/Users/annafriesen/RRate/rrate/Users/annafriesen/RRate/rrate/dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "expo export -p web"
+functions = "/Users/annafriesen/RRate/rrate/netlify/functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

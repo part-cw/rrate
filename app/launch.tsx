@@ -17,7 +17,7 @@ export default function Launch() {
         const clientId = "my-smart-app";
         const redirectUri =
           Platform.OS === 'web'
-            ? "http://localhost:8081/callback"
+            ? "https://rrate.netlify.app/callback"
             : "rrate://callback";
 
         const scope = "launch patient/Observation.write openid fhirUser";
