@@ -39,6 +39,9 @@ type globalContextType = {
   LongitudinalStudyEvent: string;
   setLongitudinalStudyEvent: (value: string) => void;
 
+  RepeatableEvent: boolean;
+  setRepeatableEvent: (value: boolean) => void;
+
   UsingRepeatableInstruments: boolean;
   setUsingRepeatableInstruments: (value: boolean) => void;
 
@@ -92,6 +95,7 @@ const STORAGE_KEYS = {
   REDCapURL: 'REDCapURL',
   LongitudinalStudy: 'LongitudinalStudy',
   LongitudinalStudyEvent: 'LongitudinalStudyEvent',
+  RepeatableEvent: 'RepeatableEvent',
   UsingRepeatableInstruments: 'UsingRepeatableInstruments',
   RepeatableInstrument: 'RepeatableInstrument',
   UploadSingleRecord: 'UploadSingleRecord',
@@ -117,6 +121,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [REDCapAPI, saveREDCapAPI] = useState('');
   const [LongitudinalStudy, saveLongitudinalStudy] = useState(false);
   const [LongitudinalStudyEvent, saveLongitudinalStudyEvent] = useState('Event');
+  const [RepeatableEvent, saveRepeatableEvent] = useState(false);
   const [UsingRepeatableInstruments, saveUsingRepeatableIntrument] = useState(false);
   const [RepeatableInstrument, saveRepeatableInstrument] = useState('Instrument');
   const [UploadSingleRecord, saveUploadSingleRecord] = useState(false);
@@ -188,6 +193,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<string>(STORAGE_KEYS.REDCapURL, saveREDCapURL),
         loadFromStorage<boolean>(STORAGE_KEYS.LongitudinalStudy, saveLongitudinalStudy),
         loadFromStorage<string>(STORAGE_KEYS.LongitudinalStudyEvent, saveLongitudinalStudyEvent),
+        loadFromStorage<boolean>(STORAGE_KEYS.RepeatableEvent, saveRepeatableEvent, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.UsingRepeatableInstruments, saveUsingRepeatableIntrument, v => v === 'true'),
         loadFromStorage<string>(STORAGE_KEYS.RepeatableInstrument, saveRepeatableInstrument),
         loadFromStorage<boolean>(STORAGE_KEYS.UploadSingleRecord, saveUploadSingleRecord, v => v === 'true'),
@@ -224,6 +230,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setREDCapURL = createPersistentSetter(STORAGE_KEYS.REDCapURL, saveREDCapURL);
   const setLongitudinalStudy = createPersistentSetter(STORAGE_KEYS.LongitudinalStudy, saveLongitudinalStudy);
   const setLongitudinalStudyEvent = createPersistentSetter(STORAGE_KEYS.LongitudinalStudyEvent, saveLongitudinalStudyEvent);
+  const setRepeatableEvent = createPersistentSetter(STORAGE_KEYS.RepeatableEvent, saveRepeatableEvent, v => v.toString());
   const setUsingRepeatableInstruments = createPersistentSetter(STORAGE_KEYS.UsingRepeatableInstruments, saveUsingRepeatableIntrument);
   const setRepeatableInstrument = createPersistentSetter(STORAGE_KEYS.RepeatableInstrument, saveRepeatableInstrument);
   const setUploadSingleRecord = createPersistentSetter(STORAGE_KEYS.UploadSingleRecord, saveUploadSingleRecord)
@@ -266,6 +273,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setLongitudinalStudy,
         LongitudinalStudyEvent,
         setLongitudinalStudyEvent,
+        RepeatableEvent,
+        setRepeatableEvent,
         UsingRepeatableInstruments,
         setUsingRepeatableInstruments,
         RepeatableInstrument,

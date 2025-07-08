@@ -3,14 +3,38 @@ export async function uploadRecordToREDCap({
   apiUrl,
   apiToken,
   recordData,
+  recordID,
   event = '',
+  repeatInstrument = '',
 }: {
   apiUrl: string;
   apiToken: string;
   recordData: any[];
+  recordID: string;
   event?: string;
+  repeatInstrument?: string;
 }): Promise<string> {
   const formData = new FormData();
+
+  // Modify record data if a repeat instrument is specified
+  const finalData = recordData.map(record => {
+    if (repeatInstrument) {
+      const repeatInstance = getNextRepeatInstance({ apiUrl, apiToken, recordID, event, repeatInstrument });
+      return {
+        ...record,
+        redcap_repeat_instrument: repeatInstrument,
+        redcap_repeat_instance: repeatInstance,
+        ...(event && { redcap_event_name: event }),
+      };
+    } else if (event) {
+      return {
+        ...record,
+        redcap_event_name: event,
+      };
+    }
+    return record;
+  });
+
 
   // Fields taken from BCCHR REDCap API documentation for "Import Records" endpoint
   formData.append('token', apiToken);
@@ -20,10 +44,7 @@ export async function uploadRecordToREDCap({
   formData.append('overwriteBehavior', 'normal');
   formData.append('forceAutoNumber', 'true');
   formData.append('returnFormat', 'json');
-  if (event) {
-    formData.append('event', event);
-  }
-  formData.append('data', JSON.stringify(recordData));
+  formData.append('data', JSON.stringify(finalData));
 
   try {
     const response = await fetch(apiUrl, {
@@ -44,12 +65,80 @@ export async function uploadRecordToREDCap({
   }
 }
 
+
 // How to use: 
 // const result = await uploadRecordToREDCap({
 //         apiUrl: url,
 //         apiToken: token,
 //         recordData: record,
 //       });
+
+// Retrieves the next repeatable instance index for a given record in REDCap
+export async function getNextRepeatInstance({
+  apiUrl,
+  apiToken,
+  recordID,
+  event = '',
+  repeatInstrument = '',
+}: {
+  apiUrl: string;
+  apiToken: string;
+  recordID: string;
+  event?: string;
+  repeatInstrument?: string;
+}): Promise<number> {
+  try {
+    const params: Record<string, string> = {
+      token: apiToken,
+      content: 'record',
+      format: 'json',
+      type: 'eav',
+      fields: 'redcap_repeat_instance',
+      records: recordID,
+      returnFormat: 'json',
+    };
+
+    if (repeatInstrument) {
+      params.forms = repeatInstrument;
+    }
+
+    if (event) {
+      params.events = event;
+    }
+
+    const res = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(params).toString(),
+    });
+
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      console.warn("No REDCap entry currently exists; instance will begin at 1.");
+      return 1;
+    }
+
+    // Filter for only records with a repeat instance
+    const instances = data
+      .map((r: any) => parseInt(r.value, 10))
+      .filter(i => !isNaN(i));
+
+    if (instances.length === 0) {
+      console.error("This REDCap entry is not repeatable.");
+      return 1;
+    }
+
+    const maxInstance = Math.max(...instances);
+    return maxInstance + 1;
+
+  } catch (error) {
+    console.error('Failed to fetch next repeat instance index:', error);
+    throw error;
+  }
+}
 
 
 // Retrieves last record ID from REDCap and returns the next available record ID

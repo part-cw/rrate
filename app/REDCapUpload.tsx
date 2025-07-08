@@ -41,6 +41,9 @@ export default function REDCapUpload() {
         apiUrl: REDCapURL,
         apiToken: REDCapAPI,
         recordData: record,
+        recordID: nextRecordId,
+        event: 'Event 1',
+        repeatInstrument: 'Instrument 1',
       });
       setResponse('Upload successful!');
     } catch (error: any) {

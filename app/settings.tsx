@@ -19,7 +19,7 @@ export default function Settings() {
 
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled,
     REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
-    LongitudinalStudy, setLongitudinalStudy, UsingRepeatableInstruments, setUsingRepeatableInstruments,
+    LongitudinalStudy, setLongitudinalStudy, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
     UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
   } = useGlobalVariables();
 
@@ -71,7 +71,7 @@ export default function Settings() {
           <PatientModelPicker />
 
           {/* REDCap Settings */}
-          {/* <View style={Style.floatingContainer}>
+          <View style={Style.floatingContainer}>
             <Text style={Style.heading}> REDCap</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
               <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
@@ -100,9 +100,21 @@ export default function Settings() {
                       onChangeText={text => setLongitudinalStudyEvent(text)} />)}
                 </View>
 
+                {LongitudinalStudy && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+                    <Checkbox label={t("REP_EVENTS")} checked={RepeatableEvent} onChange={() => {
+                      setRepeatableEvent(!RepeatableEvent);
+                      if (UsingRepeatableInstruments) setUsingRepeatableInstruments(false);
+                    }} />
+                  </View>
+                )}
+
                 <View style={{ flexDirection: 'column' }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => setUsingRepeatableInstruments(!UsingRepeatableInstruments)} />
+                    <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => {
+                      setUsingRepeatableInstruments(!UsingRepeatableInstruments);
+                      if (RepeatableEvent) setRepeatableEvent(false);
+                    }} />
                   </View>
                   {UsingRepeatableInstruments && (
                     <TextInput label="Instrument" onChangeText={text => setRepeatableInstrument(text)} />)}
@@ -116,7 +128,7 @@ export default function Settings() {
                 </View>
               </View>
             )}
-          </View> */}
+          </View>
 
           {/* Configuration Settings */}
           <Pressable onPress={() => router.push('/passwordConfigSettings')}>

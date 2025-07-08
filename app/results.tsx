@@ -191,6 +191,14 @@ export default function Results() {
                     icon="arrow-u-right-bottom"
                     buttonColor={Theme.colors["neutral-bttn"]}
                     mode="contained"
+                    onPress={() => router.push("/REDCapUpload")}
+                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                    Test
+                  </Button>
+                  <Button
+                    icon="arrow-u-right-bottom"
+                    buttonColor={Theme.colors["neutral-bttn"]}
+                    mode="contained"
                     onPress={() => router.push("/")}
                     style={{ paddingHorizontal: 30, marginRight: 10 }}>
                     {t("RESTART")}
