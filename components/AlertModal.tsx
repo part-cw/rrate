@@ -23,11 +23,6 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
     router.push('/');
   };
 
-  const handleIgnore = () => {
-    onClose();
-    router.push('/results');
-  };
-
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View style={Style.modalOverlay}>

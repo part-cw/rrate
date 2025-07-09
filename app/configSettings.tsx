@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, ScrollView, Alert, Platform, InteractionManager } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
@@ -9,6 +9,7 @@ import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
 import Copyright from "../components/Copyright";
 import RadioButtonGroup from "../components/RadioButtonGroup";
+import Checkbox from "../components/Checkbox";
 import Slider from "@react-native-community/slider";
 
 // The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and 
@@ -17,7 +18,11 @@ export default function ConfigSettings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold, configSettingsUnlocked, setConfigSettingsUnlocked } = useGlobalVariables();
+  const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold,
+    configSettingsUnlocked, setConfigSettingsUnlocked, REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
+    LongitudinalStudy, setLongitudinalStudy, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
+    UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
+  } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? useState('tap') : useState('timer');
 
   // Only allow access if config settings are unlocked; prevents unauthorized access through URL manipulation.
@@ -43,6 +48,66 @@ export default function ConfigSettings() {
             }}>
               {t("BACK")}
             </Button>
+          </View>
+
+          {/* REDCap Settings */}
+          <View style={Style.floatingContainer}>
+            <Text style={Style.heading}> REDCap</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+              <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
+            </View>
+
+            {REDCap && (
+              <View >
+                <TextInput label={t("HOST")} value={REDCapHost} style={Style.textField} onChangeText={text => setREDCapHost(text)} />
+                <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
+                <TextInput
+                  label={t("TOKEN")}
+                  value={REDCapAPI}
+                  style={Style.textField}
+                  onChangeText={text => {
+                    setREDCapAPI(text);
+                  }}
+                />
+
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
+                  </View>
+                  {LongitudinalStudy && (
+                    <TextInput
+                      label="Event"
+                      onChangeText={text => setLongitudinalStudyEvent(text)} />)}
+                </View>
+
+                {LongitudinalStudy && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+                    <Checkbox label={t("REP_EVENTS")} checked={RepeatableEvent} onChange={() => {
+                      setRepeatableEvent(!RepeatableEvent);
+                      if (UsingRepeatableInstruments) setUsingRepeatableInstruments(false);
+                    }} />
+                  </View>
+                )}
+
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => {
+                      setUsingRepeatableInstruments(!UsingRepeatableInstruments);
+                      if (RepeatableEvent) setRepeatableEvent(false);
+                    }} />
+                  </View>
+                  {UsingRepeatableInstruments && (
+                    <TextInput label="Instrument" onChangeText={text => setRepeatableInstrument(text)} />)}
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
+                  {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (
+                    <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
+                </View>
+              </View>
+            )}
           </View>
 
           {/* Measurement Method Selection*/}
