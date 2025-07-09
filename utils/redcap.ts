@@ -18,7 +18,7 @@ export async function uploadRecordToREDCap({
 }): Promise<string> {
   const formData = new FormData();
 
-  // Modify record data if a repeat instrument is specified or project is a longitudinal study
+  // Modify record data if repeatable instruments, repeated events or longitudinal project is enabled
   const finalData = await Promise.all(
     recordData.map(async (record) => {
       // CASE 1: Repeating Instrument (possibly longitudinal)
@@ -104,6 +104,7 @@ export async function uploadRecordToREDCap({
 //         apiToken: token,
 //         recordData: record,
 //       });
+
 
 // Retrieves the next repeatable instance index for a given record in REDCap
 export async function getNextRepeatInstance({

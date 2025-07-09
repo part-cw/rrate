@@ -28,7 +28,7 @@ export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string
   }
 }
 
-// Save FHIR Observation to local device storage to be accessed by PARA later
+// Encode FHIR Observation in Expo file system and send as string to PARA
 export async function saveFHIRObservationToFile(patientId: string, rrate: string) {
   const filename = `RRate-FHIRObservation-${Date.now()}.json`;
   const fileUri = FileSystem.documentDirectory + filename;
@@ -42,7 +42,7 @@ export async function saveFHIRObservationToFile(patientId: string, rrate: string
     encoding: FileSystem.EncodingType.UTF8,
   });
 
-  const link = `PARA_CUSTOM_URL://observation?uri=${encodeURIComponent(fileUri)}`; // Put in PARA URL!
+  const link = `PARA_CUSTOM_URL://observation?uri=${encodeURIComponent(fileUri)}`; // TO-DO:  Put in PARA URL!
 
   Linking.openURL(link);
 }
