@@ -119,7 +119,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [ageThresholdEnabled, saveAgeThresholdEnabled] = useState(false);
   const [babyAnimation, saveBabyAnimation] = useState<BabyAnimationOption>(1);
   const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
-  const password = "1234";
+  const password = "67d1514f9bb64c1adcec4ff70c012a40d675612d4403bfae978193547b751142";
   const [breathingAudioEnabled, saveBreathingAudioEnabled] = useState<boolean>(true);
   const [endChimeEnabled, saveEndChimeEnabled] = useState<boolean>(true);
   const [vibrationsEnabled, saveVibrationsEnabled] = useState<boolean>(true);

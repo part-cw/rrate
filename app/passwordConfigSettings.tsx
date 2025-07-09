@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import * as Crypto from 'expo-crypto';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '../assets/theme';
 import { GlobalStyles as Style } from '../assets/styles';
@@ -19,8 +20,12 @@ export default function PasswordPage() {
   const [error, setError] = useState('');
 
   // Handle password submission
-  const handleSubmit = () => {
-    if (passwordField === password) {
+  const handleSubmit = async () => {
+    const hash = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      passwordField
+    );
+    if (hash === password) {
       setError('');
       setConfigSettingsUnlocked(true);
       router.replace('/configSettings');
