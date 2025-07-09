@@ -74,7 +74,7 @@ export async function uploadRecordToREDCap({
   formData.append('format', 'json');
   formData.append('type', 'flat');
   formData.append('overwriteBehavior', 'normal');
-  formData.append('forceAutoNumber', 'true');
+  formData.append('forceAutoNumber', 'false');
   formData.append('returnFormat', 'json');
   formData.append('data', JSON.stringify(finalData));
 

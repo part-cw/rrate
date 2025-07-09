@@ -38,7 +38,7 @@ export function generateRRTapString(timestamps: number[]): string {
   const addPaddingZero = (num: number) => num.toString().padStart(2, '0');
 
   const formattedStart = `${startDate.getFullYear()}-${addPaddingZero(startDate.getMonth() + 1)}-${addPaddingZero(startDate.getDate())}` +
-    ` ${addPaddingZero(startDate.getHours())}:${addPaddingZero(startDate.getMinutes())}:${addPaddingZero(startDate.getSeconds())}.${startDate.getMilliseconds()}`;
+    ` ${addPaddingZero(startDate.getHours())}:${addPaddingZero(startDate.getMinutes())}:${addPaddingZero(startDate.getSeconds())}.${startDate.getMilliseconds()}0`;
 
   const deltas = timestamps.slice(1).map(t => (t - start).toFixed(4));
 

@@ -48,14 +48,6 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
             >
               {t("RETRY")}
             </Button>
-            {/* <Button
-              icon="minus-circle-outline"
-              buttonColor={Theme.colors["neutral-bttn"]}
-              mode="contained"
-              onPress={handleIgnore}
-            >
-              {t("IGNORE")}
-            </Button> */}
           </View>
         </View>
       </View>

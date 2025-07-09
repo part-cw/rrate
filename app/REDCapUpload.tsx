@@ -41,8 +41,9 @@ export default function REDCapUpload() {
         apiUrl: 'https://rc-demo.bcchr.ca/redcap_demo/api/', // HARDCODED
         apiToken: '64E3843F0A1B388A4FEFEF29CE3F206E',
         recordData: record,
-        event: 'testevent_arm_1',
-        recordID: '19',
+        event: 'practiceevent_arm_1',
+        //practiceevent_arm_1
+        recordID: '2',
         repeatableEvent: true,
         repeatInstrument: 'form_1',
       });
