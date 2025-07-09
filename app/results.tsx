@@ -8,7 +8,7 @@ import { useRouter } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
 import { useFHIRContext } from '../utils/fhirContext';
-import { sendFHIRObservation, saveFHIRObservationToFile } from '../utils/fhirFunctions';
+import { sendFHIRObservation, sendFHIRObservationToApp } from '../utils/fhirFunctions';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
@@ -51,7 +51,7 @@ export default function Results() {
   const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, UploadSingleRecord } = useGlobalVariables();
-  const { launchType, patientId, fhirBaseURL, accessToken } = useFHIRContext();
+  const { launchType, patientId, fhirBaseURL, accessToken, redirectURIToExternalApp } = useFHIRContext();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
 
   // Variables for the baby animation
@@ -106,8 +106,8 @@ export default function Results() {
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
   const handleCorrectMeasurement = () => {
     setRRateConfirmed(true);
-    if (launchType == 'para') {
-      saveFHIRObservationToFile(patientId, rrate);
+    if (launchType == 'app') {
+      sendFHIRObservationToApp(patientId, rrate, redirectURIToExternalApp);
     } else if (launchType === 'emr') {
       sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
     }

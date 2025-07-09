@@ -4,8 +4,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFHIRContext } from '../utils/fhirContext';
 
 export default function Launch() {
-  const { iss, launch, launchType, fhirBase, patient, accessToken } = useLocalSearchParams(); // e.g., from EMR or PARA
-  const { setFHIRBaseURL, setLaunchType, setPatientId } = useFHIRContext();
+  const { iss, launch, launchType, redirectURI, fhirBase, patient, accessToken } = useLocalSearchParams(); // e.g., from EMR or external app
+  const { setFHIRBaseURL, setLaunchType, setPatientId, setRedirectURIToExternalApp } = useFHIRContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function Launch() {
       if (iss && launch) {
         setLaunchType('emr');
         // authentication variables
-        const clientId = "my-smart-app";
+        const clientId = "my-smart-app"; // HARD-CODED
         const redirectUri =
           Platform.OS === 'web'
             ? "https://rrate.netlify.app/callback"
@@ -41,17 +41,18 @@ export default function Launch() {
         }
       }
 
-      // Launched from PARA 
-      if (launchType === 'para' && fhirBase && patient) {
-        setLaunchType('para');
+      // Launched from external app (e.g. PARA)  
+      if (launchType === 'app' && fhirBase && patient) {
+        setLaunchType('app');
         setPatientId(patient ? patient.toString() : '');
         setFHIRBaseURL(fhirBase[0]);
+        setRedirectURIToExternalApp(redirectURI ? redirectURI[0] : '');
         router.replace('/');
       }
     });
 
     return () => task.cancel();
-  }, [iss, launch, launchType, patient, accessToken]);
+  }, [iss, launch, launchType, patient, redirectURI, accessToken]);
 
   return null;
 }

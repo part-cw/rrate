@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Types used for FHIR context and authentication
 type fhirContextType = {
-  launchType: 'standalone' | 'para' | 'emr' | null;
-  setLaunchType: (type: 'standalone' | 'para' | 'emr' | null) => void;
+  launchType: 'standalone' | 'app' | 'emr' | null;
+  setLaunchType: (type: 'standalone' | 'app' | 'emr' | null) => void;
 
   fhirBaseURL: string;
   setFHIRBaseURL: (url: string) => void;
@@ -15,6 +15,9 @@ type fhirContextType = {
 
   patientId: string;
   setPatientId: (id: string) => void;
+
+  redirectURIToExternalApp: string; // Optional, used for external app redirects
+  setRedirectURIToExternalApp: (url: string) => void;
 }
 
 const FHIRContext = createContext<fhirContextType | null>(null);
@@ -28,10 +31,11 @@ const STORAGE_KEYS = {
 }
 
 export const FHIRContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [launchType, setLaunchType] = useState<'standalone' | 'para' | 'emr' | null>(null);
+  const [launchType, setLaunchType] = useState<'standalone' | 'app' | 'emr' | null>(null);
   const [fhirBaseURL, setFHIRBaseURL] = useState<string>('');
   const [accessToken, setAccessToken] = useState<string>('');
   const [patientId, setPatientId] = useState<string>('');
+  const [redirectURIToExternalApp, setRedirectURIToExternalApp] = useState<string>('');
 
   // Load initial values from storage
   useEffect(() => {
@@ -41,7 +45,7 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
       const storedAccessToken = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_ACCESS_TOKEN);
       const storedPatientId = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_PATIENT_ID);
 
-      if (storedLaunchType) setLaunchType(storedLaunchType as 'standalone' | 'para' | 'emr');
+      if (storedLaunchType) setLaunchType(storedLaunchType as 'standalone' | 'app' | 'emr');
       if (storedBaseURL) setFHIRBaseURL(storedBaseURL);
       if (storedAccessToken) setAccessToken(storedAccessToken);
       if (storedPatientId) setPatientId(storedPatientId);
@@ -60,7 +64,9 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
         accessToken,
         setAccessToken,
         patientId,
-        setPatientId
+        setPatientId,
+        redirectURIToExternalApp,
+        setRedirectURIToExternalApp
       }
       }>
       {children}
