@@ -20,6 +20,15 @@ type globalContextType = {
   configSettingsUnlocked: boolean;
   setConfigSettingsUnlocked: (unlocked: boolean) => void;
 
+  breathingAudioEnabled: boolean;
+  setBreathingAudioEnabled: (value: boolean) => void;
+
+  endChimeEnabled: boolean;
+  setEndChimeEnabled: (value: boolean) => void;
+
+  vibrationsEnabled: boolean;
+  setVibrationsEnabled: (value: boolean) => void;
+
   // REDCap SETTINGS
   REDCap: boolean;
   setREDCap: (value: boolean) => void;
@@ -87,6 +96,9 @@ const STORAGE_KEYS = {
   selectedLanguage: 'selectedLanguage',
   ageThresholdEnabled: 'ageThresholdEnabled',
   babyAnimation: 'babyAnimation',
+  breathingAudioEnabled: 'breathingAudioEnabled',
+  endChimeEnabled: 'endChimeEnabled',
+  vibrationsEnabled: 'vibrationsEnabled',
   measurementMethod: 'measurementMethod',
   consistencyThreshold: 'consistencyThreshold',
   tapCountRequired: 'tapCountRequired',
@@ -108,6 +120,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [babyAnimation, saveBabyAnimation] = useState<BabyAnimationOption>(1);
   const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
   const password = "1234";
+  const [breathingAudioEnabled, saveBreathingAudioEnabled] = useState<boolean>(true);
+  const [endChimeEnabled, saveEndChimeEnabled] = useState<boolean>(true);
+  const [vibrationsEnabled, saveVibrationsEnabled] = useState<boolean>(true);
   const [measurementMethod, saveMeasurementMethod] = useState<string>('tap');
   const [consistencyThreshold, saveConsistencyThreshold] = useState(13);
   const [tapCountRequired, saveTapCountRequired] = useState(5);
@@ -185,6 +200,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<string>(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage),
         loadFromStorage<boolean>(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v === 'true'),
         loadFromStorage<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => Number(v) as BabyAnimationOption),
+        loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioEnabled, saveBreathingAudioEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v === 'true'),
         loadFromStorage<string>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, v => v),
         loadFromStorage<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, v => Number(v)),
         loadFromStorage<number>(STORAGE_KEYS.tapCountRequired, saveTapCountRequired, v => Number(v)),
@@ -222,6 +240,9 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setSelectedLanguage = createPersistentSetter(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage);
   const setAgeThresholdEnabled = createPersistentSetter(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v.toString());
   const setBabyAnimation = createPersistentSetter(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => v.toString());
+  const setBreathingAudioEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioEnabled, saveBreathingAudioEnabled, v => v.toString());
+  const setEndChimeEnabled = createPersistentSetter(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v.toString());
+  const setVibrationsEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v.toString());
   const setMeasurementMethod = createPersistentSetter(STORAGE_KEYS.measurementMethod, saveMeasurementMethod);
   const setConsistencyThreshold = createPersistentSetter(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold);
   const setTapCountRequired = createPersistentSetter(STORAGE_KEYS.tapCountRequired, saveTapCountRequired);
@@ -246,6 +267,12 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setBabyAnimation,
         configSettingsUnlocked,
         setConfigSettingsUnlocked,
+        breathingAudioEnabled,
+        setBreathingAudioEnabled,
+        endChimeEnabled,
+        setEndChimeEnabled,
+        vibrationsEnabled,
+        setVibrationsEnabled,
         password,
         measurementMethod,
         setMeasurementMethod,
