@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, Pressable, ScrollView, useWindowDimensions } from 'react-native';
+import React, { useState, useRef, useCallback } from 'react';
+import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
@@ -68,19 +69,30 @@ export default function Results() {
   // Start breathing loop: fade exhale out (inhale), then back in (exhale)
   const startBreathing = () => {
     animationIntervalRef.current = setInterval(() => {
-      setIsInhaling(prev => !prev);
+      setIsInhaling(prev => {
+        const next = !prev;
+        if (next) {
+          Vibration.vibrate(100); // vibrate when inhaling
+        }
+        return next;
+      });
     }, halfCycle);
   };
 
   // On mount, begin the animation
-  React.useEffect(() => {
-    startBreathing();
-    return () => {
-      if (animationIntervalRef.current) {
-        clearInterval(animationIntervalRef.current);
-      }
-    };
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      startBreathing();
+
+      return () => {
+        if (animationIntervalRef.current) {
+          clearInterval(animationIntervalRef.current);
+          animationIntervalRef.current = null;
+        }
+        Vibration.cancel();
+      };
+    }, [])
+  );
 
   // when animation is tapped, reset to start of exhalation state
   const handleTap = () => {
@@ -170,7 +182,6 @@ export default function Results() {
                     height={measurementMethod === 'timer' ? 390 : 340}
                   />}
               </View>
-
             </Pressable>
 
             {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
