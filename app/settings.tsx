@@ -10,16 +10,17 @@ import useTranslation from '../utils/useTranslation';
 import DropDown from "../components/DropdownList";
 import Copyright from "../components/Copyright";
 import PatientModelPicker from "../components/PatientModelPicker";
-import Checkbox from "../components/Checkbox";
 
 // Displays all general settings for the app, including language selection, age interpretation, REDCap settings, and configuration settings.
 export default function Settings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled } = useGlobalVariables();
+  const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioEnabled, setBreathingAudioEnabled,
+    endChimeEnabled, setEndChimeEnabled, vibrationsEnabled, setVibrationsEnabled
+  } = useGlobalVariables();
 
-  const onToggleSwitch = () => {
+  const ageThresholdToggle = () => {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
 
@@ -54,7 +55,7 @@ export default function Settings() {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text style={Style.heading}> Patient Age Interpretation </Text>
               <Switch value={ageThresholdEnabled}
-                onValueChange={onToggleSwitch} />
+                onValueChange={ageThresholdToggle} />
             </View>
             <View style={{ marginVertical: 20 }}>
               <Text style={{ color: "#707070" }}>Uses age-based thresholds to classify the respiratory rate as
@@ -65,7 +66,6 @@ export default function Settings() {
 
           {/* Patient Model (Baby Animation) Selection */}
           <PatientModelPicker />
-
 
           {/* Configuration Settings */}
           <Pressable onPress={() => router.push('/passwordConfigSettings')}>

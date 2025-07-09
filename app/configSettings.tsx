@@ -50,65 +50,67 @@ export default function ConfigSettings() {
             </Button>
           </View>
 
-          {/* REDCap Settings */}
-          <View style={Style.floatingContainer}>
-            <Text style={Style.heading}> REDCap</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-              <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
-            </View>
-
-            {REDCap && (
-              <View >
-                <TextInput label={t("HOST")} value={REDCapHost} style={Style.textField} onChangeText={text => setREDCapHost(text)} />
-                <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
-                <TextInput
-                  label={t("TOKEN")}
-                  value={REDCapAPI}
-                  style={Style.textField}
-                  onChangeText={text => {
-                    setREDCapAPI(text);
-                  }}
-                />
-
-                <View style={{ flexDirection: 'column' }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
-                  </View>
-                  {LongitudinalStudy && (
-                    <TextInput
-                      label="Event"
-                      onChangeText={text => setLongitudinalStudyEvent(text)} />)}
-                </View>
-
-                {LongitudinalStudy && (
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-                    <Checkbox label={t("REP_EVENTS")} checked={RepeatableEvent} onChange={() => {
-                      setRepeatableEvent(!RepeatableEvent);
-                      if (UsingRepeatableInstruments) setUsingRepeatableInstruments(false);
-                    }} />
-                  </View>
-                )}
-
-                <View style={{ flexDirection: 'column' }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => {
-                      setUsingRepeatableInstruments(!UsingRepeatableInstruments);
-                      if (RepeatableEvent) setRepeatableEvent(false);
-                    }} />
-                  </View>
-                  {UsingRepeatableInstruments && (
-                    <TextInput label="Instrument" onChangeText={text => setRepeatableInstrument(text)} />)}
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                  {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (
-                    <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
-                </View>
+          {/* REDCap Settings - only display on mobile due to lack of secure web storage for API token */}
+          {Platform.OS !== 'web' && (
+            <View style={Style.floatingContainer}>
+              <Text style={Style.heading}> REDCap</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+                <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
               </View>
-            )}
-          </View>
+
+              {REDCap && (
+                <View >
+                  <TextInput label={t("HOST")} value={REDCapHost} style={Style.textField} onChangeText={text => setREDCapHost(text)} />
+                  <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
+                  <TextInput
+                    label={t("TOKEN")}
+                    value={REDCapAPI}
+                    style={Style.textField}
+                    onChangeText={text => {
+                      setREDCapAPI(text);
+                    }}
+                  />
+
+                  <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
+                    </View>
+                    {LongitudinalStudy && (
+                      <TextInput
+                        label="Event"
+                        onChangeText={text => setLongitudinalStudyEvent(text)} />)}
+                  </View>
+
+                  {LongitudinalStudy && (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+                      <Checkbox label={t("REP_EVENTS")} checked={RepeatableEvent} onChange={() => {
+                        setRepeatableEvent(!RepeatableEvent);
+                        if (UsingRepeatableInstruments) setUsingRepeatableInstruments(false);
+                      }} />
+                    </View>
+                  )}
+
+                  <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => {
+                        setUsingRepeatableInstruments(!UsingRepeatableInstruments);
+                        if (RepeatableEvent) setRepeatableEvent(false);
+                      }} />
+                    </View>
+                    {UsingRepeatableInstruments && (
+                      <TextInput label="Instrument" onChangeText={text => setRepeatableInstrument(text)} />)}
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
+                  </View>
+                  <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
+                    {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (
+                      <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
+                  </View>
+                </View>
+              )}
+            </View>
+          )}
 
           {/* Measurement Method Selection*/}
           <View style={[Style.floatingContainer]}>
