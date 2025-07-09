@@ -33,9 +33,6 @@ type globalContextType = {
   REDCap: boolean;
   setREDCap: (value: boolean) => void;
 
-  REDCapHost: string;
-  setREDCapHost: (host: string) => void;
-
   REDCapURL: string;
   setREDCapURL: (url: string) => void;
 
@@ -103,7 +100,6 @@ const STORAGE_KEYS = {
   consistencyThreshold: 'consistencyThreshold',
   tapCountRequired: 'tapCountRequired',
   REDCap: 'REDCap',
-  REDCapHost: 'REDCapHost',
   REDCapURL: 'REDCapURL',
   LongitudinalStudy: 'LongitudinalStudy',
   LongitudinalStudyEvent: 'LongitudinalStudyEvent',
@@ -131,7 +127,6 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [rrTaps, setRRTaps] = useState('');
   const [tapTimestamps, setTapTimestaps] = useState<number[]>([]);
   const [REDCap, saveREDCap] = useState(false);
-  const [REDCapHost, saveREDCapHost] = useState('');
   const [REDCapURL, saveREDCapURL] = useState('');
   const [REDCapAPI, saveREDCapAPI] = useState('');
   const [LongitudinalStudy, saveLongitudinalStudy] = useState(false);
@@ -207,7 +202,6 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, v => Number(v)),
         loadFromStorage<number>(STORAGE_KEYS.tapCountRequired, saveTapCountRequired, v => Number(v)),
         loadFromStorage<boolean>(STORAGE_KEYS.REDCap, saveREDCap, v => v === 'true'),
-        loadFromStorage<string>(STORAGE_KEYS.REDCapHost, saveREDCapHost),
         loadFromStorage<string>(STORAGE_KEYS.REDCapURL, saveREDCapURL),
         loadFromStorage<boolean>(STORAGE_KEYS.LongitudinalStudy, saveLongitudinalStudy),
         loadFromStorage<string>(STORAGE_KEYS.LongitudinalStudyEvent, saveLongitudinalStudyEvent),
@@ -247,7 +241,6 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setConsistencyThreshold = createPersistentSetter(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold);
   const setTapCountRequired = createPersistentSetter(STORAGE_KEYS.tapCountRequired, saveTapCountRequired);
   const setREDCap = createPersistentSetter(STORAGE_KEYS.REDCap, saveREDCap);
-  const setREDCapHost = createPersistentSetter(STORAGE_KEYS.REDCapHost, saveREDCapHost);
   const setREDCapURL = createPersistentSetter(STORAGE_KEYS.REDCapURL, saveREDCapURL);
   const setLongitudinalStudy = createPersistentSetter(STORAGE_KEYS.LongitudinalStudy, saveLongitudinalStudy);
   const setLongitudinalStudyEvent = createPersistentSetter(STORAGE_KEYS.LongitudinalStudyEvent, saveLongitudinalStudyEvent);
@@ -290,8 +283,6 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setTapTimestaps,
         REDCap,
         setREDCap,
-        REDCapHost,
-        setREDCapHost,
         REDCapURL,
         setREDCapURL,
         REDCapAPI,

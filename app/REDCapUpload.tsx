@@ -24,9 +24,6 @@ export default function REDCapUpload() {
     try {
       setIsLoading(true);
 
-      // Fetch the most recent record id 
-      // const nextRecordId = await getNextRecordID({ apiUrl: REDCapURL, apiToken: REDCapAPI });
-
       // The new record to upload
       const record = [
         {
@@ -38,11 +35,10 @@ export default function REDCapUpload() {
       ];
 
       const result = await uploadRecordToREDCap({
-        apiUrl: 'https://rc-demo.bcchr.ca/redcap_demo/api/', // HARDCODED
+        apiUrl: 'https://rc-demo.bcchr.ca/redcap_demo/api/',
         apiToken: '64E3843F0A1B388A4FEFEF29CE3F206E',
         recordData: record,
         event: 'practiceevent_arm_1',
-        //practiceevent_arm_1
         recordID: '2',
         repeatableEvent: true,
         repeatInstrument: 'form_1',

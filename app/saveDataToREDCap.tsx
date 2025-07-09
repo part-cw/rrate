@@ -17,7 +17,7 @@ export default function SaveDataToREDCap() {
   const [recordID, setRecordID] = useState<string>("");
   const [isRecordSaved, setIsRecordSaved] = useState<boolean>(false);
 
-  const { REDCapAPI, REDCapURL, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
+  const { REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
   // Load the database of saved sessions when the page loads
   useEffect(() => {
@@ -67,6 +67,10 @@ export default function SaveDataToREDCap() {
           apiUrl: REDCapURL,
           apiToken: REDCapAPI,
           recordData: record,
+          recordID,
+          event: LongitudinalStudyEvent,
+          repeatableEvent: RepeatableEvent,
+          repeatInstrument: RepeatableInstrument,
         });
 
         console.log('Upload result for Record ID ' + recordID + ':' + result);
@@ -83,7 +87,7 @@ export default function SaveDataToREDCap() {
     <View style={Style.redirectScreenContainer}>
       <View style={{ alignItems: 'center', justifyContent: 'center', width: 350 }}>
         <Image
-          source={require('@/assets/images/REDCap-icon.png')}
+          source={require('../assets/images/REDCap-icon.png')}
           style={{ width: 67, height: 70, marginBottom: 20 }}
         />
         <Text style={Style.pageTitle}>Save Data to REDCap</Text>

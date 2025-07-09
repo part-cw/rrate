@@ -7,6 +7,7 @@ import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
+import { uploadRecordToREDCap } from "../utils/redcap";
 import Copyright from "../components/Copyright";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 import Checkbox from "../components/Checkbox";
@@ -19,7 +20,7 @@ export default function ConfigSettings() {
   const { t } = useTranslation();
 
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold,
-    configSettingsUnlocked, setConfigSettingsUnlocked, REDCap, setREDCap, REDCapHost, setREDCapHost, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
+    configSettingsUnlocked, setConfigSettingsUnlocked, REDCap, setREDCap, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
     UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
   } = useGlobalVariables();
@@ -60,7 +61,6 @@ export default function ConfigSettings() {
 
               {REDCap && (
                 <View >
-                  <TextInput label={t("HOST")} value={REDCapHost} style={Style.textField} onChangeText={text => setREDCapHost(text)} />
                   <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
                   <TextInput
                     label={t("TOKEN")}
@@ -104,7 +104,7 @@ export default function ConfigSettings() {
                     <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                   </View>
                   <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                    {!UploadSingleRecord && REDCapHost && REDCapURL && REDCapAPI && (
+                    {!UploadSingleRecord && REDCapURL && REDCapAPI && (
                       <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
                   </View>
                 </View>

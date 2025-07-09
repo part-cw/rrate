@@ -126,7 +126,6 @@ export async function getNextRepeatInstance({
       content: 'record',
       format: 'json',
       type: 'eav',
-      fields: 'redcap_repeat_instance',
       records: recordID,
       returnFormat: 'json',
     };
@@ -154,13 +153,12 @@ export async function getNextRepeatInstance({
       return 1;
     }
 
-    // Filter for only records with a repeat instance
     const instances = data
-      .map((r: any) => parseInt(r.value, 10))
+      .map((r: any) => parseInt(r.redcap_repeat_instance, 10))
       .filter(i => !isNaN(i));
 
     if (instances.length === 0) {
-      console.error("This REDCap entry is not repeatable.");
+      console.warn("No repeat instances found — defaulting to 1.");
       return 1;
     }
 
@@ -172,6 +170,7 @@ export async function getNextRepeatInstance({
     throw error;
   }
 }
+
 
 
 // Retrieves last record ID from REDCap and returns the next available record ID
