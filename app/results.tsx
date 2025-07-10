@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
 import { useFHIRContext } from '../utils/fhirContext';
@@ -48,11 +48,15 @@ export default function Results() {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
 
+
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, UploadSingleRecord } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, REDCap } = useGlobalVariables();
   const { launchType, patientId, fhirBaseURL, accessToken, redirectURIToExternalApp } = useFHIRContext();
-  const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(false);
+  const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
+  const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
+  const isRecordSaved = rrateConfirmedParam === 'true';
+
 
   // Variables for the baby animation
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -192,7 +196,7 @@ export default function Results() {
               <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   { /* TEST REDCap BUTTON */}
-                  {UploadSingleRecord && (
+                  {REDCap && !isRecordSaved && (
                     <Button mode="contained"
                       buttonColor={Theme.colors.secondary}
                       style={{ paddingHorizontal: 30, marginRight: 10 }}
@@ -202,7 +206,7 @@ export default function Results() {
                     icon="arrow-u-right-bottom"
                     buttonColor={Theme.colors["neutral-bttn"]}
                     mode="contained"
-                    onPress={() => router.push("/REDCapUpload")}
+                    onPress={() => router.push("/saveDataToREDCap")}
                     style={{ paddingHorizontal: 30, marginRight: 10 }}>
                     Test
                   </Button>

@@ -3,13 +3,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const CDB_KEY = 'data.cdb.json';
 
 type Session = {
+  record_id: string;
   rr_rate: string;
   rr_time: string;
   rr_taps: string;
 };
 
 type RRateDatabase = {
-  [recordNo: string]: Session[];
+  [recordID: string]: Session[];
 };
 
 // Load from AsyncStorage or return an empty object
@@ -34,17 +35,18 @@ export async function saveDatabase(db: RRateDatabase): Promise<void> {
 }
 
 // Save a new session to the database
-export async function saveSession(recordNo: string, rate: string, time: string, taps: string): Promise<void> {
+export async function saveSession(recordID: string, rate: string, time: string, taps: string): Promise<void> {
   const db = await loadDatabase();
 
   const newSession: Session = {
+    record_id: recordID,
     rr_rate: rate,
     rr_time: time,
     rr_taps: taps,
   };
 
-  const existingSessions = db[recordNo] ?? [];
-  db[recordNo] = [...existingSessions, newSession];
+  const existingSessions = db[recordID] ?? [];
+  db[recordID] = [...existingSessions, newSession];
 
   const result = await saveDatabase(db);
 }

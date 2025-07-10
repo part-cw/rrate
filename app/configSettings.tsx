@@ -8,23 +8,24 @@ import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from "../utils/redcap";
+import { loadDatabase, deleteDatabase } from "../utils/storeSessionData";
 import Copyright from "../components/Copyright";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 import Checkbox from "../components/Checkbox";
 import Slider from "@react-native-community/slider";
 
-// The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and 
-// the consistency threshold.
+// The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and the consistency threshold.
 export default function ConfigSettings() {
   const router = useRouter();
   const { t } = useTranslation();
 
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold,
     configSettingsUnlocked, setConfigSettingsUnlocked, REDCap, setREDCap, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
-    LongitudinalStudy, setLongitudinalStudy, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
-    UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
+    LongitudinalStudy, setLongitudinalStudy, LongitudinalStudyEvent, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
+    RepeatableInstrument, UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
   } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? useState('tap') : useState('timer');
+  const [response, setResponse] = useState<string>("");
 
   // Only allow access if config settings are unlocked; prevents unauthorized access through URL manipulation.
   useEffect(() => {
@@ -37,6 +38,62 @@ export default function ConfigSettings() {
 
     return () => task.cancel();
   }, [configSettingsUnlocked]);
+
+  // Handles bulk upload of stored measurements to REDCap
+  const handleBulkUpload = async () => {
+    if (!REDCapURL || !REDCapAPI) {
+      Alert.alert('Missing Info', 'Please enter your REDCap URL and API token in Settings first.');
+      return;
+    }
+
+    try {
+      // Access saved measurements that need to be uploaded to REDCap
+      const db = await loadDatabase();
+      const recordNums = Object.keys(db);
+
+      if (recordNums.length === 0) {
+        setResponse('No saved sessions requiring upload.');
+        return;
+      }
+
+      for (const recordNum of recordNums) {
+        const sessions = db[recordNum];
+        const session = sessions[0];
+
+        if (!session) {
+          continue; // Skip if no session data
+        }
+
+        // The new record to upload
+        const record = [
+          {
+            record_id: session.record_id,
+            rrate_rate: session.rr_rate,
+            rrate_time: session.rr_time,
+            rrate_taps: session.rr_taps
+          },
+        ];
+
+        const result = await uploadRecordToREDCap({
+          apiUrl: REDCapURL,
+          apiToken: REDCapAPI,
+          recordData: record,
+          recordID: session.record_id,
+          event: LongitudinalStudyEvent,
+          repeatableEvent: RepeatableEvent,
+          repeatInstrument: RepeatableInstrument,
+        });
+
+        console.log('Upload result for Record ID ' + session.record_id + ':' + result);
+      }
+
+      await deleteDatabase();
+      setResponse('All sessions uploaded successfully and local database cleared.');
+    } catch (error: any) {
+      setResponse('Upload failed:\n' + error.message);
+    }
+  };
+
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
@@ -52,7 +109,7 @@ export default function ConfigSettings() {
           </View>
 
           {/* REDCap Settings - only display on mobile due to lack of secure web storage for API token */}
-          {Platform.OS !== 'web' && (
+          {Platform.OS !== 'ios' && (
             <View style={Style.floatingContainer}>
               <Text style={Style.heading}> REDCap</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
@@ -78,6 +135,7 @@ export default function ConfigSettings() {
                     {LongitudinalStudy && (
                       <TextInput
                         label="Event"
+                        value={LongitudinalStudyEvent}
                         onChangeText={text => setLongitudinalStudyEvent(text)} />)}
                   </View>
 
@@ -98,14 +156,19 @@ export default function ConfigSettings() {
                       }} />
                     </View>
                     {UsingRepeatableInstruments && (
-                      <TextInput label="Instrument" onChangeText={text => setRepeatableInstrument(text)} />)}
+                      <TextInput label="Instrument" value={RepeatableInstrument} onChangeText={text => setRepeatableInstrument(text)} />)}
                   </View>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                   </View>
                   <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
                     {!UploadSingleRecord && REDCapURL && REDCapAPI && (
-                      <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => console.log("Save to REDCap")} >Upload to REDCap</Button>)}
+                      <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => handleBulkUpload()}>Upload to REDCap</Button>)}
+                    {response && (
+                      <View >
+                        <Text style={{ fontSize: 16 }}>{response}</Text>
+                      </View>
+                    )}
                   </View>
                 </View>
               )}

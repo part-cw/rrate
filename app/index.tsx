@@ -119,7 +119,7 @@ export default function Index() {
           clearInterval(intervalRef.current!);
           setRRate(tapCountRef.current.toString());
           setTapTimestaps(timestamps);
-          router.push("/results");
+          router.push({ pathname: "/results", params: { rrateConfirmed: 'false', isRecordSaved: "false" } });
 
           return 60;
         }

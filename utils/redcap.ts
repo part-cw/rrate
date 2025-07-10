@@ -98,14 +98,6 @@ export async function uploadRecordToREDCap({
 }
 
 
-// How to use: 
-// const result = await uploadRecordToREDCap({
-//         apiUrl: url,
-//         apiToken: token,
-//         recordData: record,
-//       });
-
-
 // Retrieves the next repeatable instance index for a given record in REDCap
 export async function getNextRepeatInstance({
   apiUrl,
@@ -170,7 +162,6 @@ export async function getNextRepeatInstance({
     throw error;
   }
 }
-
 
 
 // Retrieves last record ID from REDCap and returns the next available record ID
