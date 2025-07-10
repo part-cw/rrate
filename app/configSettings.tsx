@@ -118,7 +118,7 @@ export default function ConfigSettings() {
 
               {REDCap && (
                 <View >
-                  <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} placeholder="/redcap/api/" />
+                  <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} />
                   <TextInput
                     label={t("TOKEN")}
                     value={REDCapAPI}
