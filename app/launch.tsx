@@ -23,8 +23,8 @@ export default function Launch() {
         const scope = "launch patient/Observation.write openid fhirUser";
         const simpleIss = Array.isArray(iss) ? iss[0] : iss; // sometimes iss is an array, handle that case
 
-        // const fhirBase = iss[0].replace(/\/fhir\/?$/, ''); // removes /fhir from iss, so url is in correct directory for authorization
-        const fhirBase = 'https://launch.smarthealthit.org/v/r4';
+        const fhirBase = simpleIss.replace(/\/fhir\/?$/, ''); // removes /fhir from iss, so url is in correct directory for authorization
+        // const fhirBase = 'https://launch.smarthealthit.org/v/r4';
 
         const authorizeUrl = `${fhirBase}/auth/authorize?` +
           `response_type=code&` +

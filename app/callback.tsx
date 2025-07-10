@@ -4,12 +4,11 @@ import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
 const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r4/token';
-const CLIENT_ID = 'my-smart-app'; // match your registered client_id
+const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
 
-// This screen handles the OAuth callback after the user has authenticated
 export default function CallbackScreen() {
   const router = useRouter();
-  const { code } = useLocalSearchParams();
+  const { code, state } = useLocalSearchParams();
   const { setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
@@ -22,38 +21,19 @@ export default function CallbackScreen() {
 
     async function exchangeCodeForToken() {
       try {
+        const response = await fetch(TOKEN_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            grant_type: 'authorization_code',
+            code: code.toString(),
+            redirect_uri: redirectUri,
+            client_id: CLIENT_ID,
+          }).toString(),
+        });
 
-        const isWeb = Platform.OS === 'web';
-        const tokenUrl = isWeb
-          ? '/.netlify/functions/exchange-token'
-          : 'https://auth.smarthealthit.org/token';
-
-        const requestOptions = isWeb
-          ? {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              code: code.toString(),
-              redirect_uri: redirectUri,
-              client_id: CLIENT_ID,
-            }),
-          }
-          : {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-              grant_type: 'authorization_code',
-              code: code.toString(),
-              redirect_uri: redirectUri,
-              client_id: CLIENT_ID,
-            }).toString(),
-          };
-
-        const response = await fetch(tokenUrl, requestOptions);
         const tokenJson = await response.json();
 
         if (!response.ok) {
@@ -63,16 +43,15 @@ export default function CallbackScreen() {
 
         const { access_token, patient } = tokenJson;
 
-        // Store relevant FHIR variables
+        // Store access token and patient ID
         setAccessToken(access_token);
         setPatientId(patient);
 
-        // Navigate to main app screen
+        // Navigate to home screen
         router.replace('/');
 
       } catch (err) {
         console.error('OAuth error:', err);
-        // Pop-up here?
       }
     }
 
