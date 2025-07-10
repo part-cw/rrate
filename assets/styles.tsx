@@ -172,6 +172,22 @@ export const GlobalStyles = StyleSheet.create({
     color: '#000000',
   },
 
+  // Slider labels
+  labelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 300,
+  },
+  label: {
+    paddingHorizontal: 5,
+    fontSize: 16,
+    color: '#555',
+  },
+  activeLabel: {
+    fontWeight: 'bold',
+    color: Theme.colors.primary,
+  },
+
   // Consistency Chart
   backgroundThresholdBand: {
     position: 'absolute',

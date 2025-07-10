@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, Alert, Platform, InteractionManager } from "react-native";
+import { View, Text, ScrollView, Alert, Pressable, Platform, InteractionManager, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, TextInput } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
@@ -26,6 +26,8 @@ export default function ConfigSettings() {
   } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? useState('tap') : useState('timer');
   const [response, setResponse] = useState<string>("");
+  const tapCountOptions = [3, 4, 5, 6];
+  const consistencyThresholdOptions = [10, 11, 12, 13, 14];
 
   // Only allow access if config settings are unlocked; prevents unauthorized access through URL manipulation.
   useEffect(() => {
@@ -198,7 +200,7 @@ export default function ConfigSettings() {
             <View style={{ paddingVertical: 20 }}>
               <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Slider
                 style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
                 minimumValue={3}
@@ -209,13 +211,22 @@ export default function ConfigSettings() {
                 minimumTrackTintColor="#000000"
                 maximumTrackTintColor="#000000"
                 tapToSeek={true}
-                StepMarker={({ stepMarked, index }) => (
-                  <View style={[Style.marker]}>
-                    <Text style={[stepMarked && Style.markerActive]}>{index}</Text>
-                  </View>
-                )}
                 onValueChange={(value) => setTapCountRequired(value)}
               />
+              <View style={Style.labelRow}>
+                {tapCountOptions.map((val) => (
+                  <Pressable key={val} onPress={() => setTapCountRequired(val)}>
+                    <Text
+                      style={[
+                        Style.label,
+                        tapCountRequired === val && Style.activeLabel,
+                      ]}
+                    >
+                      {val}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
             </View>
           </View>
 
@@ -225,7 +236,7 @@ export default function ConfigSettings() {
             <View style={{ paddingVertical: 20 }}>
               <Text>{t("CONSISTENCY_THRESH")}</Text>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Slider
                 style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
                 minimumValue={10}
@@ -236,13 +247,22 @@ export default function ConfigSettings() {
                 minimumTrackTintColor="#000000"
                 maximumTrackTintColor="#000000"
                 tapToSeek={true}
-                StepMarker={({ stepMarked, index }) => (
-                  <View style={[Style.marker]}>
-                    <Text style={[stepMarked && Style.markerActive]}>{index}%</Text>
-                  </View>
-                )}
                 onValueChange={(value) => setConsistencyThreshold(value)}
               />
+              <View style={Style.labelRow}>
+                {consistencyThresholdOptions.map((val) => (
+                  <Pressable key={val} onPress={() => setConsistencyThreshold(val)}>
+                    <Text
+                      style={[
+                        Style.label,
+                        consistencyThreshold === val && Style.activeLabel,
+                      ]}
+                    >
+                      {val}%
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
             </View>
           </View>
 
