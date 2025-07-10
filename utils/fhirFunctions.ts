@@ -1,15 +1,14 @@
 import { getFHIRObservation } from "./fhirObservation";
-import * as Linking from 'expo-linking';
 import * as FileSystem from 'expo-file-system';
 
 // Send the FHIR observation to the FHIR sever and redirect back to PARA if successful
-export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string, authToken?: string) {
+export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string, accessToken: string) {
   const timestamp = new Date().toISOString();
-
-  const result = await fetch(`${fhirBaseUrl}`, {
+  console.log("Access token:", accessToken);
+  const result = await fetch(`${fhirBaseUrl}/Observation`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${authToken}`,
+      'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/fhir+json'
     },
     body: JSON.stringify(getFHIRObservation({
@@ -29,7 +28,7 @@ export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string
 }
 
 // Encode FHIR Observation in Expo file system and send as string to external app (e.g. PARA) 
-export async function sendFHIRObservationToApp(patientId: string, rrate: string, redirectURI: string) {
+export async function sendFHIRObservationToApp(patientId: string, rrate: string) {
   const filename = `RRate-FHIRObservation-${Date.now()}.json`;
   const fileUri = FileSystem.documentDirectory + filename;
   const observation = getFHIRObservation({
@@ -41,6 +40,4 @@ export async function sendFHIRObservationToApp(patientId: string, rrate: string,
   await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(observation), {
     encoding: FileSystem.EncodingType.UTF8,
   });
-
-  Linking.openURL(redirectURI);
 }

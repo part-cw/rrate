@@ -12,6 +12,7 @@ import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFun
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
 import Timer from '../components/Timer';
+import { useFHIRContext } from "@/utils/fhirContext";
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
@@ -29,6 +30,7 @@ export default function Index() {
 
   // GLOBAL VARIABLES
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod } = useGlobalVariables();
+  const { launchType } = useFHIRContext();
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -84,6 +86,7 @@ export default function Index() {
       setRRate('');
       setTapTimestaps([]);
       setRRTime('');
+      console.log("Launch type", launchType)
 
       // Clear any timers just in case
       if (intervalRef.current) {

@@ -4,6 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
+import * as Linking from 'expo-linking';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
@@ -52,7 +53,7 @@ export default function Results() {
   const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, REDCap } = useGlobalVariables();
-  const { launchType, patientId, fhirBaseURL, accessToken, redirectURIToExternalApp } = useFHIRContext();
+  const { launchType, patientId, fhirBaseURL, accessToken, returnURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
   const isRecordSaved = rrateConfirmedParam === 'true';
@@ -108,12 +109,15 @@ export default function Results() {
   };
 
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
-  const handleCorrectMeasurement = () => {
+  const handleCorrectMeasurement = async () => {
     setRRateConfirmed(true);
-    if (launchType == 'app') {
-      sendFHIRObservationToApp(patientId, rrate, redirectURIToExternalApp);
+    if (launchType === 'app') {
+      await sendFHIRObservationToApp(patientId, rrate);
+      Linking.openURL(returnURL);
     } else if (launchType === 'emr') {
-      sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
+      console.log("FHIRBaseURL: ", fhirBaseURL);
+      await sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
+      window.location.href = returnURL;
     }
   }
 

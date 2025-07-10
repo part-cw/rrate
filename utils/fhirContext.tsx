@@ -1,54 +1,77 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Types used for FHIR context and authentication
 type fhirContextType = {
-  launchType: 'standalone' | 'app' | 'emr' | null;
-  setLaunchType: (type: 'standalone' | 'app' | 'emr' | null) => void;
+  launchType: 'standalone' | 'app' | 'emr';
+  setLaunchType: (type: 'standalone' | 'app' | 'emr') => Promise<void>;
 
   fhirBaseURL: string;
-  setFHIRBaseURL: (url: string) => void;
+  setFHIRBaseURL: (url: string) => Promise<void>;
 
   accessToken: string;
-  setAccessToken: (token: string) => void;
+  setAccessToken: (id: string) => Promise<void>;
 
   patientId: string;
-  setPatientId: (id: string) => void;
+  setPatientId: (id: string) => Promise<void>;
 
-  redirectURIToExternalApp: string; // Optional, used for external app redirects
-  setRedirectURIToExternalApp: (url: string) => void;
-}
+  returnURL: string;
+  setReturnURL: (url: string) => void;
+};
 
 const FHIRContext = createContext<fhirContextType | null>(null);
 
-// Storage keys used to load and set values in SecureStore
 const STORAGE_KEYS = {
   FHIR_LAUNCH_TYPE: 'fhirLaunchType',
   FHIR_BASE_URL: 'fhirBaseURL',
-  FHIR_ACCESS_TOKEN: 'fhirAccessToken',
   FHIR_PATIENT_ID: 'fhirPatientId',
-}
+  FHIR_RETURN_URL: 'fhirReturnURL',
+};
 
 export const FHIRContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [launchType, setLaunchType] = useState<'standalone' | 'app' | 'emr' | null>(null);
-  const [fhirBaseURL, setFHIRBaseURL] = useState<string>('');
-  const [accessToken, setAccessToken] = useState<string>('');
-  const [patientId, setPatientId] = useState<string>('');
-  const [redirectURIToExternalApp, setRedirectURIToExternalApp] = useState<string>('');
+  const [launchType, saveLaunchType] = useState<'standalone' | 'app' | 'emr'>('standalone');
+  const [fhirBaseURL, saveFHIRBaseURL] = useState<string>('');
+  const [accessToken, saveAccessToken] = useState<string>('');
+  const [patientId, savePatientId] = useState<string>('');
+  const [returnURL, saveReturnURL] = useState<string>('');
+
+  // Persistent setters
+  const setLaunchType = async (type: 'standalone' | 'app' | 'emr') => {
+    saveLaunchType(type);
+    await AsyncStorage.setItem(STORAGE_KEYS.FHIR_LAUNCH_TYPE, type);
+  };
+
+  const setFHIRBaseURL = async (url: string) => {
+    saveFHIRBaseURL(url);
+    await AsyncStorage.setItem(STORAGE_KEYS.FHIR_BASE_URL, url);
+  };
+
+  // Don't save access token to async storage for security reasons
+  const setAccessToken = async (token: string) => {
+    saveAccessToken(token);
+  };
+
+  const setPatientId = async (id: string) => {
+    savePatientId(id);
+    await AsyncStorage.setItem(STORAGE_KEYS.FHIR_PATIENT_ID, id);
+  };
+
+  const setReturnURL = async (url: string) => {
+    saveReturnURL(url);
+    await AsyncStorage.setItem(STORAGE_KEYS.FHIR_RETURN_URL, url);
+  };
 
   // Load initial values from storage
   useEffect(() => {
     const loadInitialValues = async () => {
       const storedLaunchType = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_LAUNCH_TYPE);
       const storedBaseURL = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_BASE_URL);
-      const storedAccessToken = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_ACCESS_TOKEN);
       const storedPatientId = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_PATIENT_ID);
+      const storedReturnURL = await AsyncStorage.getItem(STORAGE_KEYS.FHIR_RETURN_URL);
 
-      if (storedLaunchType) setLaunchType(storedLaunchType as 'standalone' | 'app' | 'emr');
-      if (storedBaseURL) setFHIRBaseURL(storedBaseURL);
-      if (storedAccessToken) setAccessToken(storedAccessToken);
-      if (storedPatientId) setPatientId(storedPatientId);
+      if (storedLaunchType) saveLaunchType(storedLaunchType as 'standalone' | 'app' | 'emr');
+      if (storedBaseURL) saveFHIRBaseURL(storedBaseURL);
+      if (storedPatientId) savePatientId(storedPatientId);
+      if (storedReturnURL) saveReturnURL(storedReturnURL);
     };
 
     loadInitialValues();
@@ -65,18 +88,17 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
         setAccessToken,
         patientId,
         setPatientId,
-        redirectURIToExternalApp,
-        setRedirectURIToExternalApp
-      }
-      }>
+        returnURL,
+        setReturnURL,
+      }}
+    >
       {children}
     </FHIRContext.Provider>
   );
-}
-
+};
 
 export const useFHIRContext = () => {
   const context = useContext(FHIRContext);
   if (!context) throw new Error('useFHIRContext must be used within a FHIRContextProvider');
   return context;
-}
+};

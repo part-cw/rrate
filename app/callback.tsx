@@ -3,20 +3,20 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
-const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r4/token';
+const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r2/auth/token';
 const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
 
 export default function CallbackScreen() {
   const router = useRouter();
   const { code, state } = useLocalSearchParams();
-  const { setAccessToken, setPatientId } = useFHIRContext();
+  const { launchType, setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
     if (!code) return;
 
     const redirectUri =
       Platform.OS === 'web'
-        ? "https://rrate.netlify.app/callback"
+        ? "http://localhost:8081/callback"
         : "rrate://callback";
 
     async function exchangeCodeForToken() {
@@ -34,6 +34,7 @@ export default function CallbackScreen() {
           }).toString(),
         });
 
+        console.log("Luanch type:", launchType);
         const tokenJson = await response.json();
 
         if (!response.ok) {
