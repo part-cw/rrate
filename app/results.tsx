@@ -112,8 +112,7 @@ export default function Results() {
   const handleCorrectMeasurement = async () => {
     setRRateConfirmed(true);
     if (launchType === 'app') {
-      await sendFHIRObservationToApp(patientId, rrate);
-      Linking.openURL(returnURL);
+      await sendFHIRObservationToApp(patientId, rrate, returnURL);
     } else if (launchType === 'emr') {
       console.log("FHIRBaseURL: ", fhirBaseURL);
       await sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
