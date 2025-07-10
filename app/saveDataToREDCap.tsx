@@ -95,7 +95,7 @@ export default function SaveDataToREDCap() {
             <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleUpload()}>
               {t("UPLOAD")}
             </Button> :
-            <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
+            <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
               try {
                 saveSession(recordID, rrate, rrTime, rrTaps);
                 setResponse("Session saved.");
