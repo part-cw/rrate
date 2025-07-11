@@ -8,6 +8,7 @@ import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import { useAudioPlayer } from 'expo-audio';
+import loadAndPlayAudio from '../utils/audioFunctions';
 import useTranslation from '../utils/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
@@ -29,9 +30,11 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod } = useGlobalVariables();
-  const audioSource = require('../assets/audio/notification_alert.mp3'); // Thank you to Universfield on Pixabay for this auio
-  const player = useAudioPlayer(audioSource);
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod, breathingAudioEnabled, endChimeEnabled } = useGlobalVariables();
+  const endChimeSource = require('../assets/audio/endChime.mp3'); // Thank you to Universfield on Pixabay for this audio
+  const endChimePlayer = useAudioPlayer(endChimeSource);
+  const breathingAudioSource = require('../assets/audio/breathing.mp3');
+  const breathingAudioPlayer = useAudioPlayer(breathingAudioSource);
 
 
   // REFS (stores mutable values that do not cause re-renders when changed)
@@ -139,14 +142,10 @@ export default function Index() {
     };
   }, []);
 
-  // Load the chime to alert the user when the measurement is complete.
-  const loadAndPlayAlert = () => {
-    player.seekTo(0);
-    player.play();
-  };
-
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
+    console.log("end chime enabled: ", endChimeEnabled);
+    if (breathingAudioEnabled) loadAndPlayAudio(breathingAudioPlayer);
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
 
@@ -184,7 +183,8 @@ export default function Index() {
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
-        loadAndPlayAlert();
+        console.log("end chime enabled: ", endChimeEnabled);
+        if (endChimeEnabled) loadAndPlayAudio(endChimePlayer);
         router.push("/results");
         return;
       } else {

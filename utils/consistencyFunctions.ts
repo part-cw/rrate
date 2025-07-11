@@ -1,4 +1,4 @@
-// Testable functions (ie. those that don't use global variables or React hooks)
+// Testable functions related to the RRate algorithm (ie. those that don't use global variables or React hooks)
 
 // Returns the median of an array of numbers
 export function getMedian(arr: number[]): number {

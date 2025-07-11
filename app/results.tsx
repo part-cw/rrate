@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useAudioPlayer } from 'expo-audio';
-import * as Linking from 'expo-linking';
+import loadAndPlayAudio from '../utils/audioFunctions';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
@@ -82,23 +82,17 @@ export default function Results() {
           Vibration.vibrate(100); // vibrate when inhaling
         }
         if (next && breathingAudioEnabled) {
-          loadAndPlayAudio();
+          loadAndPlayAudio(player);
         }
         return next;
       });
     }, halfCycle);
   };
 
-  // Load the breathing audio and set playback rate based on respiratory rate
-  const loadAndPlayAudio = () => {
-    player.seekTo(0);
-    player.play();
-  };
-
   // On mount, begin the animation
   useFocusEffect(
     useCallback(() => {
-      if (breathingAudioEnabled) loadAndPlayAudio();
+      if (breathingAudioEnabled) loadAndPlayAudio(player);
       startBreathing();
 
       return () => {
@@ -121,7 +115,7 @@ export default function Results() {
     }
     setIsInhaling(true);
     startBreathing();
-    if (breathingAudioEnabled) loadAndPlayAudio();
+    if (breathingAudioEnabled) loadAndPlayAudio(player);
   };
 
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
