@@ -9,6 +9,7 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 import useTranslation from '../utils/useTranslation';
 import DropDown from "../components/DropdownList";
 import Copyright from "../components/Copyright";
+import Checkbox from "../components/Checkbox";
 import PatientModelPicker from "../components/PatientModelPicker";
 
 // Displays all general settings for the app, including language selection, age interpretation, REDCap settings, and configuration settings.
@@ -62,6 +63,15 @@ export default function Settings() {
                 <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> normal</Text> or
                 <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> high.</Text> </Text>
             </View>
+          </View>
+
+          {/* Audio */}
+          <View style={Style.floatingContainer}>
+            <Text style={[Style.heading, { marginBottom: 10 }]}> Audio </Text>
+            <Checkbox label="Breathing audio" checked={breathingAudioEnabled} onChange={() => setBreathingAudioEnabled(!breathingAudioEnabled)} />
+            <Checkbox label="Vibration on inhalation" checked={vibrationsEnabled} onChange={() => setVibrationsEnabled(!vibrationsEnabled)} />
+            <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
+
           </View>
 
           {/* Patient Model (Baby Animation) Selection */}

@@ -53,7 +53,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, REDCap } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, REDCap, breathingAudioEnabled, vibrationsEnabled } = useGlobalVariables();
   const { launchType, patientId, fhirBaseURL, accessToken, returnURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
@@ -78,7 +78,7 @@ export default function Results() {
     animationIntervalRef.current = setInterval(() => {
       setIsInhaling(prev => {
         const next = !prev;
-        if (next) {
+        if (next && vibrationsEnabled) {
           Vibration.vibrate(100); // vibrate when inhaling
         }
         return next;
@@ -100,7 +100,7 @@ export default function Results() {
   // On mount, begin the animation
   useFocusEffect(
     useCallback(() => {
-      loadAndPlayAudio();
+      if (breathingAudioEnabled) loadAndPlayAudio();
       startBreathing();
 
       return () => {
@@ -108,7 +108,7 @@ export default function Results() {
           clearInterval(animationIntervalRef.current);
           animationIntervalRef.current = null;
         }
-        if (player) {
+        if (player && breathingAudioEnabled) {
           player.pause?.();
         }
         Vibration.cancel();
@@ -123,7 +123,7 @@ export default function Results() {
     }
     setIsInhaling(true);
     startBreathing();
-    loadAndPlayAudio();
+    if (breathingAudioEnabled) loadAndPlayAudio();
   };
 
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
