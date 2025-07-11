@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Audio } from 'expo-av';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
@@ -49,7 +50,6 @@ export default function Results() {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
 
-
   const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, REDCap } = useGlobalVariables();
@@ -58,6 +58,7 @@ export default function Results() {
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
   const isRecordSaved = rrateConfirmedParam === 'true';
 
+  const soundRef = useRef<Audio.Sound | null>(null);
 
   // Variables for the baby animation
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -83,6 +84,7 @@ export default function Results() {
       });
     }, halfCycle);
   };
+
 
   // On mount, begin the animation
   useFocusEffect(
