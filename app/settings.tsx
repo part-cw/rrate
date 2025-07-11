@@ -71,7 +71,6 @@ export default function Settings() {
             <Checkbox label="Breathing audio" checked={breathingAudioEnabled} onChange={() => setBreathingAudioEnabled(!breathingAudioEnabled)} />
             <Checkbox label="Vibration on inhalation" checked={vibrationsEnabled} onChange={() => setVibrationsEnabled(!vibrationsEnabled)} />
             <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
-
           </View>
 
           {/* Patient Model (Baby Animation) Selection */}

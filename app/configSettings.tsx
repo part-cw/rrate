@@ -92,7 +92,8 @@ export default function ConfigSettings() {
       await deleteDatabase();
       setResponse('All sessions uploaded successfully and local database cleared.');
     } catch (error: any) {
-      setResponse('Upload failed:\n' + error.message);
+      setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
+      console.log('Error uploading to REDCap:', error.message || error);
     }
   };
 
@@ -167,11 +168,12 @@ export default function ConfigSettings() {
                     {!UploadSingleRecord && REDCapURL && REDCapAPI && (
                       <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => handleBulkUpload()}>Upload to REDCap</Button>)}
                     {response && (
-                      <View >
-                        <Text style={{ fontSize: 16 }}>{response}</Text>
+                      <View>
+                        <Text style={{ fontSize: 16, marginTop: 10, textAlign: 'center' }}>{response}</Text>
                       </View>
                     )}
                   </View>
+                  {/* <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => deleteDatabase()}>Delete</Button> */}
                 </View>
               )}
             </View>

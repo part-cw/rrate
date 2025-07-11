@@ -6,11 +6,12 @@ import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useAudioPlayer } from 'expo-audio';
 import loadAndPlayAudio from '../utils/audioFunctions';
+import { Linking } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
 import { useFHIRContext } from '../utils/fhirContext';
-import { sendFHIRObservation, sendFHIRObservationToApp } from '../utils/fhirFunctions';
+import { sendFHIRObservation, sendFHIRObservationToApp, saveFHIRObservationLocally } from '../utils/fhirFunctions';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
@@ -53,8 +54,8 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, setRRTaps, REDCap, breathingAudioEnabled, vibrationsEnabled } = useGlobalVariables();
-  const { launchType, patientId, fhirBaseURL, accessToken, returnURL } = useFHIRContext();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, REDCap, breathingAudioEnabled, vibrationsEnabled } = useGlobalVariables();
+  const { launchType, setLaunchType, patientId, fhirBaseURL, accessToken, returnURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
   const isRecordSaved = rrateConfirmedParam === 'true';
@@ -122,8 +123,16 @@ export default function Results() {
   const handleCorrectMeasurement = async () => {
     setRRateConfirmed(true);
     if (launchType === 'app') {
-      await sendFHIRObservationToApp(patientId, rrate, returnURL);
+      const fullUrl = await sendFHIRObservationToApp(patientId, rrate, returnURL);
+      setLaunchType('standalone'); // reset launch type to standalone for next use
+      try {
+        await Linking.openURL(fullUrl);
+      } catch (error) {
+        console.error('Failed to return to app:', error);
+        saveFHIRObservationLocally(patientId, rrate);
+      }
     } else if (launchType === 'emr') {
+      setLaunchType('standalone'); // reset launch type to standalone for next uses
       await sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
       window.location.href = returnURL;
     }
@@ -210,7 +219,8 @@ export default function Results() {
                   { /* TEST REDCap BUTTON */}
                   {REDCap && !isRecordSaved && (
                     <Button mode="contained"
-                      buttonColor={Theme.colors.secondary}
+                      icon="database-arrow-up"
+                      buttonColor={Theme.colors.primary}
                       style={{ paddingHorizontal: 30, marginRight: 10 }}
                       onPress={() => router.push("/saveDataToREDCap")}> REDCap </Button>
                   )}

@@ -45,17 +45,12 @@ export async function sendFHIRObservationToApp(patientId: string, rrate: string,
     timestamp: new Date().toISOString(),
   });
 
-  try {
-    const encoded = encodeURIComponent(JSON.stringify(observation));
+  const encoded = encodeURIComponent(JSON.stringify(observation));
 
-    // send the observation back via the return URL 
-    const fullUrl = `${returnURL}?observation=${encoded}`;
+  // send the observation back via the return URL 
+  const fullUrl = `${returnURL}?observation=${encoded}`;
 
-    await Linking.openURL(fullUrl);
-  } catch (error) {
-    console.error('Failed to send observation to app:', error);
-    saveFHIRObservationLocally(patientId, rrate);
-  }
+  return fullUrl;
 }
 
 // Load from AsyncStorage or return empty database

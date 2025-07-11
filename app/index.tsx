@@ -14,6 +14,7 @@ import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFun
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
 import Timer from '../components/Timer';
+import { useFHIRContext } from "../utils/fhirContext";
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
@@ -35,6 +36,7 @@ export default function Index() {
   const endChimePlayer = useAudioPlayer(endChimeSource);
   const breathingAudioSource = require('../assets/audio/breathing.mp3');
   const breathingAudioPlayer = useAudioPlayer(breathingAudioSource);
+  const { launchType } = useFHIRContext();
 
 
   // REFS (stores mutable values that do not cause re-renders when changed)
@@ -144,7 +146,6 @@ export default function Index() {
 
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
-    console.log("end chime enabled: ", endChimeEnabled);
     if (breathingAudioEnabled) loadAndPlayAudio(breathingAudioPlayer);
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
@@ -183,7 +184,6 @@ export default function Index() {
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
-        console.log("end chime enabled: ", endChimeEnabled);
         if (endChimeEnabled) loadAndPlayAudio(endChimePlayer);
         router.push("/results");
         return;
