@@ -86,7 +86,6 @@ export default function Index() {
       setRRate('');
       setTapTimestaps([]);
       setRRTime('');
-      console.log("Launch type", launchType)
 
       // Clear any timers just in case
       if (intervalRef.current) {

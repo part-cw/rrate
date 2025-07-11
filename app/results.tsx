@@ -1,10 +1,10 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Audio } from 'expo-av';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
+import { useAudioPlayer } from 'expo-audio';
 import * as Linking from 'expo-linking';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
@@ -17,6 +17,7 @@ import useTranslation from '../utils/useTranslation';
 
 // LOCAL VARIABLES
 const ages = ['<2 months', '2–12 months', '>1 year'];
+const audioSource = require('../assets/breathing.mp3');
 const babySVGMap = {
   1: {
     inflate: require('../assets/babyAnimation/Baby1_inflate.svg').default,
@@ -58,7 +59,7 @@ export default function Results() {
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
   const isRecordSaved = rrateConfirmedParam === 'true';
 
-  const soundRef = useRef<Audio.Sound | null>(null);
+  const player = useAudioPlayer(audioSource);
 
   // Variables for the baby animation
   const InflateSVG = babySVGMap[babyAnimation]?.inflate;
@@ -85,10 +86,21 @@ export default function Results() {
     }, halfCycle);
   };
 
+  // Load the breating audio and set playback rate based on respiratory rate
+  const loadAndPlayAudio = () => {
+    const audioDuration = 1.91; // taken from audio recording
+    const playbackRate = audioDuration / secondsPerBreath;
+    player.setPlaybackRate(playbackRate + 0.20); // set duration to match breathing cycle
+    player.loop = true;
+    player.shouldCorrectPitch = true;
+    player.seekTo(0);
+    player.play();
+  };
 
   // On mount, begin the animation
   useFocusEffect(
     useCallback(() => {
+      loadAndPlayAudio();
       startBreathing();
 
       return () => {
@@ -96,18 +108,22 @@ export default function Results() {
           clearInterval(animationIntervalRef.current);
           animationIntervalRef.current = null;
         }
+        if (player) {
+          player.pause?.();
+        }
         Vibration.cancel();
       };
     }, [])
   );
 
   // when animation is tapped, reset to start of exhalation state
-  const handleTap = () => {
+  const handleTap = async () => {
     if (animationIntervalRef.current) {
       clearInterval(animationIntervalRef.current);
     }
     setIsInhaling(true);
     startBreathing();
+    loadAndPlayAudio();
   };
 
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
@@ -116,7 +132,6 @@ export default function Results() {
     if (launchType === 'app') {
       await sendFHIRObservationToApp(patientId, rrate, returnURL);
     } else if (launchType === 'emr') {
-      console.log("FHIRBaseURL: ", fhirBaseURL);
       await sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
       window.location.href = returnURL;
     }
