@@ -17,7 +17,7 @@ import useTranslation from '../utils/useTranslation';
 
 // LOCAL VARIABLES
 const ages = ['<2 months', '2–12 months', '>1 year'];
-const audioSource = require('../assets/breathing.mp3');
+const audioSource = require('../assets/audio/breathing.mp3');
 const babySVGMap = {
   1: {
     inflate: require('../assets/babyAnimation/Baby1_inflate.svg').default,
@@ -81,18 +81,16 @@ export default function Results() {
         if (next && vibrationsEnabled) {
           Vibration.vibrate(100); // vibrate when inhaling
         }
+        if (next && breathingAudioEnabled) {
+          loadAndPlayAudio();
+        }
         return next;
       });
     }, halfCycle);
   };
 
-  // Load the breating audio and set playback rate based on respiratory rate
+  // Load the breathing audio and set playback rate based on respiratory rate
   const loadAndPlayAudio = () => {
-    const audioDuration = 1.91; // taken from audio recording
-    const playbackRate = audioDuration / secondsPerBreath;
-    player.setPlaybackRate(playbackRate + 0.20); // set duration to match breathing cycle
-    player.loop = true;
-    player.shouldCorrectPitch = true;
     player.seekTo(0);
     player.play();
   };

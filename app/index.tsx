@@ -7,12 +7,12 @@ import { Theme } from "../assets/theme";
 import { GlobalStyles as Style } from "@/assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
+import { useAudioPlayer } from 'expo-audio';
 import useTranslation from '../utils/useTranslation';
 import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
 import Timer from '../components/Timer';
-import { useFHIRContext } from "@/utils/fhirContext";
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
@@ -30,7 +30,9 @@ export default function Index() {
 
   // GLOBAL VARIABLES
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod } = useGlobalVariables();
-  const { launchType } = useFHIRContext();
+  const audioSource = require('../assets/audio/notification_alert.mp3'); // Thank you to Universfield on Pixabay for this auio
+  const player = useAudioPlayer(audioSource);
+
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -137,6 +139,11 @@ export default function Index() {
     };
   }, []);
 
+  // Load the chime to alert the user when the measurement is complete.
+  const loadAndPlayAlert = () => {
+    player.seekTo(0);
+    player.play();
+  };
 
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
@@ -177,6 +184,7 @@ export default function Index() {
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
+        loadAndPlayAlert();
         router.push("/results");
         return;
       } else {
