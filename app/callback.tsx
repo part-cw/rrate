@@ -4,12 +4,11 @@ import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
 const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
-// const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r4/token';
 
 export default function CallbackScreen() {
   const router = useRouter();
   const { code } = useLocalSearchParams();
-  const { setAccessToken, setPatientId } = useFHIRContext();
+  const { setAccessToken, setPatientId, setCodeVerifier } = useFHIRContext();
 
   useEffect(() => {
     if (!code) return;

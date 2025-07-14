@@ -33,8 +33,8 @@ export default function Launch() {
       // Launched from EMR
       if (iss && launch) {
         await setLaunchType('emr');
-        if (returnURL) setReturnURL(returnURL.toString());
-        setReturnURL("https://hl7.org/fhir/smart-app-launch/app-launch.html#retrieve-well-knownsmart-configuration"); // temporary hardcoded
+        if (returnURL) setReturnURL(returnURL.toString()); // if EMR provides a return URL
+        setReturnURL("https://hl7.org/fhir/smart-app-launch/app-launch.html#retrieve-well-knownsmart-configuration"); // temporarily hardcoded
 
         // authentication variables - HARD-CODED
         const clientId = "my-smart-app";
