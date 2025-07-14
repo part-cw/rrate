@@ -1,5 +1,5 @@
 # rrate
-A new version of the RRate app in React and React Native
+A new version of the RRate app in React and React Native.
 
 # Installation
 
@@ -28,9 +28,9 @@ After launching, you can open the app on another platform simultaneously by pres
 
 
 # Accessing the Configuration Settings
-This version of RRate ensures data security and protects features of the RRate algorithm by keeping some settings password-protected. If you are using RRate as part of an ongoing research project and require any of the following functions for your project, please contact the Institute for Global Health at [email] to receive the password: 
+This version of RRate ensures data security and protects features of the RRate algorithm by keeping some settings password-protected. If you are using RRate as part of an ongoing research project and require any of the following functions for your project, please contact the Institute for Global Health at part.cw@gmail.com to receive the password: 
 
 - changing the consistency threshold
 - changing the number of required taps
-- using a 60 sec timer instead of the RRate algorithm
+- using a 60 second timer instead of the RRate algorithm
 - sending data to a REDCap project
