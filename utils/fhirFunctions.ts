@@ -53,59 +53,6 @@ export async function sendFHIRObservationToApp(patientId: string, rrate: string,
   return fullUrl;
 }
 
-// Load from AsyncStorage or return empty database
-export async function loadFHIRDatabase(): Promise<FHIRDatabase> {
-  try {
-    const data = await AsyncStorage.getItem(FHIR_DB_KEY);
-    return data ? JSON.parse(data) : {};
-  } catch (error) {
-    console.error('Failed to load FHIR database:', error);
-    return {};
-  }
-}
-
-// Save entire database to AsyncStorage
-export async function saveFHIRDatabase(db: FHIRDatabase): Promise<void> {
-  try {
-    const json = JSON.stringify(db, null, 2);
-    await AsyncStorage.setItem(FHIR_DB_KEY, json);
-  } catch (error) {
-    console.error('Failed to save FHIR database:', error);
-  }
-}
-
-// Add new observation to the database
-export async function saveFHIRObservationLocally(patientId: string, rrate: string): Promise<void> {
-  const db = await loadFHIRDatabase();
-  const timestamp = new Date().toISOString();
-
-  const observation = getFHIRObservation({
-    patientId,
-    rrate,
-    timestamp,
-  });
-
-  const existing = db[patientId] ?? [];
-  db[patientId] = [...existing, observation];
-
-  await saveFHIRDatabase(db);
-}
-
-// Delete the entire FHIR observation database
-export async function deleteFHIRDatabase(): Promise<void> {
-  try {
-    const exists = await AsyncStorage.getItem(FHIR_DB_KEY);
-    if (exists !== null) {
-      await AsyncStorage.removeItem(FHIR_DB_KEY);
-      console.log('FHIR database deleted.');
-    } else {
-      console.log('No FHIR database found to delete.');
-    }
-  } catch (error) {
-    console.error('Failed to delete FHIR database:', error);
-  }
-}
-
 // Retrieves the endpoint from the FHIR server's .well-known/smart-configuration, allowing access to metadata including the 
 // authorization endpoint and token endpoint
 export async function fetchEndpoint(iss: string) {

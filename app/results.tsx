@@ -11,7 +11,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { GlobalStyles as Style } from '@/assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
 import { useFHIRContext } from '../utils/fhirContext';
-import { sendFHIRObservation, sendFHIRObservationToApp, saveFHIRObservationLocally } from '../utils/fhirFunctions';
+import { sendFHIRObservation, sendFHIRObservationToApp } from '../utils/fhirFunctions';
 import DropdownList from '../components/DropdownList';
 import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
@@ -129,7 +129,6 @@ export default function Results() {
         await Linking.openURL(fullUrl);
       } catch (error) {
         console.error('Failed to return to app:', error);
-        saveFHIRObservationLocally(patientId, rrate);
       }
     } else if (launchType === 'emr') {
       setLaunchType('standalone'); // reset launch type to standalone for next uses

@@ -7,7 +7,7 @@ import * as Crypto from 'expo-crypto';
 
 export default function Launch() {
   const { iss, launch, redirectURI, fhirBase, patient, accessToken, returnURL } = useLocalSearchParams();
-  const { launchType, setCodeVerifier, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
+  const { launchType, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
   const router = useRouter();
 
 
@@ -56,7 +56,7 @@ export default function Launch() {
         // Generate code verifier and code challenge for PKCE
         var code_verifier = base64URLEncode(Crypto.getRandomBytes(32).toString());
         // Store codeVerifier securely for token exchange later
-        setCodeVerifier(code_verifier);
+        sessionStorage.setItem('pkce_code_verifier', code_verifier);
         // Generate code challenge from code verifier
         var transformed_verifier = await generateCodeChallenger(code_verifier);
         var code_challenge = base64URLEncode(transformed_verifier);

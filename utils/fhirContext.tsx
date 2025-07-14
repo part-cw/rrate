@@ -17,9 +17,6 @@ type fhirContextType = {
 
   returnURL: string;
   setReturnURL: (url: string) => void;
-
-  codeVerifier: string;
-  setCodeVerifier: (url: string) => Promise<void>;
 };
 
 const FHIRContext = createContext<fhirContextType | null>(null);
@@ -30,7 +27,6 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
   const [accessToken, saveAccessToken] = useState<string>('');
   const [patientId, savePatientId] = useState<string>('');
   const [returnURL, saveReturnURL] = useState<string>('');
-  const [codeVerifier, saveCodeVerifier] = useState<string>('');
 
   // Memory-only setters
   const setLaunchType = async (type: 'standalone' | 'app' | 'emr') => {
@@ -53,10 +49,6 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
     saveReturnURL(url);
   };
 
-  const setCodeVerifier = async (code: string) => {
-    saveCodeVerifier(code);
-  };
-
   return (
     <FHIRContext.Provider
       value={{
@@ -70,8 +62,6 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
         setPatientId,
         returnURL,
         setReturnURL,
-        codeVerifier,
-        setCodeVerifier
       }}
     >
       {children}

@@ -8,7 +8,7 @@ const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
 export default function CallbackScreen() {
   const router = useRouter();
   const { code } = useLocalSearchParams();
-  const { setAccessToken, setPatientId, setCodeVerifier } = useFHIRContext();
+  const { setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
     if (!code) return;
@@ -21,7 +21,7 @@ export default function CallbackScreen() {
     async function exchangeCodeForToken() {
       try {
         const tokenEndpoint = sessionStorage.getItem('token_endpoint');
-        const code_verifier = sessionStorage.getItem('pkce_code_verifier');
+        const codeVerifier = sessionStorage.getItem('pkce_code_verifier');
         if (!tokenEndpoint) {
           throw new Error('Token endpoint is missing from sessionStorage');
         }
@@ -35,7 +35,7 @@ export default function CallbackScreen() {
             code: code.toString(),
             redirect_uri: redirectUri,
             client_id: CLIENT_ID,
-            code_verifier: code_verifier || ''
+            code_verifier: codeVerifier || ''
           }).toString(),
         });
 
