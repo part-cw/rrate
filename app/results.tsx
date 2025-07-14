@@ -134,6 +134,8 @@ export default function Results() {
       setLaunchType('standalone'); // reset launch type to standalone for next uses
       await sendFHIRObservation(FHIRBaseURL, patientId, rrate, accessToken);
       window.location.href = returnURL;
+    } else { // standalone launch
+      router.push('/saveDataToREDCap');
     }
   }
 
@@ -214,24 +216,14 @@ export default function Results() {
             {/* Sets bottom buttons based on whether user has confirmed rate or not */}
             {rrateConfirmed ? (
               <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
-                  { /* TEST REDCap BUTTON */}
-                  {REDCap && !isRecordSaved && (
-                    <Button mode="contained"
-                      icon="database-arrow-up"
-                      buttonColor={Theme.colors.primary}
-                      style={{ paddingHorizontal: 30, marginRight: 10 }}
-                      onPress={() => router.push("/saveDataToREDCap")}> REDCap </Button>
-                  )}
-                  <Button
-                    icon="arrow-u-right-bottom"
-                    buttonColor={Theme.colors["neutral-bttn"]}
-                    mode="contained"
-                    onPress={() => router.push("/")}
-                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
-                    {t("RESTART")}
-                  </Button>
-                </View>
+                <Button
+                  icon="arrow-u-right-bottom"
+                  buttonColor={Theme.colors["neutral-bttn"]}
+                  mode="contained"
+                  onPress={() => router.push("/")}
+                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                  {t("RESTART")}
+                </Button>
               </View>
             ) : (
               <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
