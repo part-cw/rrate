@@ -8,7 +8,7 @@ const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
 
 export default function CallbackScreen() {
   const router = useRouter();
-  const { code, state } = useLocalSearchParams();
+  const { code } = useLocalSearchParams();
   const { launchType, setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
@@ -21,6 +21,7 @@ export default function CallbackScreen() {
 
     async function exchangeCodeForToken() {
       try {
+        const code_verifier = sessionStorage.getItem('pkce_code_verifier');
         const response = await fetch(TOKEN_ENDPOINT, {
           method: 'POST',
           headers: {
@@ -31,6 +32,7 @@ export default function CallbackScreen() {
             code: code.toString(),
             redirect_uri: redirectUri,
             client_id: CLIENT_ID,
+            code_verifier: code_verifier || ''
           }).toString(),
         });
 

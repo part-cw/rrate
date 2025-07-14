@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Platform, Linking } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFHIRContext } from '../utils/fhirContext';
+import * as Crypto from 'expo-crypto';
 
 export default function Launch() {
   const { iss, launch, redirectURI, fhirBase, patient, accessToken, returnURL } = useLocalSearchParams();
@@ -28,6 +29,23 @@ export default function Launch() {
     }
   };
 
+  // Encodes random string in in base64 URL with high entropy, as required by OAuth 2.0
+  function base64URLEncode(str: string) {
+    return str
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+  }
+
+  // creates a S256 hash of the code verifier
+  async function generateCodeChallenger(verifier: string) {
+    return await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      verifier,
+      { encoding: Crypto.CryptoEncoding.BASE64 }
+    );
+  }
+
   useEffect(() => {
     const handleLaunch = async () => {
       // Launched from EMR
@@ -50,13 +68,23 @@ export default function Launch() {
         // Retrieve authorization endpoint from the server 
         const authorizationEndpoint = await fetchAuthorizationEndpoint(iss.toString());
 
+        // Generate code verifier and code challenge for PKCE
+        var code_verifier = base64URLEncode(Crypto.getRandomBytes(32).toString());
+        // Store codeVerifier securely for token exchange later
+        sessionStorage.setItem('pkce_code_verifier', code_verifier);
+        // Generate code challenge from code verifier
+        var transformed_verifier = await generateCodeChallenger(code_verifier);
+        var code_challenge = base64URLEncode(transformed_verifier);
+
         const authorizeUrl = authorizationEndpoint +
           `?response_type=code&` +
           `client_id=${encodeURIComponent(clientId)}&` +
           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
           `scope=${encodeURIComponent(scope)}&` +
           `aud=${encodeURIComponent(simpleIss)}&` +
-          `launch=${launch}`;
+          `launch=${launch}&` +
+          `code_challenge=${encodeURIComponent(code_challenge)}&` +
+          `code_challenge_method=S256`;
 
         if (Platform.OS === 'web') {
           window.location.href = authorizeUrl;
