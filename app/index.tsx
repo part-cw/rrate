@@ -10,7 +10,7 @@ import { useGlobalVariables } from "../utils/globalContext";
 import { useAudioPlayer } from 'expo-audio';
 import loadAndPlayAudio from '../utils/audioFunctions';
 import useTranslation from '../utils/useTranslation';
-import { evaluateRecentTaps, generateRRTapString } from '../utils/consistencyFunctions';
+import { evaluateRecentTaps, generateRRTapString, getLocalTimestamp } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
 import Timer from '../components/Timer';
@@ -180,7 +180,7 @@ export default function Index() {
     setTapTimestaps(updated); // store timestamps in the global context
     const rrTaps = generateRRTapString(updated); // generate the string for REDCap
     setRRTaps(rrTaps);
-    setRRTime(rrTaps.split(';')[0]);
+    setRRTime(getLocalTimestamp());
 
     if (result.isConsistent === true) {
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {

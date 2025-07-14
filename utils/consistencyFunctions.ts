@@ -44,3 +44,12 @@ export function generateRRTapString(timestamps: number[]): string {
 
   return [formattedStart, ...deltas].join(';');
 }
+
+// Returns local time in format of (Y-M-D H:M:S)
+export function getLocalTimestamp() {
+  const startDate = new Date();
+  const formattedDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}` +
+    ` ${startDate.getHours()}:${startDate.getMinutes()}:${startDate.getSeconds()}`;
+
+  return formattedDate;
+}

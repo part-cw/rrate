@@ -58,7 +58,6 @@ export default function Results() {
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
-  const isRecordSaved = rrateConfirmedParam === 'true';
 
   const player = useAudioPlayer(audioSource);
 
