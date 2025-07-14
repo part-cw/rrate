@@ -250,6 +250,7 @@ export const GlobalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 8,
+    paddingRight: 30
   },
   checkbox: {
     height: 22,

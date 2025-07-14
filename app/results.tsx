@@ -115,7 +115,7 @@ export default function Results() {
     }
     setIsInhaling(true);
     startBreathing();
-    if (breathingAudioAfterEnabled) loadAndPlayAudio(player);
+    // if (breathingAudioAfterEnabled) loadAndPlayAudio(player);
   };
 
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
