@@ -8,6 +8,26 @@ export default function Launch() {
   const { setFHIRBaseURL, launchType, setLaunchType, setPatientId, setReturnURL } = useFHIRContext();
   const router = useRouter();
 
+  // Retrieves the authorization endpoint from the FHIR server's .well-known/smart-configuration
+  const fetchAuthorizationEndpoint = async (iss: string) => {
+    try {
+      const response = await fetch(`${iss}/.well-known/smart-configuration`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          }
+        }
+      );
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      return data.authorization_endpoint;
+    } catch (error) {
+      console.error('Error fetching authorization endpoint:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     const handleLaunch = async () => {
       // Launched from EMR
@@ -16,7 +36,7 @@ export default function Launch() {
         if (returnURL) setReturnURL(returnURL.toString());
         setReturnURL("https://hl7.org/fhir/smart-app-launch/app-launch.html#retrieve-well-knownsmart-configuration"); // temporary hardcoded
 
-        // authentication variables
+        // authentication variables - HARD-CODED
         const clientId = "my-smart-app";
         const redirectUri = Platform.OS === 'web'
           ? "http://localhost:8081/callback"
@@ -25,10 +45,13 @@ export default function Launch() {
         const scope = "launch patient/Observation.write openid fhirUser";
         const simpleIss = Array.isArray(iss) ? iss[0] : iss; // sometimes iss is an array, handle that case
         const base = simpleIss.replace(/\/fhir\/?$/, ''); // removes /fhir from iss, so url is in correct directory to find fhir base url
-        await setFHIRBaseURL(`${iss}`);
+        await setFHIRBaseURL(`${iss}`); // save for use in response from server in callback.tsx 
 
-        const authorizeUrl = `${base}/auth/authorize?` +
-          `response_type=code&` +
+        // Retrieve authorization endpoint from the server 
+        const authorizationEndpoint = await fetchAuthorizationEndpoint(iss.toString());
+
+        const authorizeUrl = authorizationEndpoint +
+          `?response_type=code&` +
           `client_id=${encodeURIComponent(clientId)}&` +
           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
           `scope=${encodeURIComponent(scope)}&` +
