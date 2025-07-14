@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, Alert, Pressable, Platform, InteractionManager, StyleSheet } from "react-native";
+import { View, Text, ScrollView, Pressable, Platform, InteractionManager } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, TextInput } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
@@ -7,8 +7,6 @@ import { Theme } from "../assets/theme";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import useTranslation from '../utils/useTranslation';
-import { uploadRecordToREDCap } from "../utils/redcap";
-import { loadDatabase, deleteDatabase } from "../utils/storeSessionData";
 import Copyright from "../components/Copyright";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 import Checkbox from "../components/Checkbox";
@@ -25,7 +23,7 @@ export default function ConfigSettings() {
     RepeatableInstrument, UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
   } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? useState('tap') : useState('timer');
-  const [response, setResponse] = useState<string>("");
+
   const tapCountOptions = [3, 4, 5, 6];
   const consistencyThresholdOptions = [10, 11, 12, 13, 14];
 
@@ -40,62 +38,6 @@ export default function ConfigSettings() {
 
     return () => task.cancel();
   }, [configSettingsUnlocked]);
-
-  // Handles bulk upload of stored measurements to REDCap
-  const handleBulkUpload = async () => {
-    if (!REDCapURL || !REDCapAPI) {
-      Alert.alert('Missing Info', 'Please enter your REDCap URL and API token in Settings first.');
-      return;
-    }
-
-    try {
-      // Access saved measurements that need to be uploaded to REDCap
-      const db = await loadDatabase();
-      const recordNums = Object.keys(db);
-
-      if (recordNums.length === 0) {
-        setResponse('No saved sessions requiring upload.');
-        return;
-      }
-
-      for (const recordNum of recordNums) {
-        const sessions = db[recordNum];
-        const session = sessions[0];
-
-        if (!session) {
-          continue; // Skip if no session data
-        }
-
-        // The new record to upload
-        const record = [
-          {
-            record_id: session.record_id,
-            rrate_rate: session.rr_rate,
-            rrate_time: session.rr_time,
-            rrate_taps: session.rr_taps
-          },
-        ];
-
-        const result = await uploadRecordToREDCap({
-          apiUrl: REDCapURL,
-          apiToken: REDCapAPI,
-          recordData: record,
-          recordID: session.record_id,
-          event: LongitudinalStudyEvent,
-          repeatableEvent: RepeatableEvent,
-          repeatInstrument: RepeatableInstrument,
-        });
-
-        console.log('Upload result for Record ID ' + session.record_id + ':' + result);
-      }
-
-      await deleteDatabase();
-      setResponse('All sessions uploaded successfully and local database cleared.');
-    } catch (error: any) {
-      setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
-      console.log('Error uploading to REDCap:', error.message || error);
-    }
-  };
 
 
   return (
@@ -164,16 +106,6 @@ export default function ConfigSettings() {
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                   </View>
-                  <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                    {!UploadSingleRecord && REDCapURL && REDCapAPI && (
-                      <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => handleBulkUpload()}>Upload to REDCap</Button>)}
-                    {response && (
-                      <View>
-                        <Text style={{ fontSize: 16, marginTop: 10, textAlign: 'center' }}>{response}</Text>
-                      </View>
-                    )}
-                  </View>
-                  {/* <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary }} onPress={() => deleteDatabase()}>Delete</Button> */}
                 </View>
               )}
             </View>
@@ -191,7 +123,6 @@ export default function ConfigSettings() {
               onSelect={(value) => {
                 setmeasurementMethodRadioButton(value);
                 setMeasurementMethod(value);
-                console.log("Measurement Method set to: " + measurementMethod);
               }}
             />
           </View>

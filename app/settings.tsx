@@ -1,10 +1,13 @@
-import { View, Text, ScrollView, Platform, Pressable } from "react-native";
-import { Button, Switch, TextInput } from 'react-native-paper';
+import { useState } from "react";
+import { View, Text, ScrollView, Alert, Pressable } from "react-native";
+import { Button, Switch } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import { Theme } from "../assets/theme";
+import { loadDatabase, deleteDatabase } from "../utils/storeSessionData";
+import { uploadRecordToREDCap } from "../utils/redcap";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import useTranslation from '../utils/useTranslation';
 import DropDown from "../components/DropdownList";
@@ -18,12 +21,13 @@ export default function Settings() {
   const { t } = useTranslation();
 
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioEnabled, setBreathingAudioEnabled,
-    endChimeEnabled, setEndChimeEnabled, vibrationsEnabled, setVibrationsEnabled
+    endChimeEnabled, setEndChimeEnabled, vibrationsEnabled, setVibrationsEnabled, REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
   } = useGlobalVariables();
 
   const ageThresholdToggle = () => {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
+  const [response, setResponse] = useState<string>("");
 
   // ADD THIS FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
   // const languages = [
@@ -34,6 +38,62 @@ export default function Settings() {
   const languages = [
     'English'
   ];
+
+  // Handles bulk upload of stored measurements to REDCap
+  const handleBulkUpload = async () => {
+    if (!REDCapURL || !REDCapAPI) {
+      Alert.alert('Missing Info', 'Please enter your REDCap URL and API token in Settings first.');
+      return;
+    }
+
+    try {
+      // Access saved measurements that need to be uploaded to REDCap
+      const db = await loadDatabase();
+      const recordNums = Object.keys(db);
+
+      if (recordNums.length === 0) {
+        setResponse('No saved sessions requiring upload.');
+        return;
+      }
+
+      for (const recordNum of recordNums) {
+        const sessions = db[recordNum];
+        const session = sessions[0];
+
+        if (!session) {
+          continue; // Skip if no session data
+        }
+
+        // The new record to upload
+        const record = [
+          {
+            record_id: session.record_id,
+            rrate_rate: session.rr_rate,
+            rrate_time: session.rr_time,
+            rrate_taps: session.rr_taps
+          },
+        ];
+
+        const result = await uploadRecordToREDCap({
+          apiUrl: REDCapURL,
+          apiToken: REDCapAPI,
+          recordData: record,
+          recordID: session.record_id,
+          event: LongitudinalStudyEvent,
+          repeatableEvent: RepeatableEvent,
+          repeatInstrument: RepeatableInstrument,
+        });
+
+        console.log('Upload result for Record ID ' + session.record_id + ':' + result);
+      }
+
+      await deleteDatabase();
+      setResponse('All sessions uploaded successfully and local database cleared.');
+    } catch (error: any) {
+      setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
+      console.log('Error uploading to REDCap:', error.message || error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
@@ -75,6 +135,24 @@ export default function Settings() {
 
           {/* Patient Model (Baby Animation) Selection */}
           <PatientModelPicker />
+
+          {/* Upload to REDCap */}
+          <View style={Style.floatingContainer}>
+            <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
+            <View >
+              <Text style={{ color: "#707070" }}>Import all saved measurements to your REDCap project.</Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
+              {REDCapURL && REDCapAPI ? (
+                <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>) :
+                (<Text style={{ color: Theme.colors.tertiary }}>No sessions to upload.</Text>)}
+            </View>
+            {response && (
+              <View>
+                <Text style={{ fontSize: 16, marginTop: 10, textAlign: 'center' }}>{response}</Text>
+              </View>
+            )}
+          </View>
 
           {/* Configuration Settings */}
           <Pressable onPress={() => router.push('/passwordConfigSettings')}>
