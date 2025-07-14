@@ -106,3 +106,24 @@ export async function deleteFHIRDatabase(): Promise<void> {
   }
 }
 
+// Retrieves the endpoint from the FHIR server's .well-known/smart-configuration, allowing access to metadata including the 
+// authorization endpoint and token endpoint
+export async function fetchEndpoint(iss: string) {
+  try {
+    const response = await fetch(`${iss}/.well-known/smart-configuration`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        }
+      }
+    );
+    if (!response.ok) throw new Error('Network response was not ok');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching endpoint:', error);
+    return null;
+  }
+};
+

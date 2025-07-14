@@ -3,13 +3,13 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
-const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r2/auth/token';
 const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
+// const TOKEN_ENDPOINT = 'https://launch.smarthealthit.org/v/r4/token';
 
 export default function CallbackScreen() {
   const router = useRouter();
   const { code } = useLocalSearchParams();
-  const { launchType, setAccessToken, setPatientId } = useFHIRContext();
+  const { setAccessToken, setPatientId } = useFHIRContext();
 
   useEffect(() => {
     if (!code) return;
@@ -21,8 +21,12 @@ export default function CallbackScreen() {
 
     async function exchangeCodeForToken() {
       try {
+        const tokenEndpoint = sessionStorage.getItem('token_endpoint');
         const code_verifier = sessionStorage.getItem('pkce_code_verifier');
-        const response = await fetch(TOKEN_ENDPOINT, {
+        if (!tokenEndpoint) {
+          throw new Error('Token endpoint is missing from sessionStorage');
+        }
+        const response = await fetch(tokenEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -36,7 +40,6 @@ export default function CallbackScreen() {
           }).toString(),
         });
 
-        console.log("Luanch type:", launchType);
         const tokenJson = await response.json();
 
         if (!response.ok) {

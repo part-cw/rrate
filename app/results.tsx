@@ -55,7 +55,7 @@ export default function Results() {
   const [age, setAge] = useState<string>("Set Age");
 
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, REDCap, breathingAudioEnabled, vibrationsEnabled } = useGlobalVariables();
-  const { launchType, setLaunchType, patientId, fhirBaseURL, accessToken, returnURL } = useFHIRContext();
+  const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
   const isRecordSaved = rrateConfirmedParam === 'true';
@@ -133,7 +133,7 @@ export default function Results() {
       }
     } else if (launchType === 'emr') {
       setLaunchType('standalone'); // reset launch type to standalone for next uses
-      await sendFHIRObservation(fhirBaseURL, patientId, rrate, accessToken);
+      await sendFHIRObservation(FHIRBaseURL, patientId, rrate, accessToken);
       window.location.href = returnURL;
     }
   }

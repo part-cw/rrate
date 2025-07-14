@@ -2,32 +2,14 @@ import { useEffect } from 'react';
 import { Platform, Linking } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFHIRContext } from '../utils/fhirContext';
+import { fetchEndpoint } from '../utils/fhirFunctions';
 import * as Crypto from 'expo-crypto';
 
 export default function Launch() {
   const { iss, launch, redirectURI, fhirBase, patient, accessToken, returnURL } = useLocalSearchParams();
-  const { setFHIRBaseURL, launchType, setLaunchType, setPatientId, setReturnURL } = useFHIRContext();
+  const { launchType, setCodeVerifier, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
   const router = useRouter();
 
-  // Retrieves the authorization endpoint from the FHIR server's .well-known/smart-configuration
-  const fetchAuthorizationEndpoint = async (iss: string) => {
-    try {
-      const response = await fetch(`${iss}/.well-known/smart-configuration`,
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-          }
-        }
-      );
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      return data.authorization_endpoint;
-    } catch (error) {
-      console.error('Error fetching authorization endpoint:', error);
-      return null;
-    }
-  };
 
   // Encodes random string in in base64 URL with high entropy, as required by OAuth 2.0
   function base64URLEncode(str: string) {
@@ -62,16 +44,19 @@ export default function Launch() {
 
         const scope = "launch patient/Observation.write openid fhirUser";
         const simpleIss = Array.isArray(iss) ? iss[0] : iss; // sometimes iss is an array, handle that case
-        const base = simpleIss.replace(/\/fhir\/?$/, ''); // removes /fhir from iss, so url is in correct directory to find fhir base url
-        await setFHIRBaseURL(`${iss}`); // save for use in response from server in callback.tsx 
 
         // Retrieve authorization endpoint from the server 
-        const authorizationEndpoint = await fetchAuthorizationEndpoint(iss.toString());
+        const endpoint = await fetchEndpoint(iss.toString());
+        console.log("Endpoint:", endpoint);
+
+        const authorizationEndpoint = endpoint.authorization_endpoint;
+        const tokenEndpoint = endpoint.token_endpoint;
+        sessionStorage.setItem('token_endpoint', tokenEndpoint);// save token endpoint for later use in callback.tsx
 
         // Generate code verifier and code challenge for PKCE
         var code_verifier = base64URLEncode(Crypto.getRandomBytes(32).toString());
         // Store codeVerifier securely for token exchange later
-        sessionStorage.setItem('pkce_code_verifier', code_verifier);
+        setCodeVerifier(code_verifier);
         // Generate code challenge from code verifier
         var transformed_verifier = await generateCodeChallenger(code_verifier);
         var code_challenge = base64URLEncode(transformed_verifier);
