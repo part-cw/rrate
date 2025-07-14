@@ -67,7 +67,8 @@ export default function SaveDataToREDCap() {
 
 
     } catch (error: any) {
-      setResponse('Upload failed:\n' + error.message);
+      setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
+      console.log('Error uploading to REDCap:', error.message || error);
     }
   };
 

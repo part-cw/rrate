@@ -54,7 +54,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, REDCap, breathingAudioEnabled, vibrationsEnabled } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, REDCap, breathingAudioAfterEnabled, vibrationsEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
@@ -81,7 +81,7 @@ export default function Results() {
         if (next && vibrationsEnabled) {
           Vibration.vibrate(100); // vibrate when inhaling
         }
-        if (next && breathingAudioEnabled) {
+        if (next && breathingAudioAfterEnabled) {
           loadAndPlayAudio(player);
         }
         return next;
@@ -92,7 +92,7 @@ export default function Results() {
   // On mount, begin the animation
   useFocusEffect(
     useCallback(() => {
-      if (breathingAudioEnabled) loadAndPlayAudio(player);
+      if (breathingAudioAfterEnabled) loadAndPlayAudio(player);
       startBreathing();
 
       return () => {
@@ -100,7 +100,7 @@ export default function Results() {
           clearInterval(animationIntervalRef.current);
           animationIntervalRef.current = null;
         }
-        if (player && breathingAudioEnabled) {
+        if (player && breathingAudioAfterEnabled) {
           player.pause?.();
         }
         Vibration.cancel();
@@ -115,7 +115,7 @@ export default function Results() {
     }
     setIsInhaling(true);
     startBreathing();
-    if (breathingAudioEnabled) loadAndPlayAudio(player);
+    if (breathingAudioAfterEnabled) loadAndPlayAudio(player);
   };
 
   // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation

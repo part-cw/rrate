@@ -31,13 +31,11 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod, breathingAudioEnabled, endChimeEnabled } = useGlobalVariables();
+  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod, breathingAudioDuringEnabled, endChimeEnabled } = useGlobalVariables();
   const endChimeSource = require('../assets/audio/endChime.mp3'); // Thank you to Universfield on Pixabay for this audio
   const endChimePlayer = useAudioPlayer(endChimeSource);
   const breathingAudioSource = require('../assets/audio/breathing.mp3');
   const breathingAudioPlayer = useAudioPlayer(breathingAudioSource);
-  const { launchType } = useFHIRContext();
-
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -146,7 +144,7 @@ export default function Index() {
 
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
-    if (breathingAudioEnabled) loadAndPlayAudio(breathingAudioPlayer);
+    if (breathingAudioDuringEnabled) loadAndPlayAudio(breathingAudioPlayer);
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
 

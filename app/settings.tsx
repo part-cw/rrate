@@ -20,8 +20,9 @@ export default function Settings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioEnabled, setBreathingAudioEnabled,
-    endChimeEnabled, setEndChimeEnabled, vibrationsEnabled, setVibrationsEnabled, REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
+  const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioDuringEnabled, setBreathingAudioDuringEnabled,
+    breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, vibrationsEnabled, setVibrationsEnabled,
+    REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
   } = useGlobalVariables();
 
   const ageThresholdToggle = () => {
@@ -128,7 +129,8 @@ export default function Settings() {
           {/* Audio */}
           <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}> Audio </Text>
-            <Checkbox label="Breathing audio" checked={breathingAudioEnabled} onChange={() => setBreathingAudioEnabled(!breathingAudioEnabled)} />
+            <Checkbox label="Breathing audio during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
+            <Checkbox label="Breathing audio after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
             <Checkbox label="Vibration on inhalation" checked={vibrationsEnabled} onChange={() => setVibrationsEnabled(!vibrationsEnabled)} />
             <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
           </View>

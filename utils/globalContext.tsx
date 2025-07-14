@@ -20,8 +20,11 @@ type globalContextType = {
   configSettingsUnlocked: boolean;
   setConfigSettingsUnlocked: (unlocked: boolean) => void;
 
-  breathingAudioEnabled: boolean;
-  setBreathingAudioEnabled: (value: boolean) => void;
+  breathingAudioDuringEnabled: boolean;
+  setBreathingAudioDuringEnabled: (value: boolean) => void;
+
+  breathingAudioAfterEnabled: boolean;
+  setBreathingAudioAfterEnabled: (value: boolean) => void;
 
   endChimeEnabled: boolean;
   setEndChimeEnabled: (value: boolean) => void;
@@ -93,7 +96,8 @@ const STORAGE_KEYS = {
   selectedLanguage: 'selectedLanguage',
   ageThresholdEnabled: 'ageThresholdEnabled',
   babyAnimation: 'babyAnimation',
-  breathingAudioEnabled: 'breathingAudioEnabled',
+  breathingAudioDuringEnabled: 'breathingAudioDuringEnabled',
+  breathingAudioAfterEnabled: 'breathingAudioAfterEnabled',
   endChimeEnabled: 'endChimeEnabled',
   vibrationsEnabled: 'vibrationsEnabled',
   measurementMethod: 'measurementMethod',
@@ -116,7 +120,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [babyAnimation, saveBabyAnimation] = useState<BabyAnimationOption>(1);
   const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
   const password = "67d1514f9bb64c1adcec4ff70c012a40d675612d4403bfae978193547b751142";
-  const [breathingAudioEnabled, saveBreathingAudioEnabled] = useState<boolean>(false);
+  const [breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled] = useState<boolean>(false);
+  const [breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled] = useState<boolean>(false);
   const [endChimeEnabled, saveEndChimeEnabled] = useState<boolean>(false);
   const [vibrationsEnabled, saveVibrationsEnabled] = useState<boolean>(false);
   const [measurementMethod, saveMeasurementMethod] = useState<string>('tap');
@@ -195,7 +200,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<string>(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage),
         loadFromStorage<boolean>(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v === 'true'),
         loadFromStorage<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => Number(v) as BabyAnimationOption),
-        loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioEnabled, saveBreathingAudioEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v === 'true'),
         loadFromStorage<string>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, v => v),
@@ -234,7 +240,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setSelectedLanguage = createPersistentSetter(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage);
   const setAgeThresholdEnabled = createPersistentSetter(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v.toString());
   const setBabyAnimation = createPersistentSetter(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => v.toString());
-  const setBreathingAudioEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioEnabled, saveBreathingAudioEnabled, v => v.toString());
+  const setBreathingAudioDuringEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v.toString());
+  const setBreathingAudioAfterEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v.toString());
   const setEndChimeEnabled = createPersistentSetter(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v.toString());
   const setVibrationsEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v.toString());
   const setMeasurementMethod = createPersistentSetter(STORAGE_KEYS.measurementMethod, saveMeasurementMethod);
@@ -260,8 +267,10 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setBabyAnimation,
         configSettingsUnlocked,
         setConfigSettingsUnlocked,
-        breathingAudioEnabled,
-        setBreathingAudioEnabled,
+        breathingAudioDuringEnabled,
+        setBreathingAudioDuringEnabled,
+        breathingAudioAfterEnabled,
+        setBreathingAudioAfterEnabled,
         endChimeEnabled,
         setEndChimeEnabled,
         vibrationsEnabled,
