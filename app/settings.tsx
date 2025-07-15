@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, ScrollView, Alert, Pressable } from "react-native";
+import { View, Text, ScrollView, Alert, Pressable, Platform } from "react-native";
 import { Button, Switch } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
@@ -141,7 +141,7 @@ export default function Settings() {
           <PatientModelPicker />
 
           {/* Upload to REDCap */}
-          <View style={Style.floatingContainer}>
+          {Platform.OS !== 'web' && <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
             <View >
               <Text style={{ color: "#707070" }}>Import all saved measurements to your REDCap project.</Text>
@@ -156,7 +156,7 @@ export default function Settings() {
                 <Text style={{ fontSize: 16, marginTop: 10, textAlign: 'center' }}>{response}</Text>
               </View>
             )}
-          </View>
+          </View>}
 
           {/* Configuration Settings */}
           <Pressable onPress={() => router.push('/passwordConfigSettings')}>

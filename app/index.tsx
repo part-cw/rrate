@@ -14,7 +14,6 @@ import { evaluateRecentTaps, generateRRTapString, getLocalTimestamp } from '../u
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
 import Timer from '../components/Timer';
-import { useFHIRContext } from "../utils/fhirContext";
 
 // The landing screen, where the measurement of respiratory rate takes place. 
 export default function Index() {
@@ -82,7 +81,6 @@ export default function Index() {
   // Reset all variables and intervals when the screen comes into focus
   useFocusEffect(
     useCallback(() => {
-      // Reset all relevant variables whenever the screen is focused (entered)
       tapCountRef.current = 0;
       setTime(0);
       setTimestamps([]);
@@ -97,7 +95,6 @@ export default function Index() {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
-
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
@@ -127,7 +124,6 @@ export default function Index() {
           setRRate(tapCountRef.current.toString());
           setTapTimestaps(timestamps);
           router.push({ pathname: "/results", params: { rrateConfirmed: 'false', isRecordSaved: "false" } });
-
           return 60;
         }
         return prev + 1;
@@ -164,7 +160,7 @@ export default function Index() {
     }
   }
 
-  // calculates consistency of taps; proceeds to results page if rate is below 140 and consistent
+  // Calculates consistency of taps; proceeds to results page if rate is below 140 and consistent
   function consistencyCalculation() {
     const now = Date.now() / 1000; // timestamp in seconds since epoch
     const updated = [...timestamps, now];
@@ -226,7 +222,7 @@ export default function Index() {
             }
           </View>
 
-          {/* Use Pressable instead of React Native Button to allow for larger button size and clickable area */}
+          {/* Using Pressable instead of React Native Button to allow for larger button size and clickable area */}
           <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 99 }]}>
             <Pressable
               onPressIn={() => setIsPressed(true)}
@@ -246,6 +242,7 @@ export default function Index() {
             </Pressable>
           </View>
 
+          {/* Modals hidden until triggered by effect */}
           <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
           <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
             setNotEnoughTapsModalVisible(false);

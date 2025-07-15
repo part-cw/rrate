@@ -19,7 +19,7 @@ export default function SaveDataToREDCap() {
 
   const { REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument, UploadSingleRecord, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
-  // Load the database of saved sessions when the page loads
+  // Load the database of saved measurements when the page loads
   useEffect(() => {
     async function debugDB() {
       const db = await loadDatabase();

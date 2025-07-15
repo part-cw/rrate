@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-// save variables used in launching from external app or EMR in memory
+// Save variables used in launching from external app or EMR in memory
 // NOTE: this information is not stored to disk for security, so it will reset for each session 
 type fhirContextType = {
   launchType: 'standalone' | 'app' | 'emr';

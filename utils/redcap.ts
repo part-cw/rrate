@@ -55,7 +55,7 @@ export async function uploadRecordToREDCap({
         };
       }
 
-      // CASE 3: Longitudinal only (no repetition)
+      // CASE 3: Longitudinal only (no repeatable instrument)
       if (event) {
         return {
           ...record,
@@ -63,7 +63,7 @@ export async function uploadRecordToREDCap({
         };
       }
 
-      // CASE 4: Classic, no longitudinal or repetition
+      // CASE 4: Classic, no longitudinal or repeatable instruments 
       return record;
     })
   );

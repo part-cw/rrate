@@ -1,15 +1,4 @@
 import { getFHIRObservation } from "./fhirObservation";
-import { Linking } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Variables for storing FHIR Observation 
-const FHIR_DB_KEY = 'fhir_observations.json';
-
-type FHIRObservation = ReturnType<typeof getFHIRObservation>;
-
-type FHIRDatabase = {
-  [patientId: string]: FHIRObservation[];
-};
 
 // Send the FHIR observation to the FHIR sever and redirect back to PARA if successful
 export async function sendFHIRObservation(fhirBaseUrl: string, patientId: string, rrate: string, accessToken: string) {

@@ -54,9 +54,9 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, REDCap, breathingAudioAfterEnabled, vibrationsEnabled } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
-  const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams();
+  const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
 
   const player = useAudioPlayer(audioSource);
@@ -73,13 +73,13 @@ export default function Results() {
   const msPerBreath = secondsPerBreath * 1000;
   const halfCycle = msPerBreath / 2;
 
-  // Start breathing loop: fade exhale out (inhale), then back in (exhale)
+  // Start breathing loop: fade exhale out (exhale), then back in (inhale)
   const startBreathing = () => {
     animationIntervalRef.current = setInterval(() => {
       setIsInhaling(prev => {
         const next = !prev;
         if (next && vibrationsEnabled) {
-          Vibration.vibrate(100); // vibrate when inhaling
+          Vibration.vibrate(100); // vibrate when exhaling
         }
         if (next && breathingAudioAfterEnabled) {
           loadAndPlayAudio(player);
@@ -108,17 +108,17 @@ export default function Results() {
     }, [])
   );
 
-  // when animation is tapped, reset to start of exhalation state
+  // When animation is tapped, reset to start of exhalation state
   const handleTap = async () => {
     if (animationIntervalRef.current) {
       clearInterval(animationIntervalRef.current);
     }
     setIsInhaling(true);
     startBreathing();
-    // if (breathingAudioAfterEnabled) loadAndPlayAudio(player);
   };
 
-  // handles the case where the user confirms the respiratory rate; if opened through PARA, send the FHIR observation
+  // Handles the case where the user confirms the respiratory rate. 
+  // If opened through PARA, send the FHIR observation via redirect URL to app; if opened through EMR, send the FHIR observation to the server and redirect back to EMR.
   const handleCorrectMeasurement = async () => {
     setRRateConfirmed(true);
     if (launchType === 'app') {
@@ -130,7 +130,7 @@ export default function Results() {
         console.error('Failed to return to app:', error);
       }
     } else if (launchType === 'emr') {
-      setLaunchType('standalone'); // reset launch type to standalone for next uses
+      setLaunchType('standalone'); // reset launch type to standalone for next use
       await sendFHIRObservation(FHIRBaseURL, patientId, rrate, accessToken);
       window.location.href = returnURL;
     } else { // standalone launch
@@ -169,6 +169,7 @@ export default function Results() {
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
       <ScrollView contentContainerStyle={Style.screenContainer}>
         <View style={Style.innerContainer}>
+
           {/* RRate Display */}
           <View style={[Style.floatingContainer, Style.rrateContainer, { paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
             <View style={Style.leftColumn}>

@@ -12,11 +12,13 @@ import RadioButtonGroup from "../components/RadioButtonGroup";
 import Checkbox from "../components/Checkbox";
 import Slider from "@react-native-community/slider";
 
-// The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, and the consistency threshold.
+// The configSettings page contains settings that should only be changed for research purposes, such as the measurement method, number of taps required, 
+// and the consistency threshold.
 export default function ConfigSettings() {
   const router = useRouter();
   const { t } = useTranslation();
 
+  // GLOBAL VARIABLES
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold,
     configSettingsUnlocked, setConfigSettingsUnlocked, REDCap, setREDCap, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, LongitudinalStudyEvent, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
@@ -46,15 +48,15 @@ export default function ConfigSettings() {
         <View style={Style.innerContainer}>
           <View style={{ alignItems: 'flex-start', width: 350 }}>
             <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => {
-              setConfigSettingsUnlocked(false);
+              setConfigSettingsUnlocked(false); // reset unlock status so users must re-enter password
               router.back();
             }}>
               {t("BACK")}
             </Button>
           </View>
 
-          {/* REDCap Settings - only display on mobile due to lack of secure web storage for API token */}
-          {Platform.OS !== 'ios' && (
+          {/* REDCap Settings - only display on mobile due to lack of secure storage for API token on web */}
+          {Platform.OS !== 'web' && (
             <View style={Style.floatingContainer}>
               <Text style={Style.heading}> REDCap</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>

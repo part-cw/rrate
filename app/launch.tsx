@@ -5,11 +5,13 @@ import { useFHIRContext } from '../utils/fhirContext';
 import { fetchEndpoint } from '../utils/fhirFunctions';
 import * as Crypto from 'expo-crypto';
 
+const CLIENT_ID = 'rrate-app'; // Replace with registered client_id connected to EHR platform 
+
+// Handles initial launch of the app from either an external app (like PARA) or from an EMR. Follows OAuth 2.0 authentication protocol, with additional PKCE security.
 export default function Launch() {
   const { iss, launch, redirectURI, fhirBase, patient, accessToken, returnURL } = useLocalSearchParams();
   const { launchType, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
   const router = useRouter();
-
 
   // Encodes random string in in base64 URL with high entropy, as required by OAuth 2.0
   function base64URLEncode(str: string) {
@@ -19,7 +21,7 @@ export default function Launch() {
       .replace(/=/g, '');
   }
 
-  // creates a S256 hash of the code verifier
+  // Creates a S256 hash of the code verifier
   async function generateCodeChallenger(verifier: string) {
     return await Crypto.digestStringAsync(
       Crypto.CryptoDigestAlgorithm.SHA256,
@@ -34,12 +36,9 @@ export default function Launch() {
       if (iss && launch) {
         await setLaunchType('emr');
         if (returnURL) setReturnURL(returnURL.toString()); // if EMR provides a return URL
-        setReturnURL("https://hl7.org/fhir/smart-app-launch/app-launch.html#retrieve-well-knownsmart-configuration"); // temporarily hardcoded
 
-        // authentication variables - HARD-CODED
-        const clientId = "my-smart-app";
         const redirectUri = Platform.OS === 'web'
-          ? "http://localhost:8081/callback"
+          ? "https://rrate.netlify.app/callback"
           : "rrate://callback";
 
         const scope = "launch patient/Observation.write openid fhirUser";
@@ -47,23 +46,20 @@ export default function Launch() {
 
         // Retrieve authorization endpoint from the server 
         const endpoint = await fetchEndpoint(iss.toString());
-        console.log("Endpoint:", endpoint);
 
         const authorizationEndpoint = endpoint.authorization_endpoint;
         const tokenEndpoint = endpoint.token_endpoint;
-        sessionStorage.setItem('token_endpoint', tokenEndpoint);// save token endpoint for later use in callback.tsx
+        sessionStorage.setItem('token_endpoint', tokenEndpoint); // save token endpoint for later use in callback.tsx; use sessionStorage to avoid lag in async setters
 
-        // Generate code verifier and code challenge for PKCE
-        var code_verifier = base64URLEncode(Crypto.getRandomBytes(32).toString());
-        // Store codeVerifier securely for token exchange later
-        sessionStorage.setItem('pkce_code_verifier', code_verifier);
-        // Generate code challenge from code verifier
-        var transformed_verifier = await generateCodeChallenger(code_verifier);
+        var code_verifier = base64URLEncode(Crypto.getRandomBytes(32).toString()); // Generate code verifier and code challenge for PKCE
+        sessionStorage.setItem('pkce_code_verifier', code_verifier); // again, save verifier for later use in callback.tsx; use sessionStorage to avoid lag in async setters
+        var transformed_verifier = await generateCodeChallenger(code_verifier); // Generate code challenge from code verifier
         var code_challenge = base64URLEncode(transformed_verifier);
 
+        // Authorization URL uses PKCE security 
         const authorizeUrl = authorizationEndpoint +
           `?response_type=code&` +
-          `client_id=${encodeURIComponent(clientId)}&` +
+          `client_id=${encodeURIComponent(CLIENT_ID)}&` +
           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
           `scope=${encodeURIComponent(scope)}&` +
           `aud=${encodeURIComponent(simpleIss)}&` +

@@ -3,8 +3,9 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
-const CLIENT_ID = 'my-smart-app'; // Replace with your actual client_id
+const CLIENT_ID = 'rrate-app'; // Replace with registered client_id connected to EHR platform 
 
+// Receives code and state from OAuth2 flow to finalize login and exchange for access token
 export default function CallbackScreen() {
   const router = useRouter();
   const { code } = useLocalSearchParams();
@@ -15,7 +16,7 @@ export default function CallbackScreen() {
 
     const redirectUri =
       Platform.OS === 'web'
-        ? "http://localhost:8081/callback"
+        ? "https://rrate.netlify.app/callback"
         : "rrate://callback";
 
     async function exchangeCodeForToken() {
@@ -24,7 +25,10 @@ export default function CallbackScreen() {
         const codeVerifier = sessionStorage.getItem('pkce_code_verifier');
         if (!tokenEndpoint) {
           throw new Error('Token endpoint is missing from sessionStorage');
+        } else if (!codeVerifier) {
+          throw new Error('PKCE code verifier is missing from sessionStorage');
         }
+
         const response = await fetch(tokenEndpoint, {
           method: 'POST',
           headers: {
@@ -48,7 +52,7 @@ export default function CallbackScreen() {
 
         const { access_token, patient } = tokenJson;
 
-        // Store access token and patient ID
+        // Store access token and patient ID to memory
         setAccessToken(access_token);
         setPatientId(patient);
 

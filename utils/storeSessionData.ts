@@ -48,7 +48,7 @@ export async function saveSession(recordID: string, rate: string, time: string, 
   const existingSessions = db[recordID] ?? [];
   db[recordID] = [...existingSessions, newSession];
 
-  const result = await saveDatabase(db);
+  await saveDatabase(db);
 }
 
 // Delete the entire database from AsyncStorage
