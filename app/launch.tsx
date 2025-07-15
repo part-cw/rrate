@@ -10,7 +10,7 @@ const CLIENT_ID = 'rrate-app'; // Replace with registered client_id connected to
 // Handles initial launch of the app from either an external app (like PARA) or from an EMR. Follows OAuth 2.0 authentication protocol, with additional PKCE security.
 export default function Launch() {
   const { iss, launch, redirectURI, patient, accessToken, returnURL } = useLocalSearchParams();
-  const { launchType, setLaunchType, setPatientId, setReturnURL } = useFHIRContext();
+  const { launchType, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
   const router = useRouter();
 
   // Encodes random string in in base64 URL with high entropy, as required by OAuth 2.0
@@ -36,12 +36,7 @@ export default function Launch() {
       if (iss && launch) {
         await setLaunchType('emr');
         if (returnURL) setReturnURL(returnURL.toString()); // if EMR provides a return URL
-
-        const redirectUri = Platform.OS === 'web'
-          ? "https://rrate.netlify.app/callback"
-          : "rrate://callback";
-
-        const scope = "launch patient/Observation.write openid fhirUser";
+        setFHIRBaseURL(iss.toString());
         const simpleIss = Array.isArray(iss) ? iss[0] : iss; // sometimes iss is an array, handle that case
 
         // Retrieve authorization endpoint from the server 
@@ -55,6 +50,12 @@ export default function Launch() {
         sessionStorage.setItem('pkce_code_verifier', code_verifier); // again, save verifier for later use in callback.tsx; use sessionStorage to avoid lag in async setters
         var transformed_verifier = await generateCodeChallenger(code_verifier); // Generate code challenge from code verifier
         var code_challenge = base64URLEncode(transformed_verifier);
+
+        const redirectUri = Platform.OS === 'web'
+          ? "https://rrate.netlify.app/callback"
+          : "rrate://callback";
+
+        const scope = "launch patient/Observation.write openid fhirUser";
 
         // Authorization URL uses PKCE security 
         const authorizeUrl = authorizationEndpoint +
@@ -79,7 +80,7 @@ export default function Launch() {
       if (patient && returnURL) {
         await setLaunchType('app');
         await setPatientId(typeof patient === 'string' ? patient : patient[0]);
-        setReturnURL(returnURL?.toString() ?? '');
+        setReturnURL(decodeURIComponent(returnURL[0]));
         router.replace('/');
       }
     };
