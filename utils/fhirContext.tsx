@@ -6,9 +6,6 @@ type fhirContextType = {
   launchType: 'standalone' | 'app' | 'emr';
   setLaunchType: (type: 'standalone' | 'app' | 'emr') => Promise<void>;
 
-  FHIRBaseURL: string;
-  setFHIRBaseURL: (url: string) => Promise<void>;
-
   accessToken: string;
   setAccessToken: (id: string) => Promise<void>;
 
@@ -23,7 +20,6 @@ const FHIRContext = createContext<fhirContextType | null>(null);
 
 export const FHIRContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [launchType, saveLaunchType] = useState<'standalone' | 'app' | 'emr'>('standalone');
-  const [FHIRBaseURL, saveFHIRBaseURL] = useState<string>('');
   const [accessToken, saveAccessToken] = useState<string>('');
   const [patientId, savePatientId] = useState<string>('');
   const [returnURL, saveReturnURL] = useState<string>('');
@@ -31,10 +27,6 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
   // Memory-only setters
   const setLaunchType = async (type: 'standalone' | 'app' | 'emr') => {
     saveLaunchType(type);
-  };
-
-  const setFHIRBaseURL = async (url: string) => {
-    saveFHIRBaseURL(url);
   };
 
   const setAccessToken = async (token: string) => {
@@ -54,8 +46,6 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
       value={{
         launchType,
         setLaunchType,
-        FHIRBaseURL,
-        setFHIRBaseURL,
         accessToken,
         setAccessToken,
         patientId,

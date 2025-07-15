@@ -146,6 +146,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
     saveREDCapAPI(token);
     if (Platform.OS === "web") {
       // Since Expo Secure Store is not available on web, use localStorage
+      // NOTE: for security reasons, REDCap is only available on mobile. This is kept for testing on web.
       localStorage.setItem('apiToken', token);
       return;
     } else {

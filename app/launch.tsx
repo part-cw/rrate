@@ -9,8 +9,8 @@ const CLIENT_ID = 'rrate-app'; // Replace with registered client_id connected to
 
 // Handles initial launch of the app from either an external app (like PARA) or from an EMR. Follows OAuth 2.0 authentication protocol, with additional PKCE security.
 export default function Launch() {
-  const { iss, launch, redirectURI, fhirBase, patient, accessToken, returnURL } = useLocalSearchParams();
-  const { launchType, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
+  const { iss, launch, redirectURI, patient, accessToken, returnURL } = useLocalSearchParams();
+  const { launchType, setLaunchType, setPatientId, setReturnURL } = useFHIRContext();
   const router = useRouter();
 
   // Encodes random string in in base64 URL with high entropy, as required by OAuth 2.0
@@ -76,17 +76,16 @@ export default function Launch() {
       }
 
       // Launched from external app (e.g. PARA)  
-      if (fhirBase && patient) {
+      if (patient && returnURL) {
         await setLaunchType('app');
         await setPatientId(typeof patient === 'string' ? patient : patient[0]);
-        await setFHIRBaseURL(Array.isArray(fhirBase) ? fhirBase[0] : fhirBase);
         setReturnURL(returnURL?.toString() ?? '');
         router.replace('/');
       }
     };
 
     handleLaunch();
-  }, [iss, launch, launchType, redirectURI, fhirBase, patient, accessToken, returnURL]);
+  }, [iss, launch, launchType, redirectURI, patient, accessToken, returnURL]);
 
   return null;
 }
