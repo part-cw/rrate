@@ -54,7 +54,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsEnabled } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsEnabled, REDCap } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
@@ -62,8 +62,8 @@ export default function Results() {
   const player = useAudioPlayer(audioSource);
 
   // Variables for the baby animation
-  const InflateSVG = babySVGMap[babyAnimation]?.inflate;
-  const DeflateSVG = babySVGMap[babyAnimation]?.deflate;
+  const InflateSVG = babySVGMap[babyAnimation as keyof typeof babySVGMap]?.inflate;
+  const DeflateSVG = babySVGMap[babyAnimation as keyof typeof babySVGMap]?.deflate;
   const [isInhaling, setIsInhaling] = useState(false);
   const animationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -133,7 +133,7 @@ export default function Results() {
       setLaunchType('standalone'); // reset launch type to standalone for next use
       await sendFHIRObservation(FHIRBaseURL, patientId, rrate, accessToken);
       window.location.href = returnURL;
-    } else { // standalone launch
+    } else if (REDCap) { // standalone launch
       router.push('/saveDataToREDCap');
     }
   }

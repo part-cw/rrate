@@ -1,15 +1,16 @@
-functionsDirectory = "/Users/annafriesen/RRate/rrate/netlify/functions"
-functionsDirectoryOrigin = "config"
-redirectsOrigin = "config"
 plugins = []
 headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
 
 [build]
-publish = "/Users/annafriesen/RRate/rrate/dist/web"
-publishOrigin = "config"
-commandOrigin = "config"
-command = "expo export"
-functions = "/Users/annafriesen/RRate/rrate/netlify/functions"
+publish = "/Users/annafriesen/RRate/rrate/dist"
+publishOrigin = "ui"
+commandOrigin = "ui"
+command = "expo export -p web"
 
 [build.environment]
 
@@ -24,17 +25,3 @@ functions = "/Users/annafriesen/RRate/rrate/netlify/functions"
 [build.processing.js]
 
 [build.services]
-
-[functions]
-
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200.0
-force = false
-
-[redirects.query]
-
-[redirects.conditions]
-
-[redirects.headers]
