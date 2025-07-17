@@ -208,14 +208,23 @@ export default function Index() {
       <View style={Style.screenContainer}>
         <View style={Style.innerContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
-            <Button
-              icon="close"
-              buttonColor={Theme.colors.tertiary}
-              mode="contained"
-              style={{ justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => { router.push("/") }}>
-              <Text>{t("CANCEL")}</Text>
-            </Button>
+            {tapCountRef.current == 0 ?
+              <Button
+                icon="information-outline"
+                buttonColor={Theme.colors["secondary-bttn"]}
+                mode="contained"
+                style={{ justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => { router.push("/tutorial") }}>
+                <Text>Tutorial</Text>
+              </Button> :
+              <Button
+                icon="close"
+                buttonColor={Theme.colors.tertiary}
+                mode="contained"
+                style={{ justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => { router.push("/") }}>
+                <Text>{t("CANCEL")}</Text>
+              </Button>}
             <Button
               icon="cog"
               buttonColor={Theme.colors["neutral-bttn"]}

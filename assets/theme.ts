@@ -23,6 +23,7 @@ export const Theme = {
     "errorContainer": "rgb(255, 218, 214)",
     "onErrorContainer": "rgb(65, 0, 2)",
     "neutral-bttn": "rgb(147, 145, 145)",
+    "secondary-bttn": "rgb(50, 63, 118)",
     "background": "rgb(253, 251, 255)",
     "onBackground": "rgb(26, 27, 31)",
     "surface": "rgb(253, 251, 255)",
