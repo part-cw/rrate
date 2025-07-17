@@ -26,6 +26,9 @@ type globalContextType = {
   breathingAudioAfterEnabled: boolean;
   setBreathingAudioAfterEnabled: (value: boolean) => void;
 
+  cancelAlertEnabled: boolean;
+  setCancelAlertEnabled: (value: boolean) => void;
+
   endChimeEnabled: boolean;
   setEndChimeEnabled: (value: boolean) => void;
 
@@ -99,6 +102,7 @@ const STORAGE_KEYS = {
   breathingAudioDuringEnabled: 'breathingAudioDuringEnabled',
   breathingAudioAfterEnabled: 'breathingAudioAfterEnabled',
   endChimeEnabled: 'endChimeEnabled',
+  cancelAlertEnabled: 'cancelAlertEnabled',
   vibrationsEnabled: 'vibrationsEnabled',
   measurementMethod: 'measurementMethod',
   consistencyThreshold: 'consistencyThreshold',
@@ -123,6 +127,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled] = useState<boolean>(false);
   const [breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled] = useState<boolean>(false);
   const [endChimeEnabled, saveEndChimeEnabled] = useState<boolean>(false);
+  const [cancelAlertEnabled, saveCancelAlertEnabled] = useState<boolean>(false);
   const [vibrationsEnabled, saveVibrationsEnabled] = useState<boolean>(false);
   const [measurementMethod, saveMeasurementMethod] = useState<string>('tap');
   const [consistencyThreshold, saveConsistencyThreshold] = useState(13);
@@ -204,6 +209,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.cancelAlertEnabled, saveCancelAlertEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v === 'true'),
         loadFromStorage<string>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, v => v),
         loadFromStorage<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, v => Number(v)),
@@ -244,6 +250,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setBreathingAudioDuringEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v.toString());
   const setBreathingAudioAfterEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v.toString());
   const setEndChimeEnabled = createPersistentSetter(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v.toString());
+  const setCancelAlertEnabled = createPersistentSetter(STORAGE_KEYS.cancelAlertEnabled, saveCancelAlertEnabled, v => v.toString());
   const setVibrationsEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v.toString());
   const setMeasurementMethod = createPersistentSetter(STORAGE_KEYS.measurementMethod, saveMeasurementMethod);
   const setConsistencyThreshold = createPersistentSetter(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold);
@@ -274,6 +281,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setBreathingAudioAfterEnabled,
         endChimeEnabled,
         setEndChimeEnabled,
+        cancelAlertEnabled,
+        setCancelAlertEnabled,
         vibrationsEnabled,
         setVibrationsEnabled,
         password,

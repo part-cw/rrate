@@ -21,7 +21,7 @@ export default function Settings() {
   const { t } = useTranslation();
 
   const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioDuringEnabled, setBreathingAudioDuringEnabled,
-    breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, vibrationsEnabled, setVibrationsEnabled,
+    breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, cancelAlertEnabled, setCancelAlertEnabled, vibrationsEnabled, setVibrationsEnabled,
     REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
   } = useGlobalVariables();
 
@@ -134,6 +134,7 @@ export default function Settings() {
               <Checkbox label="Breathing audio after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
               <Checkbox label="Vibration on inhalation" checked={vibrationsEnabled} onChange={() => setVibrationsEnabled(!vibrationsEnabled)} />
               <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
+              <Checkbox label="Sound alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
             </View>
           </View>
 

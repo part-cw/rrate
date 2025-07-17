@@ -1,11 +1,12 @@
 import { Modal, View, Text } from "react-native";
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { GlobalStyles as Style } from "@/assets/styles";
 import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
-import useTranslation from '@/utils/useTranslation';
+import useTranslation from '../utils/useTranslation';
+import { useGlobalVariables } from '../utils/globalContext';
 
 type Props = PropsWithChildren<{
   isVisible: boolean;

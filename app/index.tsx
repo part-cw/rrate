@@ -31,10 +31,14 @@ export default function Index() {
 
   // GLOBAL VARIABLES
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod, breathingAudioDuringEnabled, endChimeEnabled } = useGlobalVariables();
+
+  // AUDIO VARIABLES
   const endChimeSource = require('../assets/audio/endChime.mp3'); // Thank you to Universfield on Pixabay for this audio
   const endChimePlayer = useAudioPlayer(endChimeSource);
   const breathingAudioSource = require('../assets/audio/breathing.mp3');
   const breathingAudioPlayer = useAudioPlayer(breathingAudioSource);
+  const cancelAudioSource = require('../assets/audio/cancel.mp3');
+  const cancelAudio = useAudioPlayer(cancelAudioSource);
 
   // REFS (stores mutable values that do not cause re-renders when changed)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -43,13 +47,20 @@ export default function Index() {
   const tapCountRef = useRef(0);
 
   // MODAL DIALOG PAGE LOGIC
-  const tapsTooFast = () => setTapsTooFastModalVisible(true);
-  const inconsistentTaps = () => setTapsInconsistentModalVisible(true);
+  const tapsTooFast = () => {
+    loadAndPlayAudio(cancelAudio);
+    setTapsTooFastModalVisible(true);
+  }
+  const inconsistentTaps = () => {
+    loadAndPlayAudio(cancelAudio);
+    setTapsInconsistentModalVisible(true);
+  }
   const notEnoughTaps = () => {
     if (!notEnoughTapsModalVisible) {
       if (timeoutRef.current !== null) {
         clearTimeout(timeoutRef.current);
       }
+      loadAndPlayAudio(cancelAudio);
       setNotEnoughTapsModalVisible(true);
     }
   };
