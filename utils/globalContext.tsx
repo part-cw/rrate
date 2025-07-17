@@ -17,6 +17,9 @@ type globalContextType = {
   babyAnimation: BabyAnimationOption;
   setBabyAnimation: (value: BabyAnimationOption) => void;
 
+  exportDataEnabled: boolean;
+  setExportDataEnabled: (enabled: boolean) => void;
+
   configSettingsUnlocked: boolean;
   setConfigSettingsUnlocked: (unlocked: boolean) => void;
 
@@ -99,6 +102,7 @@ const STORAGE_KEYS = {
   selectedLanguage: 'selectedLanguage',
   ageThresholdEnabled: 'ageThresholdEnabled',
   babyAnimation: 'babyAnimation',
+  exportDataEnabled: 'exportDataEnabled',
   breathingAudioDuringEnabled: 'breathingAudioDuringEnabled',
   breathingAudioAfterEnabled: 'breathingAudioAfterEnabled',
   endChimeEnabled: 'endChimeEnabled',
@@ -122,6 +126,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [selectedLanguage, saveSelectedLanguage] = useState('English');
   const [ageThresholdEnabled, saveAgeThresholdEnabled] = useState(false);
   const [babyAnimation, saveBabyAnimation] = useState<BabyAnimationOption>(1);
+  const [exportDataEnabled, saveExportDataEnabled] = useState(false);
   const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
   const password = "67d1514f9bb64c1adcec4ff70c012a40d675612d4403bfae978193547b751142";
   const [breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled] = useState<boolean>(false);
@@ -206,6 +211,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<string>(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage),
         loadFromStorage<boolean>(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v === 'true'),
         loadFromStorage<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => Number(v) as BabyAnimationOption),
+        loadFromStorage<boolean>(STORAGE_KEYS.exportDataEnabled, saveExportDataEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v === 'true'),
@@ -247,6 +253,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setSelectedLanguage = createPersistentSetter(STORAGE_KEYS.selectedLanguage, saveSelectedLanguage);
   const setAgeThresholdEnabled = createPersistentSetter(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v.toString());
   const setBabyAnimation = createPersistentSetter(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => v.toString());
+  const setExportDataEnabled = createPersistentSetter(STORAGE_KEYS.exportDataEnabled, saveExportDataEnabled, v => v.toString());
   const setBreathingAudioDuringEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v.toString());
   const setBreathingAudioAfterEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v.toString());
   const setEndChimeEnabled = createPersistentSetter(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v.toString());
@@ -273,6 +280,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setAgeThresholdEnabled,
         babyAnimation,
         setBabyAnimation,
+        exportDataEnabled,
+        setExportDataEnabled,
         configSettingsUnlocked,
         setConfigSettingsUnlocked,
         breathingAudioDuringEnabled,

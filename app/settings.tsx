@@ -20,7 +20,7 @@ export default function Settings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioDuringEnabled, setBreathingAudioDuringEnabled,
+  const { REDCap, selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioDuringEnabled, setBreathingAudioDuringEnabled, exportDataEnabled, setExportDataEnabled,
     breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, cancelAlertEnabled, setCancelAlertEnabled, vibrationsEnabled, setVibrationsEnabled,
     REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
   } = useGlobalVariables();
@@ -108,14 +108,14 @@ export default function Settings() {
 
           {/* Language Selection */}
           <View style={Style.floatingContainer}>
-            <Text style={[Style.heading, { marginBottom: 10 }]}> Select Language </Text>
+            <Text style={[Style.heading, { marginBottom: 10 }]}>Select Language </Text>
             <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
           </View>
 
           {/* Patient Age Interpretation Dropdown */}
           <View style={Style.floatingContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Text style={Style.heading}> Patient Age Interpretation </Text>
+              <Text style={Style.heading}>Patient Age Interpretation </Text>
               <Switch value={ageThresholdEnabled}
                 onValueChange={ageThresholdToggle} />
             </View>
@@ -128,7 +128,7 @@ export default function Settings() {
 
           {/* Audio */}
           <View style={Style.floatingContainer}>
-            <Text style={[Style.heading, { marginBottom: 10 }]}> Audio </Text>
+            <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>
             <View>
               <Checkbox label="Breathing audio during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
               <Checkbox label="Breathing audio after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
@@ -159,6 +159,18 @@ export default function Settings() {
             )}
           </View>}
 
+          {/* Data Export */}
+          {!REDCap && <View style={Style.floatingContainer}>
+            <Text style={[Style.heading, { marginBottom: 10 }]}>Export Data</Text>
+            <Text style={{ color: "#707070" }}>Download up to 200 measurements as a CSV file.</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Switch value={exportDataEnabled}
+                onValueChange={setExportDataEnabled} />
+              <Text style={{ padding: 10 }}>Save measurements for download.</Text>
+            </View>
+          </View>
+          }
+
           {/* Configuration Settings */}
           <Pressable onPress={() => router.push('/passwordConfigSettings')}>
             <View style={[Style.floatingContainer, {
@@ -166,7 +178,7 @@ export default function Settings() {
             }]}>
 
               <EvilIcons name="lock" size={35} color="black" />
-              <Text style={Style.heading}> Configuration Settings</Text>
+              <Text style={Style.heading}>Configuration Settings</Text>
             </View>
           </Pressable>
 

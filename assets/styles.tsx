@@ -253,8 +253,8 @@ export const GlobalStyles = StyleSheet.create({
     paddingRight: 30
   },
   checkbox: {
-    height: 22,
-    width: 22,
+    height: 20,
+    width: 20,
     borderRadius: 4,
     borderWidth: 2,
     borderColor: '#666',
@@ -295,6 +295,12 @@ export const GlobalStyles = StyleSheet.create({
     // Android 
     elevation: 3,
     marginVertical: 10
+  },
+
+  // Tutorial box
+  tutorialBox: {
+    borderRadius: 10,
+    padding: 20
   }
 
 });
