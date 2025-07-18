@@ -58,6 +58,7 @@ export default function Results() {
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
+  const [isRecordSaved, setIsRecordSaved] = useState<boolean>(isRecordSavedParam === 'true');
 
   const player = useAudioPlayer(audioSource);
 
@@ -218,14 +219,26 @@ export default function Results() {
             {/* Sets bottom buttons based on whether user has confirmed rate or not */}
             {rrateConfirmed ? (
               <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
-                <Button
-                  icon="arrow-u-right-bottom"
-                  buttonColor={Theme.colors["neutral-bttn"]}
-                  mode="contained"
-                  onPress={() => router.push("/")}
-                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
-                  {t("RESTART")}
-                </Button>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+                  {!isRecordSaved && REDCap &&
+                    <Button
+                      icon="content-save-check-outline"
+                      buttonColor={Theme.colors.secondary}
+                      mode="contained"
+                      onPress={() => router.push("/saveDataToREDCap")}
+                      style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                      Save to REDCap
+                    </Button>
+                  }
+                  <Button
+                    icon="arrow-u-right-bottom"
+                    buttonColor={Theme.colors["neutral-bttn"]}
+                    mode="contained"
+                    onPress={() => router.push("/")}
+                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                    {t("RESTART")}
+                  </Button>
+                </View>
               </View>
             ) : (
               <View style={[Style.floatingContainer, Style.darkButtonContainer]}>

@@ -7,27 +7,22 @@ import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from '../utils/redcap';
 import { GlobalStyles as Style } from '@/assets/styles';
-import { saveREDCapSession, loadREDCapDatabase } from '../utils/storeSessionData';
+import { saveREDCapSession } from '../utils/storeSessionData';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
   const router = useRouter();
   const { t } = useTranslation();
+
+  // LOCAL VARIABLES
   const [response, setResponse] = useState<string | null>(null);
   const [recordID, setRecordID] = useState<string>("");
+  // Variables used for button logic
   const [isRecordSaved, setIsRecordSaved] = useState<boolean>(false);
+  const [isRecordUploaded, setIsRecordUploaded] = useState<boolean>(false);
 
-  const { REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument, UploadSingleRecord, rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
-
-  // Load the database of saved measurements when the page loads
-  useEffect(() => {
-    async function debugDB() {
-      const db = await loadREDCapDatabase();
-      console.log('Current DB contents:', JSON.stringify(db, null, 2));
-    }
-
-    debugDB();
-  }, []);
+  const { REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument, UploadSingleRecord,
+    rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
   // Handles upload of most recent session, posting record ID, rate, time, and tap string to REDCap
   const handleSingleUpload = async () => {
@@ -57,20 +52,27 @@ export default function SaveDataToREDCap() {
         repeatInstrument: RepeatableInstrument,
       });
 
+      setIsRecordUploaded(true);
       console.log('Upload result for Record ID ' + recordID + ':' + result);
       setResponse('Upload successful!');
-
-      // Redirect to the main screen after 3 seconds
-      setTimeout(() => {
-        router.replace('/');
-      }, 3000);
-
 
     } catch (error: any) {
       setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
       console.log('Error uploading to REDCap:', error.message || error);
     }
   };
+
+  // Handles saving most recent session to REDCap storage
+  const handleSingleSave = async () => {
+    try {
+      await saveREDCapSession(recordID, rrate, rrTime, rrTaps);
+      setResponse("Session saved.");
+      setIsRecordSaved(true);
+
+    } catch (error: any) {
+      setResponse("Error saving session: " + error.message);
+    }
+  }
 
   return (
     <View style={Style.redirectScreenContainer}>
@@ -89,24 +91,16 @@ export default function SaveDataToREDCap() {
           onChangeText={text => setRecordID(text)}
         />
         <View style={Style.lightButtonContainer}>
-          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
+          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }}
+            onPress={() => router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: `${isRecordSaved}` } })}>
             {t("BACK")}
           </Button>
-          {isRecordSaved && UploadSingleRecord ?
+          {isRecordSaved && !isRecordUploaded && UploadSingleRecord &&
             <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleUpload()}>
               {t("UPLOAD")}
-            </Button> :
-            <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={async () => {
-              try {
-                await saveREDCapSession(recordID, rrate, rrTime, rrTaps);
-                setResponse("Session saved.");
-                setIsRecordSaved(true);
-                if (!UploadSingleRecord) router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: 'true' } });
-
-              } catch (error: any) {
-                setResponse("Error saving session: " + error.message);
-              }
-            }}>
+            </Button>}
+          {!isRecordSaved &&
+            <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleSave()}>
               {t("SAVE")}
             </Button>
           }

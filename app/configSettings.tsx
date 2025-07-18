@@ -56,7 +56,7 @@ export default function ConfigSettings() {
           </View>
 
           {/* REDCap Settings - only display on mobile due to lack of secure storage for API token on web */}
-          {Platform.OS !== 'web' && (
+          {Platform.OS !== 'ios' && (
             <View style={Style.floatingContainer}>
               <Text style={Style.heading}> REDCap</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
