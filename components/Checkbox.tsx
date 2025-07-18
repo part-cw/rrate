@@ -16,7 +16,7 @@ export default function Checkbox({ label, checked, onChange }: Props) {
       <View style={[Style.checkbox, checked && Style.checked]}>
         {checked && <MaterialIcons name="check" size={18} color="white" />}
       </View>
-      <Text>{label}</Text>
+      <Text style={Style.text}>{label}</Text>
     </Pressable>
   );
 }

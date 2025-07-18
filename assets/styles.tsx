@@ -49,6 +49,13 @@ export const GlobalStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20
   },
+  heading: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  text: {
+    fontSize: 16,
+  },
   darkButtonContainer: {
     paddingHorizontal: 10,
     paddingVertical: 15,
@@ -116,10 +123,6 @@ export const GlobalStyles = StyleSheet.create({
     paddingHorizontal: 14,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-  },
-  heading: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 
   // Respiratory Rate Display

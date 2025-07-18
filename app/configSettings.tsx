@@ -133,7 +133,7 @@ export default function ConfigSettings() {
           <View style={Style.floatingContainer}>
             <Text style={Style.heading}>Taps </Text>
             <View style={{ paddingVertical: 20 }}>
-              <Text>{t("CONSISTENCY_NUM_TAPS")}</Text>
+              <Text style={Style.text}>{t("CONSISTENCY_NUM_TAPS")}</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Slider
@@ -169,7 +169,7 @@ export default function ConfigSettings() {
           <View style={Style.floatingContainer}>
             <Text style={Style.heading}>Consistency Threshold </Text>
             <View style={{ paddingVertical: 20 }}>
-              <Text>{t("CONSISTENCY_THRESH")}</Text>
+              <Text style={Style.text}>{t("CONSISTENCY_THRESH")}</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Slider

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Theme } from '../assets/theme';
+import { GlobalStyles as Style } from '../assets/styles';
 
 type Option = {
   label: string;
@@ -33,7 +34,7 @@ export default function RadioButtonGroup({ options, selected, onSelect }: Props)
             size={24}
             color={selected === option.value ? Theme.colors.primary : '#999'}
           />
-          <Text style={{ marginLeft: 10 }}>{option.label}</Text>
+          <Text style={[Style.text, { marginLeft: 10 }]}>{option.label}</Text>
         </Pressable>
       ))}
     </View>

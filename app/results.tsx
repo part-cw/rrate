@@ -230,7 +230,7 @@ export default function Results() {
             ) : (
               <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
                 <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
-                <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>Tap the animation to sync with exhalation.</Text>
+                <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>Tap the animation to sync with inhalation.</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                   <Button
                     icon="check"

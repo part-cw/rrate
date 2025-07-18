@@ -121,7 +121,7 @@ export default function Settings() {
                 onValueChange={ageThresholdToggle} />
             </View>
             <View style={{ marginVertical: 20 }}>
-              <Text style={{ color: "#707070" }}>Uses age-based thresholds to classify the respiratory rate as
+              <Text style={[Style.text, { color: "#707070" }]}>Uses age-based thresholds to classify the respiratory rate as
                 <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> normal</Text> or
                 <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> high.</Text> </Text>
             </View>
@@ -146,16 +146,16 @@ export default function Settings() {
           {Platform.OS !== 'web' && <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
             <View >
-              <Text style={{ color: "#707070" }}>Import all saved measurements to your REDCap project.</Text>
+              <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
               {REDCapURL && REDCapAPI ? (
                 <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>) :
-                (<Text style={{ color: Theme.colors.tertiary }}>No sessions to upload.</Text>)}
+                (<Text style={[Style.text, { color: Theme.colors.tertiary }]}>No sessions to upload.</Text>)}
             </View>
             {response && (
               <View>
-                <Text style={{ fontSize: 16, marginTop: 10, textAlign: 'center' }}>{response}</Text>
+                <Text style={[Style.text, { marginTop: 10, textAlign: 'center' }]}>{response}</Text>
               </View>
             )}
           </View>}
@@ -163,11 +163,11 @@ export default function Settings() {
           {/* Data Export */}
           {!REDCap && <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}>Export Data</Text>
-            <Text style={{ color: "#707070" }}>Download up to 200 measurements as a CSV file.</Text>
+            <Text style={[Style.text, { color: "#707070" }]}>Download up to 200 measurements as a CSV file.</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Switch value={exportDataEnabled}
                 onValueChange={setExportDataEnabled} />
-              <Text style={{ padding: 10 }}>Save measurements for download.</Text>
+              <Text style={[Style.text, { padding: 10 }]}>Save measurements for download.</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
               {storedDataExists() && <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }} onPress={() => exportCSV()}>Export CSV</Button>}

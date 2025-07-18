@@ -31,7 +31,7 @@ export default function SaveDataToFile() {
 
 
     } catch (error: any) {
-      setResponse('Upload failed.');
+      setResponse('Upload failed: ' + error.message);
       console.log("Error: ", error);
     }
   };
@@ -46,8 +46,8 @@ export default function SaveDataToFile() {
           style={{ padding: 20 }}
         />
         <Text style={Style.pageTitle}>Save Data</Text>
-        <Text style={{ paddingBottom: 10, fontSize: 16 }}><Text style={{ fontWeight: 'bold', fontSize: 16 }}>Rate:</Text> {rrate} breaths/min </Text>
-        <Text style={{ fontSize: 16 }}> <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+        <Text style={[Style.text, { paddingBottom: 10 }]} > <Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths /min </Text>
+        <Text style={Style.text}> <Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
         <View style={Style.lightButtonContainer}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}
@@ -63,6 +63,6 @@ export default function SaveDataToFile() {
           </View>
         )}
       </View>
-    </View>
+    </View >
   )
 }

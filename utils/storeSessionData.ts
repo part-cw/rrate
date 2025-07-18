@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 const CDB_KEY = 'data.cdb.json';
 const STORAGE_KEY = 'sessionCSV';
@@ -70,18 +71,18 @@ export async function deleteREDCapDatabase(): Promise<void> {
   }
 }
 
-// Saves measurement to csvexport function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: string) {
+// Save measurement to local Expo storage for future upload to CSV
 export function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: string) {
   try {
     let csv = '';
     let record_id = 1;
 
+    // Check if there is already an existing database
     let existing = localStorage.getItem(STORAGE_KEY) || '';
     const lines = existing.trim() ? existing.trim().split('\n') : [];
 
     if (lines.length >= MAX_ROWS) {
-      console.log('You can only store up to 200 results.');
-      return;
+      throw new Error('You can only store up to 200 results.');
     }
 
     record_id = lines.length + 1;
@@ -101,27 +102,33 @@ export function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: 
   }
 }
 
-// Export as CSV
-export function exportCSV() {
-  try {
-    const csv = localStorage.getItem(STORAGE_KEY);
-    if (!csv) {
-      console.log('No saved sessions to export.');
-      return;
-    }
+// Export as CSV to local device storage using Blob for web or FileSystem for mobile
+export async function exportCSV() {
+  const fileName = `RRateData-${new Date().toISOString()}.csv`;
+  const csv = localStorage.getItem(STORAGE_KEY);
+  if (!csv) {
+    throw new Error('No saved sessions to export.');
+  }
 
+  try {
     if (Platform.OS === 'web') {
       const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob); // create a temporary URL for the data blob
       const link = document.createElement('a');
       link.href = url;
-      link.download = `RRateData-${new Date().toISOString()}.csv`;
+      link.download = fileName;
       document.body.appendChild(link);
-      link.click();
+      link.click(); // trigger download
       document.body.removeChild(link);
       clearCSVStorage();
-    } else {
-      console.log('CSV export is only supported on web.');
+    } else { // Mobile platforms
+      const fileUri = FileSystem.documentDirectory + fileName;
+
+      await FileSystem.writeAsStringAsync(fileUri, csv, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
+      console.log('CSV saved at:', fileUri);
     }
   } catch (error) {
     console.error('Failed to export CSV:', error);

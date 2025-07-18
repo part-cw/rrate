@@ -80,8 +80,8 @@ export default function SaveDataToREDCap() {
           style={{ width: 67, height: 70, marginBottom: 20 }}
         />
         <Text style={Style.pageTitle}>Save Data to REDCap</Text>
-        <Text style={{ paddingBottom: 10, fontSize: 16 }}><Text style={{ fontWeight: 'bold', fontSize: 16 }}>Rate:</Text> {rrate} breaths/min </Text>
-        <Text style={{ fontSize: 16 }}> <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+        <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
+        <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
         <TextInput
           label="Record ID"
           value={recordID}

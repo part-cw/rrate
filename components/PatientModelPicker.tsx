@@ -62,7 +62,7 @@ export default function PatientModelPicker() {
           <Pressable onPress={handlePrev} style={{ padding: 5 }}>
             <IconButton icon="arrow-left-drop-circle-outline" size={40} disabled={currentBaby == 1} />
           </Pressable>
-          <Text> Baby {currentBaby} </Text>
+          <Text style={Style.text}> Baby {currentBaby} </Text>
           <Pressable onPress={handleNext} style={{ padding: 10 }}>
             <IconButton icon="arrow-right-drop-circle-outline" size={40} disabled={currentBaby == 6} />
           </Pressable>
