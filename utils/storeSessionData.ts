@@ -105,85 +105,106 @@ export async function storedREDCapDataExists(): Promise<boolean> {
   }
 }
 
-// Save measurement to local Expo storage for future upload to CSV
-export function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: string) {
+// Save measurement for future upload to CSV; use localStorage for web and AsyncStorage for mobile
+export async function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: string) {
   try {
-    let csv = '';
-    let record_id = 1;
+    const newLine = `${rrate},"${tapSequence}",${timestamp}`;
+    const header = 'rrate,tapSequence,timestamp';
 
-    // Check if there is already an existing database
-    let existing = localStorage.getItem(STORAGE_KEY) || '';
-    const lines = existing.trim() ? existing.trim().split('\n') : [];
+    if (Platform.OS === 'web') {
+      let existing = localStorage.getItem(STORAGE_KEY) || '';
+      const lines = existing.trim() ? existing.trim().split('\n') : [];
 
-    if (lines.length >= MAX_ROWS) {
-      throw new Error('You can only store up to 200 results.');
-    }
+      if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results.');
 
-    record_id = lines.length + 1;
+      const csv = lines.length === 0
+        ? `${header}\n${newLine}`
+        : `${existing.trim()}\n${newLine}`;
 
-    if (lines.length === 0) {
-      csv = 'record_id,rrate,tapSequence,timestamp\n';
+      localStorage.setItem(STORAGE_KEY, csv);
     } else {
-      csv = existing + '\n';
+      let existing = await AsyncStorage.getItem(STORAGE_KEY) || '';
+      const lines = existing.trim() ? existing.trim().split('\n') : [];
+
+      if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results.');
+
+      const csv = lines.length === 0
+        ? `${header}\n${newLine}`
+        : `${existing.trim()}\n${newLine}`;
+
+      await AsyncStorage.setItem(STORAGE_KEY, csv);
     }
 
-    csv += `${record_id},${rrate},"${tapSequence}",${timestamp}`;
-
-    localStorage.setItem(STORAGE_KEY, csv.trim());
-    console.log('Session saved to local storage.');
+    console.log('Session saved to storage.');
   } catch (error) {
     console.error('Failed to save session:', error);
   }
 }
 
+
 // Export as CSV to local device storage using Blob for web or FileSystem for mobile
 export async function exportCSV() {
-  const date = new Date;
-  const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}:${date.getMinutes()}`;
+  const csv =
+    Platform.OS === 'web'
+      ? localStorage.getItem(STORAGE_KEY)
+      : await AsyncStorage.getItem(STORAGE_KEY);
+
+  if (!csv) throw new Error('No saved sessions to export.');
+
+  const date = new Date();
+  const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}`;
   const fileName = `RRateData-${formattedDate}.csv`;
-  const csv = localStorage.getItem(STORAGE_KEY);
-  if (!csv) {
-    throw new Error('No saved sessions to export.');
-  }
 
   try {
     if (Platform.OS === 'web') {
       const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob); // create a temporary URL for the data blob
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       link.download = fileName;
       document.body.appendChild(link);
-      link.click(); // trigger download
+      link.click();
       document.body.removeChild(link);
-      clearCSVStorage();
-    } else { // Mobile platforms
+    } else {
       const fileUri = FileSystem.documentDirectory + fileName;
-
       await FileSystem.writeAsStringAsync(fileUri, csv, {
         encoding: FileSystem.EncodingType.UTF8,
       });
-
+      // Trigger notification for user to select where to save (ie. Files on IOS)
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(fileUri);
+      } else {
+        alert("Sharing not available");
+      }
       console.log('CSV saved at:', fileUri);
     }
+
+    await clearCSVStorage();
   } catch (error) {
     console.error('Failed to export CSV:', error);
   }
 }
 
+
 // Clear saved sessions
-export function clearCSVStorage() {
-  localStorage.removeItem(STORAGE_KEY);
+export async function clearCSVStorage() {
+  if (Platform.OS === 'web') {
+    localStorage.removeItem(STORAGE_KEY);
+  } else {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+  }
   console.log('CSV storage cleared.');
 }
 
 // Check if there are any stored data for export 
-export function storedDataExists() {
-  let data = localStorage.getItem(STORAGE_KEY) || '';
-  const lines = data.trim() ? data.trim().split('\n') : [];
-  if (lines.length === 0) {
-    return false;
-  }
-  return true;
+export async function storedDataExists(): Promise<boolean> {
+  const data =
+    Platform.OS === 'web'
+      ? localStorage.getItem(STORAGE_KEY)
+      : await AsyncStorage.getItem(STORAGE_KEY);
+
+  const lines = data?.trim() ? data.trim().split('\n') : [];
+  return lines.length > 1; // >1 because of header
 }
+
 

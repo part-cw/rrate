@@ -31,6 +31,7 @@ export default function Settings() {
   }
   const [response, setResponse] = useState<string>("");
   const [REDCapDataStored, setREDCapDataStored] = useState<boolean>(false);
+  const [dataForExportStored, setDataForExportStored] = useState<boolean>(false);
 
   // ADD THIS FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
   // const languages = [
@@ -42,17 +43,26 @@ export default function Settings() {
     'English'
   ];
 
-  // On load, checks to see if REDCap data is stored in AsyncStorage
+  // On load, checks to see if REDCap data is stored in AsyncStorage or if there is data stored for export
   useEffect(() => {
-    const checkREDCapData = async () => {
-      const result = await storedREDCapDataExists();
-      console.log("REDCap data stored: ", result);
-      setREDCapDataStored(result);
-      if (!result) {
-        setResponse('No saved sessions for upload.');
-      }
+    if (Platform.OS !== 'web') {
+      const checkREDCapData = async () => {
+        const result = await storedREDCapDataExists();
+        console.log("REDCap data stored: ", result);
+        setREDCapDataStored(result);
+        if (!result) {
+          setResponse('No saved sessions for upload.');
+        }
+      };
+      checkREDCapData();
+    }
+
+    // Check if stored data exists for export
+    const checkStoredData = async () => {
+      const result = await storedDataExists();
+      setDataForExportStored(result);
     };
-    checkREDCapData();
+    checkStoredData();
   }, []);
 
   // Handles bulk upload of stored measurements to REDCap
@@ -180,10 +190,15 @@ export default function Settings() {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Switch value={exportDataEnabled}
                 onValueChange={setExportDataEnabled} />
-              <Text style={[Style.text, { padding: 10 }]}>Save measurements for download.</Text>
+              <Text style={[Style.text, { padding: 15 }]}>Save measurements for download.</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-              {storedDataExists() && <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }} onPress={() => exportCSV()}>Export CSV</Button>}
+              {dataForExportStored && <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
+                onPress={() => {
+                  exportCSV();
+                  setDataForExportStored(false);
+                }}>
+                Export CSV</Button>}
             </View>
           </View>
           }
@@ -203,6 +218,6 @@ export default function Settings() {
 
         </View>
       </ScrollView >
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }

@@ -16,6 +16,7 @@ export default function SaveDataToFile() {
   const [response, setResponse] = useState<string | null>(null);
 
   const { rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
+  const [recordSaved, setRecordSaved] = useState<boolean>(false);
 
   // Handles save of most recent session, posting record ID, rate, time, and tap string to local storage
   const handleSingleUpload = async () => {
@@ -23,12 +24,7 @@ export default function SaveDataToFile() {
     try {
       const result = await saveSessionToCSV(rrate, rrTaps, rrTime);
       setResponse('Saved successfully!');
-
-      // Redirect to the main screen after 3 seconds
-      setTimeout(() => {
-        router.replace('/');
-      }, 3000);
-
+      setRecordSaved(true);
 
     } catch (error: any) {
       setResponse('Save failed: ' + error.message);
@@ -54,9 +50,9 @@ export default function SaveDataToFile() {
             {t("BACK")}
           </Button>
 
-          <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => { handleSingleUpload() }}>
+          {!recordSaved && <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => { handleSingleUpload() }}>
             {t("SAVE")}
-          </Button>
+          </Button>}
         </View>
         {response && (
           <View >
