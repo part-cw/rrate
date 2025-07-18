@@ -58,7 +58,7 @@ export default function Settings() {
   // Handles bulk upload of stored measurements to REDCap
   const handleBulkUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
-      Alert.alert('Missing Info', 'Please enter your REDCap URL and API token in Settings first.');
+      setResponse('Missing Info: Please enter your REDCap URL and API token in Settings first.');
       return;
     }
 
@@ -68,7 +68,6 @@ export default function Settings() {
       const recordNums = Object.keys(db);
 
       if (recordNums.length === 0) {
-        console.log("No saved sessions to upload.");
         return;
       }
 
@@ -158,7 +157,7 @@ export default function Settings() {
           <PatientModelPicker />
 
           {/* Upload to REDCap */}
-          {Platform.OS !== 'ios' && <View style={Style.floatingContainer}>
+          {Platform.OS !== 'web' && <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
             <View >
               <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
