@@ -1,5 +1,5 @@
-import { View, Text, Alert } from 'react-native';
-import { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
+import { useState } from 'react';
 import { Button } from 'react-native-paper';
 import { useGlobalVariables } from '../utils/globalContext';
 import { Theme } from '../assets/theme';
@@ -17,12 +17,12 @@ export default function SaveDataToFile() {
 
   const { rrTaps, rrate, rrTime, tapTimestamps } = useGlobalVariables();
 
-  // Handles upload of most recent session, posting record ID, rate, time, and tap string to REDCap
+  // Handles save of most recent session, posting record ID, rate, time, and tap string to local storage
   const handleSingleUpload = async () => {
 
     try {
       const result = await saveSessionToCSV(rrate, rrTaps, rrTime);
-      setResponse('Upload successful!');
+      setResponse('Saved successfully!');
 
       // Redirect to the main screen after 3 seconds
       setTimeout(() => {
@@ -31,7 +31,7 @@ export default function SaveDataToFile() {
 
 
     } catch (error: any) {
-      setResponse('Upload failed: ' + error.message);
+      setResponse('Save failed: ' + error.message);
       console.log("Error: ", error);
     }
   };
@@ -47,7 +47,8 @@ export default function SaveDataToFile() {
         />
         <Text style={Style.pageTitle}>Save Data</Text>
         <Text style={[Style.text, { paddingBottom: 10 }]} > <Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths /min </Text>
-        <Text style={Style.text}> <Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+        <Text style={[Style.text, { paddingBottom: 10 }]}> <Text style={{ fontWeight: 'bold' }}>Number of Taps:</Text> {tapTimestamps.length} </Text>
+        <Text style={Style.text}> <Text style={{ fontWeight: 'bold' }}>Time:</Text> {rrTime} </Text>
         <View style={Style.lightButtonContainer}>
           <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => router.back()}>
             {t("BACK")}

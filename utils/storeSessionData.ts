@@ -104,7 +104,9 @@ export function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: 
 
 // Export as CSV to local device storage using Blob for web or FileSystem for mobile
 export async function exportCSV() {
-  const fileName = `RRateData-${new Date().toISOString()}.csv`;
+  const date = new Date;
+  const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}:${date.getMinutes()}`;
+  const fileName = `RRateData-${formattedDate}.csv`;
   const csv = localStorage.getItem(STORAGE_KEY);
   if (!csv) {
     throw new Error('No saved sessions to export.');
