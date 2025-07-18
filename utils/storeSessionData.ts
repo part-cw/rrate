@@ -71,6 +71,18 @@ export async function deleteREDCapDatabase(): Promise<void> {
   }
 }
 
+// Check if there are any stored data for REDCap export
+export async function storedREDCapDataExists(): Promise<boolean> {
+  try {
+    const data = await AsyncStorage.getItem(CDB_KEY);
+    console.log(data);
+    return data !== null;
+  } catch (error) {
+    console.error('Error checking REDCap data existence:', error);
+    return false;
+  }
+}
+
 // Save measurement to local Expo storage for future upload to CSV
 export function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: string) {
   try {
@@ -143,10 +155,10 @@ export function clearCSVStorage() {
   console.log('CSV storage cleared.');
 }
 
-// Check if there are any stored data 
+// Check if there are any stored data for export 
 export function storedDataExists() {
-  let existing = localStorage.getItem(STORAGE_KEY) || '';
-  const lines = existing.trim() ? existing.trim().split('\n') : [];
+  let data = localStorage.getItem(STORAGE_KEY) || '';
+  const lines = data.trim() ? data.trim().split('\n') : [];
   if (lines.length === 0) {
     return false;
   }

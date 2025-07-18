@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, ScrollView, Alert, Pressable, Platform } from "react-native";
 import { Button, Switch } from 'react-native-paper';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import { Theme } from "../assets/theme";
 import { loadREDCapDatabase, deleteREDCapDatabase } from "../utils/storeSessionData";
-import { exportCSV, storedDataExists } from "../utils/storeSessionData";
+import { exportCSV, storedDataExists, storedREDCapDataExists } from "../utils/storeSessionData";
 import { uploadRecordToREDCap } from "../utils/redcap";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import useTranslation from '../utils/useTranslation';
@@ -30,6 +30,7 @@ export default function Settings() {
     setAgeThresholdEnabled(!ageThresholdEnabled);
   }
   const [response, setResponse] = useState<string>("");
+  const [REDCapDataStored, setREDCapDataStored] = useState<boolean>(false);
 
   // ADD THIS FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
   // const languages = [
@@ -40,6 +41,15 @@ export default function Settings() {
   const languages = [
     'English'
   ];
+
+  // On load, checks to see if REDCap data is stored in AsyncStorage
+  useEffect(() => {
+    const checkREDCapData = async () => {
+      const result = await storedREDCapDataExists();
+      setREDCapDataStored(result);
+    };
+    checkREDCapData();
+  }, []);
 
   // Handles bulk upload of stored measurements to REDCap
   const handleBulkUpload = async () => {
@@ -143,13 +153,13 @@ export default function Settings() {
           <PatientModelPicker />
 
           {/* Upload to REDCap */}
-          {Platform.OS !== 'web' && <View style={Style.floatingContainer}>
+          {Platform.OS !== 'ios' && <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
             <View >
               <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-              {REDCapURL && REDCapAPI ? (
+              {REDCapURL && REDCapAPI && REDCapDataStored ? (
                 <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>) :
                 (<Text style={[Style.text, { color: Theme.colors.tertiary }]}>No sessions to upload.</Text>)}
             </View>
