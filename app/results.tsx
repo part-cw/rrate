@@ -80,7 +80,7 @@ export default function Results() {
       setIsInhaling(prev => {
         const next = !prev;
         if (next && vibrationsEnabled) {
-          Vibration.vibrate(100); // vibrate when exhaling
+          Vibration.vibrate(30); // vibrate when exhaling
         }
         if (next && breathingAudioAfterEnabled) {
           loadAndPlayAudio(player);
