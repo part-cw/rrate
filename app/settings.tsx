@@ -22,8 +22,8 @@ export default function Settings() {
   const { t } = useTranslation();
 
   const { REDCap, selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioDuringEnabled, setBreathingAudioDuringEnabled, exportDataEnabled, setExportDataEnabled,
-    breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, cancelAlertEnabled, setCancelAlertEnabled, vibrationsEnabled, setVibrationsEnabled,
-    REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
+    breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, cancelAlertEnabled, setCancelAlertEnabled, vibrationsDuringEnabled, setVibrationsDuringEnabled,
+    vibrationsAfterEnabled, setVibrationsAfterEnabled, REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
   } = useGlobalVariables();
 
   const ageThresholdToggle = () => {
@@ -155,11 +155,21 @@ export default function Settings() {
           <View style={Style.floatingContainer}>
             <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>
             <View>
-              <Checkbox label="Breathing audio during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
-              <Checkbox label="Breathing audio after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
-              <Checkbox label="Vibration on inhalation" checked={vibrationsEnabled} onChange={() => setVibrationsEnabled(!vibrationsEnabled)} />
-              <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
-              <Checkbox label="Sound alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
+              <View style={{ margin: 10 }}>
+                <Text style={Style.subheading}>Breathing Audio</Text>
+                <Checkbox label="Play during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
+                <Checkbox label="Play after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
+              </View>
+              <View style={{ margin: 10 }}>
+                <Text style={Style.subheading}>Vibrations</Text>
+                <Checkbox label="Vibrate during measurement" checked={vibrationsDuringEnabled} onChange={() => setVibrationsDuringEnabled(!vibrationsDuringEnabled)} />
+                <Checkbox label="Vibrate after measurement" checked={vibrationsAfterEnabled} onChange={() => setVibrationsAfterEnabled(!vibrationsAfterEnabled)} />
+              </View>
+              <View style={{ margin: 10 }}>
+                <Text style={Style.subheading}>Status Alert</Text>
+                <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
+                <Checkbox label="Sound alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
+              </View>
             </View>
           </View>
 

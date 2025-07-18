@@ -35,8 +35,11 @@ type globalContextType = {
   endChimeEnabled: boolean;
   setEndChimeEnabled: (value: boolean) => void;
 
-  vibrationsEnabled: boolean;
-  setVibrationsEnabled: (value: boolean) => void;
+  vibrationsDuringEnabled: boolean;
+  setVibrationsDuringEnabled: (value: boolean) => void;
+
+  vibrationsAfterEnabled: boolean;
+  setVibrationsAfterEnabled: (value: boolean) => void;
 
   // REDCap SETTINGS
   REDCap: boolean;
@@ -107,7 +110,8 @@ const STORAGE_KEYS = {
   breathingAudioAfterEnabled: 'breathingAudioAfterEnabled',
   endChimeEnabled: 'endChimeEnabled',
   cancelAlertEnabled: 'cancelAlertEnabled',
-  vibrationsEnabled: 'vibrationsEnabled',
+  vibrationsDuringEnabled: 'vibrationsDuringEnabled',
+  vibrationsAfterEnabled: 'vibrationsAfterEnabled',
   measurementMethod: 'measurementMethod',
   consistencyThreshold: 'consistencyThreshold',
   tapCountRequired: 'tapCountRequired',
@@ -133,7 +137,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled] = useState<boolean>(false);
   const [endChimeEnabled, saveEndChimeEnabled] = useState<boolean>(false);
   const [cancelAlertEnabled, saveCancelAlertEnabled] = useState<boolean>(false);
-  const [vibrationsEnabled, saveVibrationsEnabled] = useState<boolean>(false);
+  const [vibrationsDuringEnabled, saveVibrationsDuringEnabled] = useState<boolean>(false);
+  const [vibrationsAfterEnabled, saveVibrationsAfterEnabled] = useState<boolean>(false);
   const [measurementMethod, saveMeasurementMethod] = useState<string>('tap');
   const [consistencyThreshold, saveConsistencyThreshold] = useState(13);
   const [tapCountRequired, saveTapCountRequired] = useState(5);
@@ -216,7 +221,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.cancelAlertEnabled, saveCancelAlertEnabled, v => v === 'true'),
-        loadFromStorage<boolean>(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.vibrationsDuringEnabled, saveVibrationsDuringEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.vibrationsAfterEnabled, saveVibrationsAfterEnabled, v => v === 'true'),
         loadFromStorage<string>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, v => v),
         loadFromStorage<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, v => Number(v)),
         loadFromStorage<number>(STORAGE_KEYS.tapCountRequired, saveTapCountRequired, v => Number(v)),
@@ -258,7 +264,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setBreathingAudioAfterEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v.toString());
   const setEndChimeEnabled = createPersistentSetter(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v.toString());
   const setCancelAlertEnabled = createPersistentSetter(STORAGE_KEYS.cancelAlertEnabled, saveCancelAlertEnabled, v => v.toString());
-  const setVibrationsEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsEnabled, saveVibrationsEnabled, v => v.toString());
+  const setVibrationsDuringEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsDuringEnabled, saveVibrationsDuringEnabled, v => v.toString());
+  const setVibrationsAfterEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsAfterEnabled, saveVibrationsAfterEnabled, v => v.toString());
   const setMeasurementMethod = createPersistentSetter(STORAGE_KEYS.measurementMethod, saveMeasurementMethod);
   const setConsistencyThreshold = createPersistentSetter(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold);
   const setTapCountRequired = createPersistentSetter(STORAGE_KEYS.tapCountRequired, saveTapCountRequired);
@@ -292,8 +299,10 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setEndChimeEnabled,
         cancelAlertEnabled,
         setCancelAlertEnabled,
-        vibrationsEnabled,
-        setVibrationsEnabled,
+        vibrationsDuringEnabled,
+        setVibrationsDuringEnabled,
+        vibrationsAfterEnabled,
+        setVibrationsAfterEnabled,
         password,
         measurementMethod,
         setMeasurementMethod,

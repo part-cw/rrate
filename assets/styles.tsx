@@ -53,6 +53,11 @@ export const GlobalStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  subheading: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#555',
+  },
   text: {
     fontSize: 16,
   },
