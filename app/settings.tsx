@@ -46,7 +46,11 @@ export default function Settings() {
   useEffect(() => {
     const checkREDCapData = async () => {
       const result = await storedREDCapDataExists();
+      console.log("REDCap data stored: ", result);
       setREDCapDataStored(result);
+      if (!result) {
+        setResponse('No saved sessions for upload.');
+      }
     };
     checkREDCapData();
   }, []);
@@ -64,7 +68,7 @@ export default function Settings() {
       const recordNums = Object.keys(db);
 
       if (recordNums.length === 0) {
-        setResponse('No saved sessions requiring upload.');
+        console.log("No saved sessions to upload.");
         return;
       }
 
@@ -100,6 +104,7 @@ export default function Settings() {
       }
 
       await deleteREDCapDatabase();
+      setREDCapDataStored(false);
       setResponse('All sessions uploaded successfully and local database cleared.');
     } catch (error: any) {
       setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
@@ -159,9 +164,8 @@ export default function Settings() {
               <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-              {REDCapURL && REDCapAPI && REDCapDataStored ? (
-                <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>) :
-                (<Text style={[Style.text, { color: Theme.colors.tertiary }]}>No sessions to upload.</Text>)}
+              {REDCapURL && REDCapAPI && REDCapDataStored &&
+                <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>}
             </View>
             {response && (
               <View>
