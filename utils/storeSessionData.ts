@@ -39,8 +39,30 @@ export async function saveREDCapDatabase(db: RRateDatabase): Promise<void> {
   }
 }
 
+// Check if there are more than 200 saved sessions in the REDCap database
+export async function hasTooManySessions(): Promise<boolean> {
+  try {
+    const db = await loadREDCapDatabase();
+    let totalSessions = 0;
+
+    for (const sessions of Object.values(db)) {
+      totalSessions += sessions.length;
+      if (totalSessions > 200) return true; // early exit
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Failed to count REDCap sessions:', error);
+    return false;
+  }
+}
+
 // Save a new session to the REDCap database
 export async function saveREDCapSession(recordID: string, rate: string, time: string, taps: string): Promise<void> {
+  if (await hasTooManySessions()) {
+    throw new Error('You can only store up to 200 results.');
+  }
+
   const db = await loadREDCapDatabase();
 
   const newSession: Session = {
