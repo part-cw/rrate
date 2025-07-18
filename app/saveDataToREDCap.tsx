@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from '../utils/redcap';
 import { GlobalStyles as Style } from '@/assets/styles';
-import { saveSession, loadDatabase } from '../utils/storeSessionData';
+import { saveREDCapSession, loadREDCapDatabase } from '../utils/storeSessionData';
 
 // Page for saving single measurement to REDCap
 export default function SaveDataToREDCap() {
@@ -22,7 +22,7 @@ export default function SaveDataToREDCap() {
   // Load the database of saved measurements when the page loads
   useEffect(() => {
     async function debugDB() {
-      const db = await loadDatabase();
+      const db = await loadREDCapDatabase();
       console.log('Current DB contents:', JSON.stringify(db, null, 2));
     }
 
@@ -98,7 +98,7 @@ export default function SaveDataToREDCap() {
             </Button> :
             <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => {
               try {
-                saveSession(recordID, rrate, rrTime, rrTaps);
+                saveREDCapSession(recordID, rrate, rrTime, rrTaps);
                 setResponse("Session saved.");
                 setIsRecordSaved(true);
                 if (!UploadSingleRecord) router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: 'true' } });

@@ -6,7 +6,8 @@ import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
 import { Theme } from "../assets/theme";
-import { loadDatabase, deleteDatabase } from "../utils/storeSessionData";
+import { loadREDCapDatabase, deleteREDCapDatabase } from "../utils/storeSessionData";
+import { exportCSV, storedDataExists } from "../utils/storeSessionData";
 import { uploadRecordToREDCap } from "../utils/redcap";
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import useTranslation from '../utils/useTranslation';
@@ -49,7 +50,7 @@ export default function Settings() {
 
     try {
       // Access saved measurements that need to be uploaded to REDCap
-      const db = await loadDatabase();
+      const db = await loadREDCapDatabase();
       const recordNums = Object.keys(db);
 
       if (recordNums.length === 0) {
@@ -88,7 +89,7 @@ export default function Settings() {
         console.log('Upload result for Record ID ' + session.record_id + ':' + result);
       }
 
-      await deleteDatabase();
+      await deleteREDCapDatabase();
       setResponse('All sessions uploaded successfully and local database cleared.');
     } catch (error: any) {
       setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
@@ -167,6 +168,9 @@ export default function Settings() {
               <Switch value={exportDataEnabled}
                 onValueChange={setExportDataEnabled} />
               <Text style={{ padding: 10 }}>Save measurements for download.</Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
+              {storedDataExists() && <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }} onPress={() => exportCSV()}>Export CSV</Button>}
             </View>
           </View>
           }

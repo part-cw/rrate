@@ -30,7 +30,7 @@ export default function Index() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   // GLOBAL VARIABLES
-  const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod, breathingAudioDuringEnabled, endChimeEnabled } = useGlobalVariables();
+  const { REDCap, setREDCap, tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime, setRRTaps, measurementMethod, breathingAudioDuringEnabled, endChimeEnabled } = useGlobalVariables();
 
   // AUDIO VARIABLES
   const endChimeSource = require('../assets/audio/endChime.mp3'); // Thank you to Universfield on Pixabay for this audio
@@ -154,7 +154,6 @@ export default function Index() {
     if (breathingAudioDuringEnabled) loadAndPlayAudio(breathingAudioPlayer);
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
-
     if (measurementMethod === 'timer') {
       // Start timer only on first tap
       if (!timerRunning) {

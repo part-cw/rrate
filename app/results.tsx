@@ -54,7 +54,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsEnabled, REDCap } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsEnabled, REDCap, exportDataEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
@@ -135,6 +135,8 @@ export default function Results() {
       window.location.href = returnURL;
     } else if (REDCap) { // standalone launch
       router.push('/saveDataToREDCap');
+    } else if (exportDataEnabled) {
+      router.push('/saveDataToFile');
     }
   }
 
