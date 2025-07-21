@@ -302,7 +302,7 @@ export const GlobalStyles = StyleSheet.create({
     shadowRadius: 3,
     // Android 
     elevation: 3,
-    marginVertical: 10
+    marginVertical: 10,
   },
 
   // Tutorial box

@@ -48,8 +48,7 @@ export function generateRRTapString(timestamps: number[]): string {
 // Returns local time in format of (Y-M-D H:M:S)
 export function getLocalTimestamp() {
   const startDate = new Date();
-  const formattedDate = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}
-  _${String(startDate.getHours()).padStart(2, '0')}-${String(startDate.getMinutes()).padStart(2, '0')}`;
+  const formattedDate = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}_${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`;
 
   return formattedDate;
 }

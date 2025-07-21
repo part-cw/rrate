@@ -1,4 +1,4 @@
-import { View, Text, Image, Alert } from 'react-native';
+import { View, Text, Image, Platform, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { useGlobalVariables } from '../utils/globalContext';
@@ -75,42 +75,60 @@ export default function SaveDataToREDCap() {
   }
 
   return (
-    <View style={Style.redirectScreenContainer}>
-      <View style={{ alignItems: 'center', justifyContent: 'center', width: 350 }}>
-        <Image
-          source={require('../assets/images/REDCap-icon.png')}
-          style={{ width: 67, height: 70, marginBottom: 20 }}
-        />
-        <Text style={Style.pageTitle}>Save Data to REDCap</Text>
-        <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
-        <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
-        <TextInput
-          label="Record ID"
-          value={recordID}
-          style={[Style.textField, { marginTop: 15, marginBottom: 0 }]}
-          onChangeText={text => setRecordID(text)}
-        />
-        <View style={Style.lightButtonContainer}>
-          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }}
-            onPress={() => router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: `${isRecordSaved}` } })}>
-            {t("BACK")}
-          </Button>
-          {isRecordSaved && !isRecordUploaded && UploadSingleRecord &&
-            <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleUpload()}>
-              {t("UPLOAD")}
-            </Button>}
-          {!isRecordSaved &&
-            <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleSave()}>
-              {t("SAVE")}
-            </Button>
-          }
-        </View>
-        {response && (
-          <View >
-            <Text style={{ fontSize: 16 }}>{response}</Text>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 30 : 0} >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={Style.redirectScreenContainer}>
+          <View style={{ alignItems: 'center', justifyContent: 'center', width: 350 }}>
+            <Image
+              source={require('../assets/images/REDCap-icon.png')}
+              style={{ width: 67, height: 70, marginBottom: 20 }}
+            />
+            <Text style={Style.pageTitle}>Save Data to REDCap</Text>
+            <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
+            <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+            <View style={{ width: '50%' }}>
+              <TextInput
+                label="Record ID"
+                value={recordID}
+                style={[Style.textField, { marginBottom: 0 }]}
+                onChangeText={text => setRecordID(text)}
+              />
+            </View>
+            <View style={Style.lightButtonContainer}>
+              {!isRecordSaved && <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }}
+                onPress={() => router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: `${isRecordSaved}` } })}>
+                {t("BACK")}
+              </Button>}
+              {/* Record is not saved */}
+              {!isRecordSaved &&
+                <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleSave()}>
+                  {t("SAVE")}
+                </Button>
+              }
+              {/* Record is saved but not uploaded */}
+              {isRecordSaved && !isRecordUploaded && UploadSingleRecord &&
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 5 }}>
+                  <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleUpload()}>
+                    {t("UPLOAD")}
+                  </Button>
+                  <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
+                    {t("RESTART")} </Button>
+                </View>}
+              {/* Record is uploaded */}
+              {isRecordUploaded &&
+                <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
+                  {t("RESTART")} </Button>}
+            </View>
+            {response && (
+              <View style={{ justifyContent: 'center', alignItems: 'center', width: 300 }}>
+                <Text style={{ fontSize: 16, textAlign: 'center' }}>{response}</Text>
+              </View>
+            )}
           </View>
-        )}
-      </View>
-    </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }

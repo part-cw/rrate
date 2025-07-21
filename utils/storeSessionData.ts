@@ -107,10 +107,10 @@ export async function storedREDCapDataExists(): Promise<boolean> {
 }
 
 // Save measurement for future upload to CSV; use localStorage for web and AsyncStorage for mobile
-export async function saveSessionToCSV(rrate: string, tapSequence: string, timestamp: string) {
+export async function saveSessionToCSV(recordId: string, rrate: string, tapSequence: string, timestamp: string) {
   try {
-    const newLine = `${rrate},"${tapSequence}",${timestamp}`;
-    const header = 'rrate,tapSequence,timestamp';
+    const newLine = `${recordId},${rrate},"${tapSequence}",${timestamp}`;
+    const header = 'recordId,rrate,tapSequence,timestamp';
 
     if (Platform.OS === 'web') {
       let existing = localStorage.getItem(STORAGE_KEY) || '';
@@ -152,7 +152,6 @@ export async function exportCSV() {
 
   if (!csv) throw new Error('No saved sessions to export.');
 
-  const date = new Date();
   const formattedDate = getLocalTimestamp();
   const fileName = `RRateData-${formattedDate}.csv`;
 

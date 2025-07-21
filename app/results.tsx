@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration } from 'react-native';
+import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration, Platform } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
@@ -217,14 +217,14 @@ export default function Results() {
           {/* Sets bottom buttons based on whether user has confirmed rate or not */}
           {rrateConfirmed ? (
             <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+              <View style={{ flexDirection: Platform.OS === 'web' ? 'row' : 'column', justifyContent: 'space-between' }} >
                 {!isRecordSaved && REDCap &&
                   <Button
                     icon="content-save-check-outline"
                     buttonColor={Theme.colors.secondary}
                     mode="contained"
                     onPress={() => router.push("/saveDataToREDCap")}
-                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                    style={{ paddingHorizontal: 30, marginVertical: 2 }}>
                     Save to REDCap
                   </Button>
                 }
@@ -233,7 +233,7 @@ export default function Results() {
                   buttonColor={Theme.colors["neutral-bttn"]}
                   mode="contained"
                   onPress={() => router.push("/")}
-                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                  style={{ paddingHorizontal: 30, marginVertical: 2 }}>
                   {t("RESTART")}
                 </Button>
               </View>
