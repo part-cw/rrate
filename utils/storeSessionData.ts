@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
+import { getLocalTimestamp } from './consistencyFunctions';
 
 const CDB_KEY = 'data.cdb.json';
 const STORAGE_KEY = 'sessionCSV';
@@ -152,7 +153,7 @@ export async function exportCSV() {
   if (!csv) throw new Error('No saved sessions to export.');
 
   const date = new Date();
-  const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}`;
+  const formattedDate = getLocalTimestamp();
   const fileName = `RRateData-${formattedDate}.csv`;
 
   try {
