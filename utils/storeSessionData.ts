@@ -2,11 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
-import { getLocalTimestamp } from './consistencyFunctions';
 
 const CDB_KEY = 'data.cdb.json';
 const STORAGE_KEY = 'sessionCSV';
-const MAX_ROWS = 200;
+const MAX_ROWS = 1;
 
 type Session = {
   record_id: string;
@@ -61,7 +60,7 @@ export async function hasTooManySessions(): Promise<boolean> {
 // Save a new session to the REDCap database
 export async function saveREDCapSession(recordID: string, rate: string, time: string, taps: string): Promise<void> {
   if (await hasTooManySessions()) {
-    throw new Error('You can only store up to 200 results.');
+    throw new Error('You can only store up to 200 results. Please export csv to clear storage.');
   }
 
   const db = await loadREDCapDatabase();
@@ -152,7 +151,8 @@ export async function exportCSV() {
 
   if (!csv) throw new Error('No saved sessions to export.');
 
-  const formattedDate = getLocalTimestamp();
+  const startDate = new Date();
+  const formattedDate = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}_${String(startDate.getHours()).padStart(2, '0')}-${String(startDate.getMinutes()).padStart(2, '0')}`;
   const fileName = `RRateData-${formattedDate}.csv`;
 
   try {
