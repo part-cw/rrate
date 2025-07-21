@@ -216,7 +216,7 @@ export default function Index() {
                 mode="contained"
                 style={{ justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => { router.push("/tutorial") }}>
-                <Text>Tutorial</Text>
+                <Text>Users Guide</Text>
               </Button> :
               <Button
                 icon="close"

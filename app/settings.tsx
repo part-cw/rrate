@@ -202,14 +202,14 @@ export default function Settings() {
                 onValueChange={setExportDataEnabled} />
               <Text style={[Style.text, { padding: 15 }]}>Save measurements for download.</Text>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-              {dataForExportStored && <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
+            {dataForExportStored && <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
+              <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
                 onPress={() => {
                   exportCSV();
                   setDataForExportStored(false);
                 }}>
-                Export CSV</Button>}
-            </View>
+                Export CSV</Button>
+            </View>}
           </View>
           }
 

@@ -32,7 +32,7 @@ export default function Tutorial() {
             />
             <Text style={Style.pageTitle}>How to Use RRate</Text>
             <Text style={[Style.text, { textAlign: 'center', paddingVertical: 20 }]}>RRate helps healthcare providers accurately measure a patient's respiratory rate. Compared to traditional methods,
-              RRate is faster, easy to use, and reduces the risk of rounding errors.</Text>
+              RRate is faster, easy to use, and reduces rounding errors.</Text>
           </View>
           <View style={{ flexGrow: 2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, gap: 15 }}>
             <View style={[Style.tutorialBox, { backgroundColor: "rgba(39, 92, 172, 0.10)" }]}>
