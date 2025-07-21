@@ -96,6 +96,8 @@ type globalContextType = {
 
   tapTimestamps: number[], // array of timestamps; not sent to REDCap
   setTapTimestaps: (value: number[]) => void;
+
+  isLoaded: boolean;
 };
 
 const GlobalContext = createContext<globalContextType | null>(null);
@@ -155,6 +157,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [UsingRepeatableInstruments, saveUsingRepeatableIntrument] = useState(false);
   const [RepeatableInstrument, saveRepeatableInstrument] = useState('Instrument');
   const [UploadSingleRecord, saveUploadSingleRecord] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Save and load to Expo SecureStore for REDCap API token
   const setREDCapAPI = async (token: string) => {
@@ -236,6 +239,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<boolean>(STORAGE_KEYS.UploadSingleRecord, saveUploadSingleRecord, v => v === 'true'),
         loadREDCapAPI()
       ]);
+      setIsLoaded(true);
     })();
   }, []);
 
@@ -335,7 +339,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         RepeatableInstrument,
         setRepeatableInstrument,
         UploadSingleRecord,
-        setUploadSingleRecord
+        setUploadSingleRecord,
+        isLoaded
       }}
     >
       {children}

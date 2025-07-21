@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, Pressable, Platform, InteractionManager } from "react-native";
+import { View, Text, ScrollView, Pressable, Platform, InteractionManager, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, TextInput } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
@@ -22,7 +22,7 @@ export default function ConfigSettings() {
   const { measurementMethod, setMeasurementMethod, tapCountRequired, setTapCountRequired, consistencyThreshold, setConsistencyThreshold,
     configSettingsUnlocked, setConfigSettingsUnlocked, REDCap, setREDCap, REDCapURL, setREDCapURL, REDCapAPI, setREDCapAPI,
     LongitudinalStudy, setLongitudinalStudy, LongitudinalStudyEvent, RepeatableEvent, setRepeatableEvent, UsingRepeatableInstruments, setUsingRepeatableInstruments,
-    RepeatableInstrument, UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument
+    RepeatableInstrument, UploadSingleRecord, setUploadSingleRecord, setLongitudinalStudyEvent, setRepeatableInstrument, isLoaded
   } = useGlobalVariables();
   const [measurementMethodRadioButton, setmeasurementMethodRadioButton] = measurementMethod == "tap" ? useState('tap') : useState('timer');
 
@@ -41,6 +41,14 @@ export default function ConfigSettings() {
     return () => task.cancel();
   }, [configSettingsUnlocked]);
 
+  // check to see if all global variables have loaded before rendering the page; ensures sliders use correct saved values rather than default
+  if (!isLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={Theme.colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <ScrollView contentContainerStyle={Style.screenContainer}>
