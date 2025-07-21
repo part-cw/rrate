@@ -215,8 +215,8 @@ export default function Index() {
                 buttonColor={Theme.colors["secondary-bttn"]}
                 mode="contained"
                 style={{ justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => { router.push("/usersGuide") }}>
-                <Text>Users Guide</Text>
+                onPress={() => { router.push("/userGuide") }}>
+                <Text>User Guide</Text>
               </Button> :
               <Button
                 icon="close"
