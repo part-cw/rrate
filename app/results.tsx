@@ -168,107 +168,105 @@ export default function Results() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      <ScrollView contentContainerStyle={Style.screenContainer}>
-        <View style={Style.innerContainer}>
+    <ScrollView contentContainerStyle={Style.screenContainer}>
+      <View style={Style.innerContainer}>
 
-          {/* RRate Display */}
-          <View style={[Style.floatingContainer, Style.rrateContainer, { paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
-            <View style={Style.leftColumn}>
-              <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
-              {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
-            </View>
-
-            <View style={Style.rightColumn}>
-              <Text style={Style.labelMain}>{t("RRATE")}</Text>
-              <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
-
-              {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
-                <View style={Style.divider} />
-                <View style={Style.dropdownContainer}>
-                  <View style={{ width: 150 }}>
-                    <DropdownList label={age} data={ages} onSelect={setAge} />
-                  </View>
-                </View>
-              </View>
-              }
-            </View>
+        {/* RRate Display */}
+        <View style={[Style.floatingContainer, Style.rrateContainer, { paddingHorizontal: width < 430 ? '7%' : '10%' }]}>
+          <View style={Style.leftColumn}>
+            <Text style={[Style.rateValue, { color: rrateColour }]}>{rrate}</Text>
+            {ageThresholdEnabled && age && <Text style={{ color: rrateColour }}>{rrateSeverity}</Text>}
           </View>
 
-          {/* Baby Animation and Consistency Chart */}
-          <View>
-            <Pressable onPress={handleTap} style={[Style.pressableContainer, { paddingTop: measurementMethod == 'timer' ? 30 : 0, }]}>
-              <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 360 : 310, height: measurementMethod === 'timer' ? 390 : 340 }]}>
-                {isInhaling && InflateSVG &&
-                  <InflateSVG
-                    width={measurementMethod === 'timer' ? 360 : 310}
-                    height={measurementMethod === 'timer' ? 390 : 340}
-                  />}
-                {!isInhaling && DeflateSVG &&
-                  <DeflateSVG
-                    width={measurementMethod === 'timer' ? 360 : 310}
-                    height={measurementMethod === 'timer' ? 390 : 340}
-                  />}
-              </View>
-            </Pressable>
+          <View style={Style.rightColumn}>
+            <Text style={Style.labelMain}>{t("RRATE")}</Text>
+            <Text style={Style.labelSub}>{t("RRATE_UNIT")}</Text>
 
-            {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
-            {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
-
-            {/* Sets bottom buttons based on whether user has confirmed rate or not */}
-            {rrateConfirmed ? (
-              <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
-                  {!isRecordSaved && REDCap &&
-                    <Button
-                      icon="content-save-check-outline"
-                      buttonColor={Theme.colors.secondary}
-                      mode="contained"
-                      onPress={() => router.push("/saveDataToREDCap")}
-                      style={{ paddingHorizontal: 30, marginRight: 10 }}>
-                      Save to REDCap
-                    </Button>
-                  }
-                  <Button
-                    icon="arrow-u-right-bottom"
-                    buttonColor={Theme.colors["neutral-bttn"]}
-                    mode="contained"
-                    onPress={() => router.push("/")}
-                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
-                    {t("RESTART")}
-                  </Button>
+            {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
+              <View style={Style.divider} />
+              <View style={Style.dropdownContainer}>
+                <View style={{ width: 150 }}>
+                  <DropdownList label={age} data={ages} onSelect={setAge} />
                 </View>
               </View>
-            ) : (
-              <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
-                <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
-                <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>Tap the animation to sync with inhalation.</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
-                  <Button
-                    icon="check"
-                    mode="contained"
-                    buttonColor={Theme.colors.secondary}
-                    onPress={() => {
-                      handleCorrectMeasurement();
-                    }}
-                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
-                    {t("YES")}
-                  </Button>
-                  <Button
-                    icon="close"
-                    buttonColor={Theme.colors.tertiary}
-                    mode="contained"
-                    onPress={() => {
-                      router.push("/");
-                    }}
-                    style={{ paddingHorizontal: 30, marginLeft: 10 }}>
-                    {t("NO")}
-                  </Button>
-                </View>
-              </View>)}
+            </View>
+            }
           </View>
         </View>
-      </ScrollView >
-    </SafeAreaView >
+
+        {/* Baby Animation and Consistency Chart */}
+        <View>
+          <Pressable onPress={handleTap} style={[Style.pressableContainer, { paddingTop: measurementMethod == 'timer' ? 30 : 0, }]}>
+            <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 350 : 300, height: measurementMethod === 'timer' ? 380 : 330 }]}>
+              {isInhaling && InflateSVG &&
+                <InflateSVG
+                  width={measurementMethod === 'timer' ? 350 : 300}
+                  height={measurementMethod === 'timer' ? 380 : 330}
+                />}
+              {!isInhaling && DeflateSVG &&
+                <DeflateSVG
+                  width={measurementMethod === 'timer' ? 350 : 300}
+                  height={measurementMethod === 'timer' ? 380 : 330}
+                />}
+            </View>
+          </Pressable>
+
+          {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
+          {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
+
+          {/* Sets bottom buttons based on whether user has confirmed rate or not */}
+          {rrateConfirmed ? (
+            <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+                {!isRecordSaved && REDCap &&
+                  <Button
+                    icon="content-save-check-outline"
+                    buttonColor={Theme.colors.secondary}
+                    mode="contained"
+                    onPress={() => router.push("/saveDataToREDCap")}
+                    style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                    Save to REDCap
+                  </Button>
+                }
+                <Button
+                  icon="arrow-u-right-bottom"
+                  buttonColor={Theme.colors["neutral-bttn"]}
+                  mode="contained"
+                  onPress={() => router.push("/")}
+                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                  {t("RESTART")}
+                </Button>
+              </View>
+            </View>
+          ) : (
+            <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
+              <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
+              <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>Tap the animation to sync with inhalation.</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
+                <Button
+                  icon="check"
+                  mode="contained"
+                  buttonColor={Theme.colors.secondary}
+                  onPress={() => {
+                    handleCorrectMeasurement();
+                  }}
+                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                  {t("YES")}
+                </Button>
+                <Button
+                  icon="close"
+                  buttonColor={Theme.colors.tertiary}
+                  mode="contained"
+                  onPress={() => {
+                    router.push("/");
+                  }}
+                  style={{ paddingHorizontal: 30, marginLeft: 10 }}>
+                  {t("NO")}
+                </Button>
+              </View>
+            </View>)}
+        </View>
+      </View>
+    </ScrollView >
   );
 }

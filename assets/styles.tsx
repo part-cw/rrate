@@ -8,7 +8,7 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: Platform.OS === 'web' ? 20 : 0
+    paddingVertical: Platform.OS === 'web' ? 20 : 0,
   },
   innerContainer: {
     width: '100%',

@@ -3,6 +3,8 @@ import { PaperProvider } from 'react-native-paper';
 import { Theme } from "../assets/theme";
 import { SettingsProvider } from "../utils/globalContext";
 import { FHIRContextProvider } from "@/utils/fhirContext";
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Project root
 export default function RootLayout() {
@@ -10,11 +12,14 @@ export default function RootLayout() {
     <PaperProvider theme={Theme}>
       <FHIRContextProvider>
         <SettingsProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              animation: 'none',
-            }} />
+          <StatusBar style="dark" backgroundColor="#fff" />
+          <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(242, 242, 242)' }} edges={['top', 'bottom', 'left', 'right']}>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                animation: 'none',
+              }} />
+          </SafeAreaView>
         </SettingsProvider>
       </FHIRContextProvider>
     </PaperProvider>

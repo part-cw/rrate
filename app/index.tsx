@@ -205,75 +205,73 @@ export default function Index() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      <View style={Style.screenContainer}>
-        <View style={Style.innerContainer}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
-            {tapCountRef.current == 0 ?
-              <Button
-                icon="information-outline"
-                buttonColor={Theme.colors["secondary-bttn"]}
-                mode="contained"
-                style={{ justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => { router.push("/userGuide") }}>
-                <Text>User Guide</Text>
-              </Button> :
-              <Button
-                icon="close"
-                buttonColor={Theme.colors.tertiary}
-                mode="contained"
-                style={{ justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => { router.push("/") }}>
-                <Text>{t("CANCEL")}</Text>
-              </Button>}
+    <View style={Style.screenContainer}>
+      <View style={Style.innerContainer}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
+          {tapCountRef.current == 0 ?
             <Button
-              icon="cog"
-              buttonColor={Theme.colors["neutral-bttn"]}
+              icon="information-outline"
+              buttonColor={Theme.colors["secondary-bttn"]}
               mode="contained"
               style={{ justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => { router.push("/settings"); }}>
-              <Text>{t("SETTINGS")}</Text>
-            </Button>
-          </View>
-
-          {/* Show either the Tap Count or Timer, depending on the user's settings for the measurement method. */}
-          <View style={[Style.componentContainer, { flexGrow: 1 }]}>
-            {measurementMethod === 'tap' ?
-              <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />
-            }
-          </View>
-
-          {/* Using Pressable instead of React Native Button to allow for larger button size and clickable area */}
-          <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 99 }]}>
-            <Pressable
-              onPressIn={() => setIsPressed(true)}
-              onPressOut={() => setIsPressed(false)}
-              onPress={countAndCalculateTap}
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary,
-                borderRadius: 10,
-              }}
-            >
-              <Text style={{ fontSize: 30, color: 'white', textAlign: 'center', padding: 20 }}>
-                {t("TAP_INHALATION")}
-              </Text>
-            </Pressable>
-          </View>
-
-          {/* Modals hidden until triggered by effect */}
-          <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
-          <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
-            setNotEnoughTapsModalVisible(false);
-            if (timeoutRef.current !== null) {
-              clearTimeout(timeoutRef.current);
-            }
-          }} />
-          <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
+              onPress={() => { router.push("/userGuide") }}>
+              <Text>User Guide</Text>
+            </Button> :
+            <Button
+              icon="close"
+              buttonColor={Theme.colors.tertiary}
+              mode="contained"
+              style={{ justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => { router.push("/") }}>
+              <Text>{t("CANCEL")}</Text>
+            </Button>}
+          <Button
+            icon="cog"
+            buttonColor={Theme.colors["neutral-bttn"]}
+            mode="contained"
+            style={{ justifyContent: 'center', alignItems: 'center' }}
+            onPress={() => { router.push("/settings"); }}>
+            <Text>{t("SETTINGS")}</Text>
+          </Button>
         </View>
-      </View >
-    </SafeAreaView >
+
+        {/* Show either the Tap Count or Timer, depending on the user's settings for the measurement method. */}
+        <View style={[Style.componentContainer, { flexGrow: 1 }]}>
+          {measurementMethod === 'tap' ?
+            <TapCount tapCount={tapCountRef.current} /> : <Timer time={time} />
+          }
+        </View>
+
+        {/* Using Pressable instead of React Native Button to allow for larger button size and clickable area */}
+        <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 99 }]}>
+          <Pressable
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
+            onPress={countAndCalculateTap}
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: isPressed ? Theme.colors.buttonPressed : Theme.colors.primary,
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ fontSize: 30, color: 'white', textAlign: 'center', padding: 20 }}>
+              {t("TAP_INHALATION")}
+            </Text>
+          </Pressable>
+        </View>
+
+        {/* Modals hidden until triggered by effect */}
+        <AlertModal isVisible={tapsTooFastModalVisible} message={t("TAPS_TOO_FAST")} onClose={() => setTapsTooFastModalVisible(false)} />
+        <AlertModal isVisible={notEnoughTapsModalVisible} message={t("NOT_ENOUGH_TAPS")} onClose={() => {
+          setNotEnoughTapsModalVisible(false);
+          if (timeoutRef.current !== null) {
+            clearTimeout(timeoutRef.current);
+          }
+        }} />
+        <AlertModal isVisible={tapsInconsistentModalVisible} message={t("TAPS_INCONSISTENT")} onClose={() => setTapsInconsistentModalVisible(false)} />
+      </View>
+    </View >
   );
 }

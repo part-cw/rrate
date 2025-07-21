@@ -122,112 +122,110 @@ export default function Settings() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      <ScrollView contentContainerStyle={Style.screenContainer}>
-        <View style={Style.innerContainer}>
-          <View style={{ alignItems: 'flex-start' }}>
-            <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
-              {t("BACK")}
-            </Button>
-          </View>
-
-          {/* Language Selection */}
-          <View style={Style.floatingContainer}>
-            <Text style={[Style.heading, { marginBottom: 10 }]}>Select Language </Text>
-            <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
-          </View>
-
-          {/* Patient Age Interpretation Dropdown */}
-          <View style={Style.floatingContainer}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Text style={Style.heading}>Patient Age Interpretation </Text>
-              <Switch value={ageThresholdEnabled}
-                onValueChange={ageThresholdToggle} />
-            </View>
-            <View style={{ marginVertical: 20 }}>
-              <Text style={[Style.text, { color: "#707070" }]}>Uses age-based thresholds to classify the respiratory rate as
-                <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> normal</Text> or
-                <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> high.</Text> </Text>
-            </View>
-          </View>
-
-          {/* Audio */}
-          <View style={Style.floatingContainer}>
-            <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>
-            <View>
-              <View style={{ margin: 10 }}>
-                <Text style={Style.subheading}>Breathing Audio</Text>
-                <Checkbox label="Play during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
-                <Checkbox label="Play after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
-              </View>
-              {Platform.OS !== "web" && <View style={{ margin: 10 }}>
-                <Text style={Style.subheading}>Vibrations</Text>
-                <Checkbox label="Vibrate during measurement" checked={vibrationsDuringEnabled} onChange={() => setVibrationsDuringEnabled(!vibrationsDuringEnabled)} />
-                <Checkbox label="Vibrate after measurement" checked={vibrationsAfterEnabled} onChange={() => setVibrationsAfterEnabled(!vibrationsAfterEnabled)} />
-              </View>}
-              <View style={{ margin: 10 }}>
-                <Text style={Style.subheading}>Status Alert</Text>
-                <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
-                <Checkbox label="Sound alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
-              </View>
-            </View>
-          </View>
-
-          {/* Patient Model (Baby Animation) Selection */}
-          <PatientModelPicker />
-
-          {/* Upload to REDCap */}
-          {Platform.OS !== 'web' && <View style={Style.floatingContainer}>
-            <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
-            <View >
-              <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-              {REDCapURL && REDCapAPI && REDCapDataStored &&
-                <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>}
-            </View>
-            {response && (
-              <View>
-                <Text style={[Style.text, { marginTop: 10, textAlign: 'center' }]}>{response}</Text>
-              </View>
-            )}
-          </View>}
-
-          {/* Data Export */}
-          {!REDCap && <View style={Style.floatingContainer}>
-            <Text style={[Style.heading, { marginBottom: 10 }]}>Export Data</Text>
-            <Text style={[Style.text, { color: "#707070" }]}>Download up to 200 measurements as a CSV file.</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Switch value={exportDataEnabled}
-                onValueChange={setExportDataEnabled} />
-              <Text style={[Style.text, { padding: 15 }]}>Save measurements for download.</Text>
-            </View>
-            {dataForExportStored && <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-              <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
-                onPress={() => {
-                  exportCSV();
-                  setDataForExportStored(false);
-                }}>
-                Export CSV</Button>
-            </View>}
-          </View>
-          }
-
-          {/* Configuration Settings */}
-          <Pressable onPress={() => router.push('/passwordConfigSettings')}>
-            <View style={[Style.floatingContainer, {
-              flexDirection: 'row', alignItems: 'center'
-            }]}>
-
-              <EvilIcons name="lock" size={35} color="black" />
-              <Text style={Style.heading}>Configuration Settings</Text>
-            </View>
-          </Pressable>
-
-          <Copyright />
-
+    <ScrollView contentContainerStyle={Style.screenContainer}>
+      <View style={Style.innerContainer}>
+        <View style={{ alignItems: 'flex-start' }}>
+          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.back()}>
+            {t("BACK")}
+          </Button>
         </View>
-      </ScrollView >
-    </SafeAreaView >
+
+        {/* Language Selection */}
+        <View style={Style.floatingContainer}>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>Select Language</Text>
+          <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
+        </View>
+
+        {/* Patient Age Interpretation Dropdown */}
+        <View style={Style.floatingContainer}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={Style.heading}>Patient Age Interpretation </Text>
+            <Switch value={ageThresholdEnabled}
+              onValueChange={ageThresholdToggle} />
+          </View>
+          <View style={{ marginVertical: 20 }}>
+            <Text style={[Style.text, { color: "#707070" }]}>Uses age-based thresholds to classify the respiratory rate as
+              <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> normal</Text> or
+              <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> high.</Text> </Text>
+          </View>
+        </View>
+
+        {/* Audio */}
+        <View style={Style.floatingContainer}>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>
+          <View>
+            <View style={{ margin: 10 }}>
+              <Text style={Style.subheading}>Breathing Audio</Text>
+              <Checkbox label="Play during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
+              <Checkbox label="Play after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
+            </View>
+            {Platform.OS !== "web" && <View style={{ margin: 10 }}>
+              <Text style={Style.subheading}>Vibrations</Text>
+              <Checkbox label="Vibrate during measurement" checked={vibrationsDuringEnabled} onChange={() => setVibrationsDuringEnabled(!vibrationsDuringEnabled)} />
+              <Checkbox label="Vibrate after measurement" checked={vibrationsAfterEnabled} onChange={() => setVibrationsAfterEnabled(!vibrationsAfterEnabled)} />
+            </View>}
+            <View style={{ margin: 10 }}>
+              <Text style={Style.subheading}>Status Alert</Text>
+              <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
+              <Checkbox label="Sound alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
+            </View>
+          </View>
+        </View>
+
+        {/* Patient Model (Baby Animation) Selection */}
+        <PatientModelPicker />
+
+        {/* Upload to REDCap */}
+        {Platform.OS !== 'web' && REDCap && <View style={Style.floatingContainer}>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
+          <View >
+            <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
+          </View>
+          <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
+            {REDCapURL && REDCapAPI && REDCapDataStored &&
+              <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>}
+          </View>
+          {response && (
+            <View>
+              <Text style={[Style.text, { marginTop: 10, textAlign: 'center' }]}>{response}</Text>
+            </View>
+          )}
+        </View>}
+
+        {/* Data Export */}
+        {!REDCap && <View style={Style.floatingContainer}>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>Export Data</Text>
+          <Text style={[Style.text, { color: "#707070" }]}>Download up to 200 measurements as a CSV file.</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Switch value={exportDataEnabled}
+              onValueChange={setExportDataEnabled} />
+            <Text style={[Style.text, { padding: 15 }]}>Save measurements for download.</Text>
+          </View>
+          {dataForExportStored && <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
+            <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
+              onPress={() => {
+                exportCSV();
+                setDataForExportStored(false);
+              }}>
+              Export CSV</Button>
+          </View>}
+        </View>
+        }
+
+        {/* Configuration Settings */}
+        <Pressable onPress={() => router.push('/passwordConfigSettings')}>
+          <View style={[Style.floatingContainer, {
+            flexDirection: 'row', alignItems: 'center'
+          }]}>
+
+            <EvilIcons name="lock" size={35} color="black" />
+            <Text style={Style.heading}>Configuration Settings</Text>
+          </View>
+        </Pressable>
+
+        <Copyright />
+
+      </View>
+    </ScrollView >
   );
 }

@@ -68,7 +68,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
 
   return (
     <View style={{ backgroundColor: '#fff', borderRadius: 10 }}>
-      <View style={{ backgroundColor: "fff", height: chartHeight, borderRadius: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, shadowOffset: { width: 2, height: 3 } }}>
+      <View style={{ backgroundColor: "fff", height: chartHeight, borderRadius: 10 }}>
         {/* Background Threshold Band */}
         <View
           style={[Style.backgroundThresholdBand, { top: grayTop, height: grayHeight, }]} />

@@ -43,168 +43,166 @@ export default function ConfigSettings() {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
-      <ScrollView contentContainerStyle={Style.screenContainer}>
-        <View style={Style.innerContainer}>
-          <View style={{ alignItems: 'flex-start', width: 350 }}>
-            <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => {
-              setConfigSettingsUnlocked(false); // reset unlock status so users must re-enter password
-              router.back();
-            }}>
-              {t("BACK")}
-            </Button>
-          </View>
-
-          {/* REDCap Settings - only display on mobile due to lack of secure storage for API token on web */}
-          {Platform.OS !== 'web' && (
-            <View style={Style.floatingContainer}>
-              <Text style={Style.heading}> REDCap</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-                <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
-              </View>
-
-              {REDCap && (
-                <View >
-                  <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} />
-                  <TextInput
-                    label={t("TOKEN")}
-                    value={REDCapAPI}
-                    style={Style.textField}
-                    onChangeText={text => {
-                      setREDCapAPI(text);
-                    }}
-                  />
-
-                  <View style={{ flexDirection: 'column' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
-                    </View>
-                    {LongitudinalStudy && (
-                      <TextInput
-                        label="Event"
-                        value={LongitudinalStudyEvent}
-                        onChangeText={text => setLongitudinalStudyEvent(text)} />)}
-                  </View>
-
-                  {LongitudinalStudy && (
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
-                      <Checkbox label={t("REP_EVENTS")} checked={RepeatableEvent} onChange={() => {
-                        setRepeatableEvent(!RepeatableEvent);
-                        if (UsingRepeatableInstruments) setUsingRepeatableInstruments(false);
-                      }} />
-                    </View>
-                  )}
-
-                  <View style={{ flexDirection: 'column' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => {
-                        setUsingRepeatableInstruments(!UsingRepeatableInstruments);
-                        if (RepeatableEvent) setRepeatableEvent(false);
-                      }} />
-                    </View>
-                    {UsingRepeatableInstruments && (
-                      <TextInput label="Instrument" value={RepeatableInstrument} onChangeText={text => setRepeatableInstrument(text)} />)}
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
-                  </View>
-                </View>
-              )}
-            </View>
-          )}
-
-          {/* Measurement Method Selection*/}
-          <View style={[Style.floatingContainer]}>
-            <Text style={Style.heading}> Measurement Method </Text>
-            <RadioButtonGroup
-              options={[
-                { label: t("CHECK"), value: 'tap' },
-                { label: t("ONEMIN"), value: 'timer' },
-              ]}
-              selected={measurementMethodRadioButton}
-              onSelect={(value) => {
-                setmeasurementMethodRadioButton(value);
-                setMeasurementMethod(value);
-              }}
-            />
-          </View>
-
-          {/* Number of Taps Selection*/}
-          <View style={Style.floatingContainer}>
-            <Text style={Style.heading}>Taps </Text>
-            <View style={{ paddingVertical: 20 }}>
-              <Text style={Style.text}>{t("CONSISTENCY_NUM_TAPS")}</Text>
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Slider
-                style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
-                minimumValue={3}
-                maximumValue={6}
-                step={1}
-                value={tapCountRequired}
-                thumbTintColor={Theme.colors.primary}
-                minimumTrackTintColor="#000000"
-                maximumTrackTintColor="#000000"
-                tapToSeek={true}
-                onValueChange={(value) => setTapCountRequired(value)}
-              />
-              <View style={Style.labelRow}>
-                {tapCountOptions.map((val) => (
-                  <Pressable key={val} onPress={() => setTapCountRequired(val)}>
-                    <Text
-                      style={[
-                        Style.label,
-                        tapCountRequired === val && Style.activeLabel,
-                      ]}
-                    >
-                      {val}
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
-            </View>
-          </View>
-
-          {/* Consistency Threshold Selection*/}
-          <View style={Style.floatingContainer}>
-            <Text style={Style.heading}>Consistency Threshold </Text>
-            <View style={{ paddingVertical: 20 }}>
-              <Text style={Style.text}>{t("CONSISTENCY_THRESH")}</Text>
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Slider
-                style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
-                minimumValue={10}
-                maximumValue={14}
-                value={consistencyThreshold}
-                step={1}
-                thumbTintColor={Theme.colors.primary}
-                minimumTrackTintColor="#000000"
-                maximumTrackTintColor="#000000"
-                tapToSeek={true}
-                onValueChange={(value) => setConsistencyThreshold(value)}
-              />
-              <View style={Style.labelRow}>
-                {consistencyThresholdOptions.map((val) => (
-                  <Pressable key={val} onPress={() => setConsistencyThreshold(val)}>
-                    <Text
-                      style={[
-                        Style.label,
-                        consistencyThreshold === val && Style.activeLabel,
-                      ]}
-                    >
-                      {val}%
-                    </Text>
-                  </Pressable>
-                ))}
-              </View>
-            </View>
-          </View>
-
-          <Copyright />
-
+    <ScrollView contentContainerStyle={Style.screenContainer}>
+      <View style={Style.innerContainer}>
+        <View style={{ alignItems: 'flex-start', width: 350 }}>
+          <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => {
+            setConfigSettingsUnlocked(false); // reset unlock status so users must re-enter password
+            router.back();
+          }}>
+            {t("BACK")}
+          </Button>
         </View>
-      </ScrollView >
-    </SafeAreaView>
+
+        {/* REDCap Settings - only display on mobile due to lack of secure storage for API token on web */}
+        {Platform.OS !== 'web' && (
+          <View style={Style.floatingContainer}>
+            <Text style={Style.heading}> REDCap</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+              <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
+            </View>
+
+            {REDCap && (
+              <View >
+                <TextInput label={t("URL")} value={REDCapURL} style={Style.textField} onChangeText={text => setREDCapURL(text)} />
+                <TextInput
+                  label={t("TOKEN")}
+                  value={REDCapAPI}
+                  style={Style.textField}
+                  onChangeText={text => {
+                    setREDCapAPI(text);
+                  }}
+                />
+
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label={t("LONGITUDINAL")} checked={LongitudinalStudy} onChange={() => setLongitudinalStudy(!LongitudinalStudy)} />
+                  </View>
+                  {LongitudinalStudy && (
+                    <TextInput
+                      label="Event"
+                      value={LongitudinalStudyEvent}
+                      onChangeText={text => setLongitudinalStudyEvent(text)} />)}
+                </View>
+
+                {LongitudinalStudy && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+                    <Checkbox label={t("REP_EVENTS")} checked={RepeatableEvent} onChange={() => {
+                      setRepeatableEvent(!RepeatableEvent);
+                      if (UsingRepeatableInstruments) setUsingRepeatableInstruments(false);
+                    }} />
+                  </View>
+                )}
+
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox label={t("REP_FORMS")} checked={UsingRepeatableInstruments} onChange={() => {
+                      setUsingRepeatableInstruments(!UsingRepeatableInstruments);
+                      if (RepeatableEvent) setRepeatableEvent(false);
+                    }} />
+                  </View>
+                  {UsingRepeatableInstruments && (
+                    <TextInput label="Instrument" value={RepeatableInstrument} onChangeText={text => setRepeatableInstrument(text)} />)}
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
+                </View>
+              </View>
+            )}
+          </View>
+        )}
+
+        {/* Measurement Method Selection*/}
+        <View style={[Style.floatingContainer]}>
+          <Text style={Style.heading}> Measurement Method </Text>
+          <RadioButtonGroup
+            options={[
+              { label: t("CHECK"), value: 'tap' },
+              { label: t("ONEMIN"), value: 'timer' },
+            ]}
+            selected={measurementMethodRadioButton}
+            onSelect={(value) => {
+              setmeasurementMethodRadioButton(value);
+              setMeasurementMethod(value);
+            }}
+          />
+        </View>
+
+        {/* Number of Taps Selection*/}
+        <View style={Style.floatingContainer}>
+          <Text style={Style.heading}>Taps </Text>
+          <View style={{ paddingVertical: 20 }}>
+            <Text style={Style.text}>{t("CONSISTENCY_NUM_TAPS")}</Text>
+          </View>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Slider
+              style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
+              minimumValue={3}
+              maximumValue={6}
+              step={1}
+              value={tapCountRequired}
+              thumbTintColor={Theme.colors.primary}
+              minimumTrackTintColor="#000000"
+              maximumTrackTintColor="#000000"
+              tapToSeek={true}
+              onValueChange={(value) => setTapCountRequired(value)}
+            />
+            <View style={Style.labelRow}>
+              {tapCountOptions.map((val) => (
+                <Pressable key={val} onPress={() => setTapCountRequired(val)}>
+                  <Text
+                    style={[
+                      Style.label,
+                      tapCountRequired === val && Style.activeLabel,
+                    ]}
+                  >
+                    {val}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        </View>
+
+        {/* Consistency Threshold Selection*/}
+        <View style={Style.floatingContainer}>
+          <Text style={Style.heading}>Consistency Threshold </Text>
+          <View style={{ paddingVertical: 20 }}>
+            <Text style={Style.text}>{t("CONSISTENCY_THRESH")}</Text>
+          </View>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Slider
+              style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
+              minimumValue={10}
+              maximumValue={14}
+              value={consistencyThreshold}
+              step={1}
+              thumbTintColor={Theme.colors.primary}
+              minimumTrackTintColor="#000000"
+              maximumTrackTintColor="#000000"
+              tapToSeek={true}
+              onValueChange={(value) => setConsistencyThreshold(value)}
+            />
+            <View style={Style.labelRow}>
+              {consistencyThresholdOptions.map((val) => (
+                <Pressable key={val} onPress={() => setConsistencyThreshold(val)}>
+                  <Text
+                    style={[
+                      Style.label,
+                      consistencyThreshold === val && Style.activeLabel,
+                    ]}
+                  >
+                    {val}%
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        </View>
+
+        <Copyright />
+
+      </View>
+    </ScrollView >
   );
 }
