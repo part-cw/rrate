@@ -160,11 +160,11 @@ export default function Settings() {
                 <Checkbox label="Play during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
                 <Checkbox label="Play after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
               </View>
-              <View style={{ margin: 10 }}>
+              {Platform.OS !== "web" && <View style={{ margin: 10 }}>
                 <Text style={Style.subheading}>Vibrations</Text>
                 <Checkbox label="Vibrate during measurement" checked={vibrationsDuringEnabled} onChange={() => setVibrationsDuringEnabled(!vibrationsDuringEnabled)} />
                 <Checkbox label="Vibrate after measurement" checked={vibrationsAfterEnabled} onChange={() => setVibrationsAfterEnabled(!vibrationsAfterEnabled)} />
-              </View>
+              </View>}
               <View style={{ margin: 10 }}>
                 <Text style={Style.subheading}>Status Alert</Text>
                 <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />

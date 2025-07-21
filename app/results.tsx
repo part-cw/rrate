@@ -57,7 +57,7 @@ export default function Results() {
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsAfterEnabled, REDCap, exportDataEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
-  const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true');
+  const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true'); // reference the local search params
   const [isRecordSaved, setIsRecordSaved] = useState<boolean>(isRecordSavedParam === 'true');
 
   const player = useAudioPlayer(audioSource);
@@ -93,7 +93,6 @@ export default function Results() {
   // On mount, begin the animation
   useFocusEffect(
     useCallback(() => {
-      if (breathingAudioAfterEnabled) loadAndPlayAudio(player);
       startBreathing();
 
       return () => {
