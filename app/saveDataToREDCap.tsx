@@ -1,5 +1,5 @@
-import { View, Text, Image, Platform, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { useState, useEffect } from 'react';
+import { View, Text, Image, Platform, KeyboardAvoidingView } from 'react-native';
+import { useState } from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { useGlobalVariables } from '../utils/globalContext';
 import { Theme } from '../assets/theme';
@@ -57,8 +57,8 @@ export default function SaveDataToREDCap() {
       setResponse('Upload successful!');
 
     } catch (error: any) {
-      setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
-      console.log('Error uploading to REDCap:', error.message || error);
+      setResponse(`Upload failed:\nPlease check your REDCap settings and try again.`);
+      console.log(`Error uploading to REDCap:\n`, error.message || error);
     }
   };
 
@@ -70,7 +70,7 @@ export default function SaveDataToREDCap() {
       setIsRecordSaved(true);
 
     } catch (error: any) {
-      setResponse("Error saving session: " + error.message);
+      setResponse(`Error saving session:\n` + error.message);
     }
   }
 
@@ -78,57 +78,56 @@ export default function SaveDataToREDCap() {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 30 : 0} >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={Style.redirectScreenContainer}>
-          <View style={{ alignItems: 'center', justifyContent: 'center', width: 350 }}>
-            <Image
-              source={require('../assets/images/REDCap-icon.png')}
-              style={{ width: 67, height: 70, marginBottom: 20 }}
+      <View style={Style.redirectScreenContainer}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', width: 350 }}>
+          <Image
+            source={require('../assets/images/REDCap-icon.png')}
+            style={{ width: 67, height: 70, marginBottom: 20 }}
+          />
+          <Text style={Style.pageTitle}>Save Data to REDCap</Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+          <View style={{ width: '50%' }}>
+            <TextInput
+              label="Record ID"
+              value={recordID}
+              style={[Style.textField, { marginBottom: 0 }]}
+              onChangeText={text => setRecordID(text)}
             />
-            <Text style={Style.pageTitle}>Save Data to REDCap</Text>
-            <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
-            <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
-            <View style={{ width: '50%' }}>
-              <TextInput
-                label="Record ID"
-                value={recordID}
-                style={[Style.textField, { marginBottom: 0 }]}
-                onChangeText={text => setRecordID(text)}
-              />
-            </View>
-            <View style={Style.lightButtonContainer}>
-              {!isRecordSaved && <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }}
-                onPress={() => router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: `${isRecordSaved}` } })}>
-                {t("BACK")}
-              </Button>}
-              {/* Record is not saved */}
-              {!isRecordSaved &&
+          </View>
+          <View style={Style.lightButtonContainer}>
+            {/* Record is not saved */}
+            {!isRecordSaved &&
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                <Button icon="chevron-left" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ marginHorizontal: 5 }}
+                  onPress={() => router.push({ pathname: "/results", params: { rrateConfirmed: 'true', isRecordSaved: `${isRecordSaved}` } })}>
+                  {t("BACK")}
+                </Button>
                 <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleSave()}>
                   {t("SAVE")}
                 </Button>
-              }
-              {/* Record is saved but not uploaded */}
-              {isRecordSaved && !isRecordUploaded && UploadSingleRecord &&
-                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 5 }}>
-                  <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => handleSingleUpload()}>
-                    {t("UPLOAD")}
-                  </Button>
-                  <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
-                    {t("RESTART")} </Button>
-                </View>}
-              {/* Record is uploaded */}
-              {isRecordUploaded &&
+              </View>}
+            {/* Record is saved but not uploaded; use column layout to fit well on mobile */}
+            {isRecordSaved && !isRecordUploaded && UploadSingleRecord &&
+              <View style={{ flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+                <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5, }} onPress={() => handleSingleUpload()}>
+                  {t("UPLOAD")}
+                </Button>
                 <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
-                  {t("RESTART")} </Button>}
-            </View>
-            {response && (
-              <View style={{ justifyContent: 'center', alignItems: 'center', width: 300 }}>
-                <Text style={{ fontSize: 16, textAlign: 'center' }}>{response}</Text>
-              </View>
-            )}
+                  {t("RESTART")} </Button>
+              </View>}
+            {/* Record is uploaded or saved*/}
+            {isRecordUploaded || isRecordSaved && !UploadSingleRecord &&
+              <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
+                {t("RESTART")} </Button>}
           </View>
+          {response && (
+            <View style={{ justifyContent: 'center', alignItems: 'center', width: 300 }}>
+              <Text style={{ fontSize: 16, textAlign: 'center' }}>{response}</Text>
+            </View>
+          )}
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </KeyboardAvoidingView>
   )
 }

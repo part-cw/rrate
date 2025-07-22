@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 
 const CDB_KEY = 'data.cdb.json';
 const STORAGE_KEY = 'sessionCSV';
-const MAX_ROWS = 1;
+const MAX_ROWS = 200;
 
 type Session = {
   record_id: string;
@@ -47,7 +47,7 @@ export async function hasTooManySessions(): Promise<boolean> {
 
     for (const sessions of Object.values(db)) {
       totalSessions += sessions.length;
-      if (totalSessions > 200) return true; // early exit
+      if (totalSessions > MAX_ROWS) return true;
     }
 
     return false;
@@ -60,7 +60,7 @@ export async function hasTooManySessions(): Promise<boolean> {
 // Save a new session to the REDCap database
 export async function saveREDCapSession(recordID: string, rate: string, time: string, taps: string): Promise<void> {
   if (await hasTooManySessions()) {
-    throw new Error('You can only store up to 200 results. Please export csv to clear storage.');
+    throw new Error(`You can only store up to ${MAX_ROWS} results. Please export csv to clear storage.`);
   }
 
   const db = await loadREDCapDatabase();
@@ -114,8 +114,8 @@ export async function saveSessionToCSV(recordId: string, rrate: string, tapSeque
     if (Platform.OS === 'web') {
       let existing = localStorage.getItem(STORAGE_KEY) || '';
       const lines = existing.trim() ? existing.trim().split('\n') : [];
-
-      if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results.');
+      console.log("Lines: ", lines.length);
+      if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results. Please export csv to clear storage.');
 
       const csv = lines.length === 0
         ? `${header}\n${newLine}`
@@ -138,6 +138,7 @@ export async function saveSessionToCSV(recordId: string, rrate: string, tapSeque
     console.log('Session saved to storage.');
   } catch (error) {
     console.error('Failed to save session:', error);
+    throw error; // return the error back to the caller
   }
 }
 
@@ -179,9 +180,9 @@ export async function exportCSV() {
       console.log('CSV saved at:', fileUri);
     }
 
-    await clearCSVStorage();
+    await clearCSVStorage(); // clear storage after export
   } catch (error) {
-    console.error('Failed to export CSV:', error);
+    console.error(`Failed to export CSV:\n`, error);
   }
 }
 

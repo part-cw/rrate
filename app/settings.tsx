@@ -68,7 +68,7 @@ export default function Settings() {
   // Handles bulk upload of stored measurements to REDCap
   const handleBulkUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
-      setResponse('Missing Info: Please enter your REDCap URL and API token in Settings first.');
+      setResponse(`Missing Info:\n Please enter your REDCap URL and API token in Settings first.`);
       return;
     }
 
@@ -182,7 +182,7 @@ export default function Settings() {
             <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
-            {REDCapURL && REDCapAPI && REDCapDataStored &&
+            {REDCapDataStored &&
               <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>}
           </View>
           {response && (
