@@ -261,7 +261,7 @@ export default function Index() {
               borderRadius: 10,
             }}
           >
-            <Text style={{ fontSize: 30, color: 'white', textAlign: 'center', padding: 20 }}>
+            <Text style={{ fontSize: 30, color: 'white', textAlign: 'center', padding: 20, userSelect: 'none' }}>
               {t("TAP_INHALATION")}
             </Text>
           </Pressable>
