@@ -217,14 +217,14 @@ export default function Results() {
           {/* Sets bottom buttons based on whether user has confirmed rate or not */}
           {rrateConfirmed ? (
             <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
-              <View style={{ flexDirection: Platform.OS === 'web' ? 'row' : 'column', justifyContent: 'space-between' }} >
+              <View style={{ flexDirection: Platform.OS === 'web' ? 'row' : 'column', justifyContent: 'center', alignContent: 'center' }} >
                 {!isRecordSaved && REDCap &&
                   <Button
                     icon="content-save-check-outline"
                     buttonColor={Theme.colors.secondary}
                     mode="contained"
                     onPress={() => router.push("/saveDataToREDCap")}
-                    style={{ paddingHorizontal: 30, marginVertical: 2 }}>
+                    style={{ width: '100%', marginVertical: 2, marginHorizontal: 5 }}>
                     Save to REDCap
                   </Button>
                 }
@@ -233,7 +233,7 @@ export default function Results() {
                   buttonColor={Theme.colors["neutral-bttn"]}
                   mode="contained"
                   onPress={() => router.push("/")}
-                  style={{ paddingHorizontal: 30, marginVertical: 2 }}>
+                  style={{ marginVertical: 2, marginHorizontal: 5 }}>
                   {t("RESTART")}
                 </Button>
               </View>
@@ -250,7 +250,7 @@ export default function Results() {
                   onPress={() => {
                     handleCorrectMeasurement();
                   }}
-                  style={{ paddingHorizontal: 30, marginRight: 10 }}>
+                  style={{ width: 150, marginHorizontal: 5 }}>
                   {t("YES")}
                 </Button>
                 <Button
@@ -260,7 +260,7 @@ export default function Results() {
                   onPress={() => {
                     router.push("/");
                   }}
-                  style={{ paddingHorizontal: 30, marginLeft: 10 }}>
+                  style={{ width: 150, marginHorizontal: 5 }}>
                   {t("NO")}
                 </Button>
               </View>
