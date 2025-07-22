@@ -196,6 +196,36 @@ export const GlobalStyles = StyleSheet.create({
     color: Theme.colors.primary,
   },
 
+  // Toggle Button
+  toggleButtonContainer: {
+    flexDirection: 'row',
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: Theme.colors.primary,
+    width: '100%',
+    height: 50
+  },
+  toggleButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10
+  },
+  activeToggleButton: {
+    backgroundColor: Theme.colors.primary,
+  },
+  inactiveToggleButton: {
+    backgroundColor: 'white',
+  },
+  activeText: {
+    color: 'white',
+  },
+  inactiveText: {
+    color: '#333',
+  },
+
   // Consistency Chart
   backgroundThresholdBand: {
     position: 'absolute',

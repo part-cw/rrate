@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { View, Text, ScrollView, Alert, Pressable, Platform } from "react-native";
+import { View, Text, ScrollView, Pressable, Platform } from "react-native";
 import { Button, Switch } from 'react-native-paper';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
 import { useRouter } from "expo-router";
 import { useGlobalVariables } from "../utils/globalContext";
@@ -15,15 +14,17 @@ import DropDown from "../components/DropdownList";
 import Copyright from "../components/Copyright";
 import Checkbox from "../components/Checkbox";
 import PatientModelPicker from "../components/PatientModelPicker";
+import ToggleButton from "../components/ToggleButton";
 
 // Displays all general settings for the app, including language selection, age interpretation, REDCap settings, and configuration settings.
 export default function Settings() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { REDCap, selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, breathingAudioDuringEnabled, setBreathingAudioDuringEnabled, exportDataEnabled, setExportDataEnabled,
-    breathingAudioAfterEnabled, setBreathingAudioAfterEnabled, endChimeEnabled, setEndChimeEnabled, cancelAlertEnabled, setCancelAlertEnabled, vibrationsDuringEnabled, setVibrationsDuringEnabled,
-    vibrationsAfterEnabled, setVibrationsAfterEnabled, REDCapAPI, REDCapURL, LongitudinalStudyEvent, RepeatableEvent, RepeatableInstrument
+  const { REDCap, selectedLanguage, setSelectedLanguage, ageThresholdEnabled, setAgeThresholdEnabled, exportDataEnabled, setExportDataEnabled,
+    sensoryFeedbackAfterMeasurement, setSensoryFeedbackAfterMeasurement, sensoryFeedbackDuringMeasurement, setSensoryFeedbackDuringMeasurement, endChimeEnabled,
+    setEndChimeEnabled, cancelAlertEnabled, setCancelAlertEnabled, sensoryFeedbackMethod, setSensoryFeedbackMethod, REDCapAPI, REDCapURL, LongitudinalStudyEvent,
+    RepeatableEvent, RepeatableInstrument
   } = useGlobalVariables();
 
   const ageThresholdToggle = () => {
@@ -150,25 +151,20 @@ export default function Settings() {
           </View>
         </View>
 
-        {/* Audio */}
+        {/* Sensory Feedback - Audio and Vibrations */}
         <View style={Style.floatingContainer}>
-          <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>
-          <View>
-            <View style={{ margin: 10 }}>
-              <Text style={Style.subheading}>Breathing Audio</Text>
-              <Checkbox label="Play during measurement" checked={breathingAudioDuringEnabled} onChange={() => setBreathingAudioDuringEnabled(!breathingAudioDuringEnabled)} />
-              <Checkbox label="Play after measurement" checked={breathingAudioAfterEnabled} onChange={() => setBreathingAudioAfterEnabled(!breathingAudioAfterEnabled)} />
-            </View>
-            {Platform.OS !== "web" && <View style={{ margin: 10 }}>
-              <Text style={Style.subheading}>Vibrations</Text>
-              <Checkbox label="Vibrate during measurement" checked={vibrationsDuringEnabled} onChange={() => setVibrationsDuringEnabled(!vibrationsDuringEnabled)} />
-              <Checkbox label="Vibrate after measurement" checked={vibrationsAfterEnabled} onChange={() => setVibrationsAfterEnabled(!vibrationsAfterEnabled)} />
-            </View>}
-            <View style={{ margin: 10 }}>
-              <Text style={Style.subheading}>Status Alert</Text>
-              <Checkbox label="Sound alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
-              <Checkbox label="Sound alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
-            </View>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>Sensory Feedback</Text>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            {/* Only allow vibrations on mobile */}
+            {Platform.OS !== "web" ?
+              <ToggleButton values={["Audio", "Vibrations"]} selectedValue={sensoryFeedbackMethod} iconNames={["volume-high", "vibrate"]} onChange={(value) => setSensoryFeedbackMethod(value)} /> :
+              <Button icon="volume-high" buttonColor={Theme.colors.primary} style={{ width: '100%' }} mode="contained">Audio</Button>}
+          </View>
+          <View style={{ margin: 10 }}>
+            <Checkbox label="Breathing during measurement" checked={sensoryFeedbackDuringMeasurement} onChange={() => setSensoryFeedbackDuringMeasurement(!sensoryFeedbackDuringMeasurement)} />
+            <Checkbox label="Breathing after measurement" checked={sensoryFeedbackAfterMeasurement} onChange={() => setSensoryFeedbackAfterMeasurement(!sensoryFeedbackAfterMeasurement)} />
+            <Checkbox label="Alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
+            <Checkbox label="Alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
           </View>
         </View>
 

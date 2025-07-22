@@ -23,23 +23,20 @@ type globalContextType = {
   configSettingsUnlocked: boolean;
   setConfigSettingsUnlocked: (unlocked: boolean) => void;
 
-  breathingAudioDuringEnabled: boolean;
-  setBreathingAudioDuringEnabled: (value: boolean) => void;
+  sensoryFeedbackMethod: string;
+  setSensoryFeedbackMethod: (value: string) => void;
 
-  breathingAudioAfterEnabled: boolean;
-  setBreathingAudioAfterEnabled: (value: boolean) => void;
+  sensoryFeedbackDuringMeasurement: boolean;
+  setSensoryFeedbackDuringMeasurement: (value: boolean) => void;
+
+  sensoryFeedbackAfterMeasurement: boolean;
+  setSensoryFeedbackAfterMeasurement: (value: boolean) => void;
 
   cancelAlertEnabled: boolean;
   setCancelAlertEnabled: (value: boolean) => void;
 
   endChimeEnabled: boolean;
   setEndChimeEnabled: (value: boolean) => void;
-
-  vibrationsDuringEnabled: boolean;
-  setVibrationsDuringEnabled: (value: boolean) => void;
-
-  vibrationsAfterEnabled: boolean;
-  setVibrationsAfterEnabled: (value: boolean) => void;
 
   // REDCap SETTINGS
   REDCap: boolean;
@@ -108,11 +105,11 @@ const STORAGE_KEYS = {
   ageThresholdEnabled: 'ageThresholdEnabled',
   babyAnimation: 'babyAnimation',
   exportDataEnabled: 'exportDataEnabled',
-  breathingAudioDuringEnabled: 'breathingAudioDuringEnabled',
-  breathingAudioAfterEnabled: 'breathingAudioAfterEnabled',
+  sensoryFeedbackDuringMeasurement: 'sensoryFeedbackDuringMeasurement',
+  sensoryFeedbackAfterMeasurement: 'sensoryFeedbackAfterMeasurement',
   endChimeEnabled: 'endChimeEnabled',
   cancelAlertEnabled: 'cancelAlertEnabled',
-  vibrationsDuringEnabled: 'vibrationsDuringEnabled',
+  sensoryFeedbackMethod: 'sensoryFeedbackMethod',
   vibrationsAfterEnabled: 'vibrationsAfterEnabled',
   measurementMethod: 'measurementMethod',
   consistencyThreshold: 'consistencyThreshold',
@@ -135,12 +132,11 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const [exportDataEnabled, saveExportDataEnabled] = useState(false);
   const [configSettingsUnlocked, setConfigSettingsUnlocked] = useState<boolean>(false);
   const password = "67d1514f9bb64c1adcec4ff70c012a40d675612d4403bfae978193547b751142";
-  const [breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled] = useState<boolean>(false);
-  const [breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled] = useState<boolean>(false);
+  const [sensoryFeedbackDuringMeasurement, saveBreathingAudioDuringEnabled] = useState<boolean>(false);
+  const [sensoryFeedbackAfterMeasurement, saveBreathingAudioAfterEnabled] = useState<boolean>(false);
   const [endChimeEnabled, saveEndChimeEnabled] = useState<boolean>(false);
   const [cancelAlertEnabled, saveCancelAlertEnabled] = useState<boolean>(false);
-  const [vibrationsDuringEnabled, saveVibrationsDuringEnabled] = useState<boolean>(false);
-  const [vibrationsAfterEnabled, saveVibrationsAfterEnabled] = useState<boolean>(false);
+  const [sensoryFeedbackMethod, saveSensoryFeedbackMethod] = useState<string>('Audio');
   const [measurementMethod, saveMeasurementMethod] = useState<string>('tap');
   const [consistencyThreshold, saveConsistencyThreshold] = useState(13);
   const [tapCountRequired, saveTapCountRequired] = useState(5);
@@ -220,12 +216,11 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         loadFromStorage<boolean>(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v === 'true'),
         loadFromStorage<BabyAnimationOption>(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => Number(v) as BabyAnimationOption),
         loadFromStorage<boolean>(STORAGE_KEYS.exportDataEnabled, saveExportDataEnabled, v => v === 'true'),
-        loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v === 'true'),
-        loadFromStorage<boolean>(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.sensoryFeedbackDuringMeasurement, saveBreathingAudioDuringEnabled, v => v === 'true'),
+        loadFromStorage<boolean>(STORAGE_KEYS.sensoryFeedbackAfterMeasurement, saveBreathingAudioAfterEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v === 'true'),
         loadFromStorage<boolean>(STORAGE_KEYS.cancelAlertEnabled, saveCancelAlertEnabled, v => v === 'true'),
-        loadFromStorage<boolean>(STORAGE_KEYS.vibrationsDuringEnabled, saveVibrationsDuringEnabled, v => v === 'true'),
-        loadFromStorage<boolean>(STORAGE_KEYS.vibrationsAfterEnabled, saveVibrationsAfterEnabled, v => v === 'true'),
+        loadFromStorage<string>(STORAGE_KEYS.sensoryFeedbackMethod, saveSensoryFeedbackMethod),
         loadFromStorage<string>(STORAGE_KEYS.measurementMethod, saveMeasurementMethod, v => v),
         loadFromStorage<number>(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold, v => Number(v)),
         loadFromStorage<number>(STORAGE_KEYS.tapCountRequired, saveTapCountRequired, v => Number(v)),
@@ -264,12 +259,11 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const setAgeThresholdEnabled = createPersistentSetter(STORAGE_KEYS.ageThresholdEnabled, saveAgeThresholdEnabled, v => v.toString());
   const setBabyAnimation = createPersistentSetter(STORAGE_KEYS.babyAnimation, saveBabyAnimation, v => v.toString());
   const setExportDataEnabled = createPersistentSetter(STORAGE_KEYS.exportDataEnabled, saveExportDataEnabled, v => v.toString());
-  const setBreathingAudioDuringEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioDuringEnabled, saveBreathingAudioDuringEnabled, v => v.toString());
-  const setBreathingAudioAfterEnabled = createPersistentSetter(STORAGE_KEYS.breathingAudioAfterEnabled, saveBreathingAudioAfterEnabled, v => v.toString());
+  const setSensoryFeedbackDuringMeasurement = createPersistentSetter(STORAGE_KEYS.sensoryFeedbackDuringMeasurement, saveBreathingAudioDuringEnabled, v => v.toString());
+  const setSensoryFeedbackAfterMeasurement = createPersistentSetter(STORAGE_KEYS.sensoryFeedbackAfterMeasurement, saveBreathingAudioAfterEnabled, v => v.toString());
   const setEndChimeEnabled = createPersistentSetter(STORAGE_KEYS.endChimeEnabled, saveEndChimeEnabled, v => v.toString());
   const setCancelAlertEnabled = createPersistentSetter(STORAGE_KEYS.cancelAlertEnabled, saveCancelAlertEnabled, v => v.toString());
-  const setVibrationsDuringEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsDuringEnabled, saveVibrationsDuringEnabled, v => v.toString());
-  const setVibrationsAfterEnabled = createPersistentSetter(STORAGE_KEYS.vibrationsAfterEnabled, saveVibrationsAfterEnabled, v => v.toString());
+  const setSensoryFeedbackMethod = createPersistentSetter(STORAGE_KEYS.sensoryFeedbackMethod, saveSensoryFeedbackMethod, v => v.toString());
   const setMeasurementMethod = createPersistentSetter(STORAGE_KEYS.measurementMethod, saveMeasurementMethod);
   const setConsistencyThreshold = createPersistentSetter(STORAGE_KEYS.consistencyThreshold, saveConsistencyThreshold);
   const setTapCountRequired = createPersistentSetter(STORAGE_KEYS.tapCountRequired, saveTapCountRequired);
@@ -295,18 +289,16 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
         setExportDataEnabled,
         configSettingsUnlocked,
         setConfigSettingsUnlocked,
-        breathingAudioDuringEnabled,
-        setBreathingAudioDuringEnabled,
-        breathingAudioAfterEnabled,
-        setBreathingAudioAfterEnabled,
+        sensoryFeedbackDuringMeasurement,
+        setSensoryFeedbackDuringMeasurement,
+        sensoryFeedbackAfterMeasurement,
+        setSensoryFeedbackAfterMeasurement,
         endChimeEnabled,
         setEndChimeEnabled,
         cancelAlertEnabled,
         setCancelAlertEnabled,
-        vibrationsDuringEnabled,
-        setVibrationsDuringEnabled,
-        vibrationsAfterEnabled,
-        setVibrationsAfterEnabled,
+        sensoryFeedbackMethod,
+        setSensoryFeedbackMethod,
         password,
         measurementMethod,
         setMeasurementMethod,

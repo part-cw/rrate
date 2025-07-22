@@ -54,7 +54,7 @@ export default function Results() {
 
   const [age, setAge] = useState<string>("Set Age");
 
-  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, breathingAudioAfterEnabled, vibrationsAfterEnabled, REDCap, exportDataEnabled } = useGlobalVariables();
+  const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, sensoryFeedbackAfterMeasurement, sensoryFeedbackMethod, REDCap, exportDataEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true'); // reference the local search params
@@ -79,11 +79,12 @@ export default function Results() {
     animationIntervalRef.current = setInterval(() => {
       setIsInhaling(prev => {
         const next = !prev;
-        if (next && vibrationsAfterEnabled) {
-          Vibration.vibrate(30); // vibrate when exhaling
-        }
-        if (next && breathingAudioAfterEnabled) {
-          loadAndPlayAudio(player);
+        if (next && sensoryFeedbackAfterMeasurement) {
+          if (sensoryFeedbackMethod === 'Audio') {
+            loadAndPlayAudio(player);
+          } else if (sensoryFeedbackMethod === 'Vibration') {
+            Vibration.vibrate(30);
+          }
         }
         return next;
       });
@@ -100,7 +101,7 @@ export default function Results() {
           clearInterval(animationIntervalRef.current);
           animationIntervalRef.current = null;
         }
-        if (player && breathingAudioAfterEnabled) {
+        if (player && sensoryFeedbackAfterMeasurement) {
           player.pause?.();
         }
         Vibration.cancel();

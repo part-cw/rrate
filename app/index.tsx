@@ -1,6 +1,5 @@
 import { View, Text, Pressable, Vibration } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
 import { Theme } from "../assets/theme";
@@ -31,7 +30,7 @@ export default function Index() {
 
   // GLOBAL VARIABLES
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime,
-    setRRTaps, measurementMethod, breathingAudioDuringEnabled, endChimeEnabled, vibrationsDuringEnabled } = useGlobalVariables();
+    setRRTaps, measurementMethod, sensoryFeedbackMethod, sensoryFeedbackDuringMeasurement, endChimeEnabled } = useGlobalVariables();
 
   // AUDIO VARIABLES
   const endChimeSource = require('../assets/audio/endChime.mp3'); // Thank you to Universfield on Pixabay for this audio
@@ -152,8 +151,14 @@ export default function Index() {
 
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
-    if (breathingAudioDuringEnabled) loadAndPlayAudio(breathingAudioPlayer);
-    if (vibrationsDuringEnabled) Vibration.vibrate(30);
+    if (sensoryFeedbackDuringMeasurement) {
+      if (sensoryFeedbackMethod === 'Audio') {
+        loadAndPlayAudio(breathingAudioPlayer);
+      } else if (sensoryFeedbackMethod === 'Vibration') {
+        Vibration.vibrate(30);
+      }
+    }
+
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
     if (measurementMethod === 'timer') {
