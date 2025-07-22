@@ -14,6 +14,7 @@ type Session = {
   rr_taps: string;
 };
 
+// Local database for storing REDCap sessions for upload
 type RRateDatabase = {
   [recordID: string]: Session[];
 };
@@ -93,7 +94,7 @@ export async function deleteREDCapDatabase(): Promise<void> {
   }
 }
 
-// Check if there are any stored data for REDCap export
+// Check if there are any stored data for REDCap export; used to determine whether to show upload button in settings
 export async function storedREDCapDataExists(): Promise<boolean> {
   try {
     const data = await AsyncStorage.getItem(CDB_KEY);
@@ -114,7 +115,6 @@ export async function saveSessionToCSV(recordId: string, rrate: string, tapSeque
     if (Platform.OS === 'web') {
       let existing = localStorage.getItem(STORAGE_KEY) || '';
       const lines = existing.trim() ? existing.trim().split('\n') : [];
-      console.log("Lines: ", lines.length);
       if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results. Please export csv to clear storage.');
 
       const csv = lines.length === 0
@@ -126,7 +126,7 @@ export async function saveSessionToCSV(recordId: string, rrate: string, tapSeque
       let existing = await AsyncStorage.getItem(STORAGE_KEY) || '';
       const lines = existing.trim() ? existing.trim().split('\n') : [];
 
-      if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results.');
+      if (lines.length >= MAX_ROWS + 1) throw new Error('You can only store up to 200 results. Please export csv to clear storage.');
 
       const csv = lines.length === 0
         ? `${header}\n${newLine}`
@@ -134,10 +134,7 @@ export async function saveSessionToCSV(recordId: string, rrate: string, tapSeque
 
       await AsyncStorage.setItem(STORAGE_KEY, csv);
     }
-
-    console.log('Session saved to storage.');
   } catch (error) {
-    console.error('Failed to save session:', error);
     throw error; // return the error back to the caller
   }
 }
@@ -154,7 +151,7 @@ export async function exportCSV() {
 
   const startDate = new Date();
   const formattedDate = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}_${String(startDate.getHours()).padStart(2, '0')}-${String(startDate.getMinutes()).padStart(2, '0')}`;
-  const fileName = `RRateData-${formattedDate}.csv`;
+  const fileName = `RRate-${formattedDate}.csv`;
 
   try {
     if (Platform.OS === 'web') {
@@ -177,15 +174,13 @@ export async function exportCSV() {
       } else {
         alert("Sharing not available");
       }
-      console.log('CSV saved at:', fileUri);
     }
 
     await clearCSVStorage(); // clear storage after export
   } catch (error) {
-    console.error(`Failed to export CSV:\n`, error);
+    throw new Error(`Failed to export CSV:\n${error}`);
   }
 }
-
 
 // Clear saved sessions
 export async function clearCSVStorage() {
@@ -194,10 +189,9 @@ export async function clearCSVStorage() {
   } else {
     await AsyncStorage.removeItem(STORAGE_KEY);
   }
-  console.log('CSV storage cleared.');
 }
 
-// Check if there are any stored data for export 
+// Check if there are any stored data for export; used to determine whether to show export button in settings
 export async function storedDataExists(): Promise<boolean> {
   const data =
     Platform.OS === 'web'

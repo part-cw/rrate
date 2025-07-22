@@ -132,7 +132,7 @@ export default function Settings() {
         </View>
 
         {/* Language Selection */}
-        <View style={Style.floatingContainer}>
+        <View style={[Style.floatingContainer, { zIndex: 100 }]}>
           <Text style={[Style.heading, { marginBottom: 10 }]}>Select Language</Text>
           <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
@@ -153,12 +153,12 @@ export default function Settings() {
 
         {/* Sensory Feedback - Audio and Vibrations */}
         <View style={Style.floatingContainer}>
-          <Text style={[Style.heading, { marginBottom: 10 }]}>Sensory Feedback</Text>
+          {Platform.OS === 'web' ? <Text style={[Style.heading, { marginBottom: 10 }]}>Sensory Feedback</Text> :
+            <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>}
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {/* Only allow vibrations on mobile */}
-            {Platform.OS !== "web" ?
-              <ToggleButton values={["Audio", "Vibrations"]} selectedValue={sensoryFeedbackMethod} iconNames={["volume-high", "vibrate"]} onChange={(value) => setSensoryFeedbackMethod(value)} /> :
-              <Button icon="volume-high" buttonColor={Theme.colors.primary} style={{ width: '100%' }} mode="contained">Audio</Button>}
+            {Platform.OS !== "web" &&
+              <ToggleButton values={["Audio", "Vibrations"]} selectedValue={sensoryFeedbackMethod} iconNames={["volume-high", "vibrate"]} onChange={(value) => setSensoryFeedbackMethod(value)} />}
           </View>
           <View style={{ margin: 10 }}>
             <Checkbox label="Breathing during measurement" checked={sensoryFeedbackDuringMeasurement} onChange={() => setSensoryFeedbackDuringMeasurement(!sensoryFeedbackDuringMeasurement)} />

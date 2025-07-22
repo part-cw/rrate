@@ -6,6 +6,7 @@ import { useGlobalVariables } from '../utils/globalContext';
 import ConsistencyChartModal from '../components/ConsistencyChartModal';
 import { getMedian } from '../utils/consistencyFunctions';
 import { GlobalStyles as Style } from '../assets/styles';
+import useTranslation from '../utils/useTranslation';
 import { Theme } from '../assets/theme';
 
 // Show info button on results page and labels on modal dialog
@@ -18,6 +19,7 @@ type ConsistencyChartProps = {
 export default function ConsistencyChart({ showInfoButton, showLabels }: ConsistencyChartProps) {
   const { consistencyThreshold, tapTimestamps, tapCountRequired, rrate } = useGlobalVariables();
   const [modalVisible, setModalVisible] = useState(false);
+  const { t } = useTranslation();
 
   const chartWidth = 350;
   const chartHeight = 80;
@@ -150,7 +152,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
                 color: Theme.colors.tertiary
               }}
             >
-              Fast
+              {t("FAST")}
             </Text>
             <Text
               style={{
@@ -164,7 +166,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
                 color: Theme.colors.secondary
               }}
             >
-              Consistent
+              {t("CONSISTENT")}
             </Text>
             <Text
               style={{
@@ -178,7 +180,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
                 color: Theme.colors.tertiary
               }}
             >
-              Slow
+              {t("SLOW")}
             </Text>
           </View>
 

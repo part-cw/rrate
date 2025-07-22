@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration, Platform } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
 import { useAudioPlayer } from 'expo-audio';

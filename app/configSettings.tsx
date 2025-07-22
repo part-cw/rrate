@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { View, Text, ScrollView, Pressable, Platform, InteractionManager, ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, TextInput } from 'react-native-paper';
 import { GlobalStyles as Style } from "../assets/styles";
 import { Theme } from "../assets/theme";
@@ -63,7 +62,7 @@ export default function ConfigSettings() {
         </View>
 
         {/* REDCap Settings - only display on mobile due to lack of secure storage for API token on web */}
-        {Platform.OS !== 'web' && (
+        {Platform.OS !== 'ios' && (
           <View style={Style.floatingContainer}>
             <Text style={Style.heading}> REDCap</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>

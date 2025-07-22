@@ -29,7 +29,6 @@ export default function SaveDataToFile() {
 
     } catch (error: any) {
       setResponse(`Save failed:\n` + error.message);
-      console.log(`Error: \n`, error);
     }
   };
 

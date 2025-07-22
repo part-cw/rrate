@@ -1,6 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
 import { Button } from 'react-native-paper';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { GlobalStyles as Style } from "../assets/styles";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useGlobalVariables } from "../utils/globalContext";
