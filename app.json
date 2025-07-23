@@ -22,11 +22,9 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.partcw.rrate",
-      "android": {
-        "permissions": [
-          "android.permission.VIBRATE"
-        ]
-      }
+      "permissions": [
+        "VIBRATE"
+      ]
     },
     "web": {
       "bundler": "metro",
