@@ -98,7 +98,6 @@ export async function deleteREDCapDatabase(): Promise<void> {
 export async function storedREDCapDataExists(): Promise<boolean> {
   try {
     const data = await AsyncStorage.getItem(CDB_KEY);
-    console.log(data);
     return data !== null;
   } catch (error) {
     console.error('Error checking REDCap data existence:', error);

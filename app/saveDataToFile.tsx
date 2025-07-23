@@ -63,7 +63,7 @@ export default function SaveDataToFile() {
 
             {!recordSaved ? <Button icon="arrow-collapse-down" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5 }} onPress={() => { handleSingleUpload() }}>
               {t("SAVE")}  </Button> :
-              <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ width: '100%' }} onPress={() => router.push("/")}>
+              <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" style={{ width: 200 }} onPress={() => router.push("/")}>
                 {t("RESTART")} </Button>
             }
           </View>

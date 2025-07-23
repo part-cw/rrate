@@ -51,7 +51,6 @@ export default function Settings() {
     if (Platform.OS !== 'web') {
       const checkREDCapData = async () => {
         const result = await storedREDCapDataExists();
-        console.log("REDCap data stored: ", result);
         setREDCapDataStored(result);
         if (!result) {
           setResponse('No saved sessions for upload.');
@@ -197,7 +196,7 @@ export default function Settings() {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Switch value={exportDataEnabled}
               onValueChange={setExportDataEnabled} />
-            <Text style={[Style.text, { padding: 15 }]}>Save measurements for download.</Text>
+            <Text style={[Style.text, { paddingHorizontal: 20, paddingVertical: 10 }]}>Save measurements for download.</Text>
           </View>
           {dataForExportStored && <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
             <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
