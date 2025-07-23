@@ -23,7 +23,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.partcw.rrate",
       "permissions": [
-        "VIBRATE"
+        "android.permission.VIBRATE"
       ]
     },
     "web": {
