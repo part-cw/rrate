@@ -184,7 +184,7 @@ export const GlobalStyles = StyleSheet.create({
   labelRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 300,
+    width: 290,
   },
   label: {
     paddingHorizontal: 5,

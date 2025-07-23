@@ -143,7 +143,7 @@ export default function ConfigSettings() {
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Slider
-              style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
+              style={{ width: 300, height: Platform.OS == "web" ? 50 : 30 }}
               minimumValue={3}
               maximumValue={6}
               step={1}
@@ -179,7 +179,7 @@ export default function ConfigSettings() {
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Slider
-              style={{ width: 300, height: Platform.OS == "web" ? 50 : 60 }}
+              style={{ width: 300, height: Platform.OS == "web" ? 50 : 30 }}
               minimumValue={10}
               maximumValue={14}
               value={consistencyThreshold}
