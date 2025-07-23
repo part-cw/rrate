@@ -44,6 +44,8 @@ export default function Settings() {
     'English'
   ];
 
+  const audioOptions = ["Audio", t("VIBRATE_SOUND")];
+
   // On load, checks to see if REDCap data is stored in AsyncStorage or if there is data stored for export
   useEffect(() => {
     if (Platform.OS !== 'web') {
@@ -158,7 +160,7 @@ export default function Settings() {
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {/* Only allow vibrations on mobile */}
             {Platform.OS !== "web" &&
-              <ToggleButton values={["Audio", "Vibrations"]} selectedValue={sensoryFeedbackMethod} iconNames={["volume-high", "vibrate"]} onChange={(value) => setSensoryFeedbackMethod(value)} />}
+              <ToggleButton values={audioOptions} selectedValue={sensoryFeedbackMethod} iconNames={["volume-high", "vibrate"]} onChange={(value) => setSensoryFeedbackMethod(value)} />}
           </View>
           <View style={{ margin: 10 }}>
             <Checkbox label="Breathing during measurement" checked={sensoryFeedbackDuringMeasurement} onChange={() => setSensoryFeedbackDuringMeasurement(!sensoryFeedbackDuringMeasurement)} />

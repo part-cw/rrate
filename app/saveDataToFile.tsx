@@ -45,7 +45,7 @@ export default function SaveDataToFile() {
             style={{ padding: 20 }}
           />
           <Text style={Style.pageTitle}>Save Data</Text>
-          <Text style={[Style.text, { paddingBottom: 10 }]} > <Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths /min </Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]} > <Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} {t("RRATE_UNIT")} </Text>
           <Text style={[Style.text, { paddingBottom: 10 }]}> <Text style={{ fontWeight: 'bold' }}>Number of Taps:</Text> {tapTimestamps.length} </Text>
           <Text style={Style.text}> <Text style={{ fontWeight: 'bold' }}>Time:</Text> {rrTime} </Text>
           <View style={{ width: '50%' }}>

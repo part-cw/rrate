@@ -64,7 +64,7 @@ export default function ConfigSettings() {
         {/* REDCap Settings - only display on mobile due to lack of secure storage for API token on web */}
         {Platform.OS !== 'ios' && (
           <View style={Style.floatingContainer}>
-            <Text style={Style.heading}> REDCap</Text>
+            <Text style={Style.heading}>REDCap</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
               <Checkbox label={t("REDCAP_USE")} checked={REDCap} onChange={() => { setREDCap(!REDCap) }} />
             </View>
