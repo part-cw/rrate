@@ -30,7 +30,7 @@ export default function Index() {
 
   // GLOBAL VARIABLES
   const { tapCountRequired, consistencyThreshold, setRRate, setTapTimestaps, setRRTime,
-    setRRTaps, measurementMethod, sensoryFeedbackMethod, sensoryFeedbackDuringMeasurement, endChimeEnabled } = useGlobalVariables();
+    setRRTaps, measurementMethod, sensoryFeedbackMethod, sensoryFeedbackDuringMeasurement, endChimeEnabled, cancelAlertEnabled } = useGlobalVariables();
 
   // AUDIO VARIABLES
   const endChimeSource = require('../assets/audio/endChime.mp3'); // Thank you to Universfield on Pixabay for this audio
@@ -48,11 +48,11 @@ export default function Index() {
 
   // MODAL DIALOG PAGE LOGIC
   const tapsTooFast = () => {
-    loadAndPlayAudio(cancelAudio);
+    if (cancelAlertEnabled) handleSensoryFeedbackAlert("cancel alert");
     setTapsTooFastModalVisible(true);
   }
   const inconsistentTaps = () => {
-    loadAndPlayAudio(cancelAudio);
+    if (cancelAlertEnabled) handleSensoryFeedbackAlert("cancel alert");
     setTapsInconsistentModalVisible(true);
   }
   const notEnoughTaps = () => {
@@ -60,10 +60,32 @@ export default function Index() {
       if (timeoutRef.current !== null) {
         clearTimeout(timeoutRef.current);
       }
-      loadAndPlayAudio(cancelAudio);
+      if (cancelAlertEnabled) handleSensoryFeedbackAlert("cancel alert");
       setNotEnoughTapsModalVisible(true);
     }
   };
+
+  const handleSensoryFeedbackAlert = (type: string) => {
+    if (type === "end chime") {
+      if (sensoryFeedbackMethod === "Audio") {
+        loadAndPlayAudio(endChimePlayer);
+      } else if (sensoryFeedbackMethod === "Vibrate") {
+        Vibration.vibrate(100);
+      }
+    } else if (type === "cancel alert") {
+      if (sensoryFeedbackMethod === "Audio") {
+        loadAndPlayAudio(cancelAudio);
+      } else if (sensoryFeedbackMethod === "Vibrate") {
+        Vibration.vibrate(100);
+      }
+    } else if (type === "breathing audio") {
+      if (sensoryFeedbackMethod === 'Audio') {
+        loadAndPlayAudio(breathingAudioPlayer);
+      } else if (sensoryFeedbackMethod === 'Vibrate') {
+        Vibration.vibrate(100);
+      }
+    }
+  }
 
   // Updates the reference of the Not Enough Taps modal whenever modal visibility changes
   useEffect(() => {
@@ -151,13 +173,7 @@ export default function Index() {
 
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
-    if (sensoryFeedbackDuringMeasurement) {
-      if (sensoryFeedbackMethod === 'Audio') {
-        loadAndPlayAudio(breathingAudioPlayer);
-      } else if (sensoryFeedbackMethod === 'Vibration') {
-        Vibration.vibrate(30);
-      }
-    }
+    if (sensoryFeedbackDuringMeasurement) handleSensoryFeedbackAlert("breathing audio");
 
     const now = Date.now() / 1000;
     tapCountRef.current += 1;
@@ -194,8 +210,8 @@ export default function Index() {
     setRRTime(getLocalTimestamp());
 
     if (result.isConsistent === true) {
+      if (endChimeEnabled) handleSensoryFeedbackAlert("end chime");
       if (result.rate < 140 && tapCountRef.current >= tapCountRequired) {
-        if (endChimeEnabled) loadAndPlayAudio(endChimePlayer);
         router.push("/results");
         return;
       } else {

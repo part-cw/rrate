@@ -10,7 +10,7 @@ export default function TapCount({ tapCount }: TapCountProps) {
 
   return (
     <View style={Style.floatingContainer}>
-      <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+      <Text style={{ fontWeight: 'bold', textAlign: 'center', userSelect: "none" }}>
         Tap Count
       </Text>
       <View style={Style.circleRow}>

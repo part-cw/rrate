@@ -155,7 +155,7 @@ export default function Settings() {
 
         {/* Sensory Feedback - Audio and Vibrations */}
         <View style={Style.floatingContainer}>
-          {Platform.OS === 'web' ? <Text style={[Style.heading, { marginBottom: 10 }]}>Sensory Feedback</Text> :
+          {Platform.OS !== 'web' ? <Text style={[Style.heading, { marginBottom: 10 }]}>Sensory Feedback</Text> :
             <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>}
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {/* Only allow vibrations on mobile */}

@@ -6,7 +6,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "@/assets/theme";
 import { useRouter } from "expo-router";
 import useTranslation from '../utils/useTranslation';
-import { useGlobalVariables } from '../utils/globalContext';
 
 type Props = PropsWithChildren<{
   isVisible: boolean;

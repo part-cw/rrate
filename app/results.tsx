@@ -81,8 +81,8 @@ export default function Results() {
         if (next && sensoryFeedbackAfterMeasurement) {
           if (sensoryFeedbackMethod === 'Audio') {
             loadAndPlayAudio(player);
-          } else if (sensoryFeedbackMethod === 'Vibration') {
-            Vibration.vibrate(30);
+          } else if (sensoryFeedbackMethod === 'Vibrate') {
+            Vibration.vibrate(100);
           }
         }
         return next;

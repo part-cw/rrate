@@ -113,12 +113,12 @@ export default function SaveDataToREDCap() {
                 <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5, }} onPress={() => handleSingleUpload()}>
                   {t("UPLOAD")}
                 </Button>
-                <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
+                <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ width: '100%' }}>
                   {t("RESTART")} </Button>
               </View>}
             {/* Record is uploaded or saved*/}
             {isRecordUploaded || isRecordSaved && !UploadSingleRecord &&
-              <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ paddingHorizontal: 30 }}>
+              <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ width: '100%' }}>
                 {t("RESTART")} </Button>}
           </View>
           {response && (
