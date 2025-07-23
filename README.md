@@ -38,4 +38,7 @@ This version of RRate ensures data security and protects features of the RRate a
 # External Launches of RRate
 RRate can be launched through an external application using a deep link to the launch page. After taking a measurement, RRate will navigate to the provided return URL and append the measured respiratory rate as URI-encoded JSON, formatted as a FHIR Respiratory Rate Vital Signs Observation. You can unencode the "observation" parameter to access the FHIR observation for data storage or upload to a FHIR server.
 - Web: https://rrate.netlify.app/launch?patientId=YOUR_PATIENT_ID&returnURL=YOUR_RETURN_URL 
-- Mobile: rrate://launch?patientId=YOUR_PATIENT_ID&returnURL=YOUR_RETURN_URL 
+- Mobile: rrate://launch?patientId=YOUR_PATIENT_ID&returnURL=YOUR_RETURN_URL
+
+# Supported Integrations
+This version of RRate can be integrated with REDCap and supports data export using SMART on FHIR protocol. Please see the [wiki](https://github.com/part-cw/rrate/wiki) to learn how to set up these integrations. 
