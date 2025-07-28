@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Vibration } from "react-native";
+import { View, Text, Pressable, Vibration, Platform } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import { useGlobalVariables } from "../utils/globalContext";
 import { useAudioPlayer } from 'expo-audio';
 import loadAndPlayAudio from '../utils/audioFunctions';
 import useTranslation from '../utils/useTranslation';
+import * as Haptics from 'expo-haptics';
 import { evaluateRecentTaps, generateRRTapString, getLocalTimestamp } from '../utils/consistencyFunctions';
 import TapCount from "../components/TapCount";
 import AlertModal from "../components/AlertModal";
@@ -65,24 +66,37 @@ export default function Index() {
     }
   };
 
-  const handleSensoryFeedbackAlert = (type: string) => {
-    if (type === "end chime") {
+  const handleSensoryFeedbackAlert = async (type: string) => {
+    if (type === "end chime" || type === "cancel alert" || type === "breathing audio") {
       if (sensoryFeedbackMethod === "Audio") {
         loadAndPlayAudio(endChimePlayer);
       } else if (sensoryFeedbackMethod === "Vibrate") {
-        Vibration.vibrate(100);
+
+        if (Platform.OS === 'android') {
+          await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
+        } else if (Platform.OS === 'ios') {
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        }
       }
     } else if (type === "cancel alert") {
       if (sensoryFeedbackMethod === "Audio") {
         loadAndPlayAudio(cancelAudio);
       } else if (sensoryFeedbackMethod === "Vibrate") {
-        Vibration.vibrate(100);
+        if (Platform.OS === 'android') {
+          await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
+        } else if (Platform.OS === 'ios') {
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        }
       }
     } else if (type === "breathing audio") {
       if (sensoryFeedbackMethod === 'Audio') {
         loadAndPlayAudio(breathingAudioPlayer);
       } else if (sensoryFeedbackMethod === 'Vibrate') {
-        Vibration.vibrate(100);
+        if (Platform.OS === 'android') {
+          await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
+        } else if (Platform.OS === 'ios') {
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        }
       }
     }
   }
