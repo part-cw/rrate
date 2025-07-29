@@ -21,7 +21,10 @@ export default function SaveDataToFile() {
 
   // Handles save of most recent session, posting record ID, rate, time, and tap string to local storage
   const handleSingleUpload = async () => {
-
+    if (!recordID) {
+      setResponse('Please enter a Record ID.');
+      return;
+    }
     try {
       const result = await saveSessionToCSV(recordID, rrate, rrTaps, rrTime);
       setResponse('Saved successfully!');

@@ -71,24 +71,13 @@ export default function Index() {
       if (sensoryFeedbackMethod === "Audio") {
         loadAndPlayAudio(endChimePlayer);
       } else if (sensoryFeedbackMethod === "Vibrate") {
-
-        if (Platform.OS === 'android') {
-          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          // await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
-        } else if (Platform.OS === 'ios') {
-          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        }
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
     } else if (type === "cancel alert") {
       if (sensoryFeedbackMethod === "Audio") {
         loadAndPlayAudio(cancelAudio);
       } else if (sensoryFeedbackMethod === "Vibrate") {
-        if (Platform.OS === 'android') {
-          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          // await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
-        } else if (Platform.OS === 'ios') {
-          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        }
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
     } else if (type === "breathing audio") {
       if (sensoryFeedbackMethod === 'Audio') {
