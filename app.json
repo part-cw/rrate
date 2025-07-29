@@ -21,7 +21,10 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.partcw.rrate"
+      "package": "com.partcw.rrate",
+      "permissions": [
+        "android.permission.VIBRATE"
+      ]
     },
     "web": {
       "bundler": "metro",
