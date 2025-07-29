@@ -67,13 +67,14 @@ export default function Index() {
   };
 
   const handleSensoryFeedbackAlert = async (type: string) => {
-    if (type === "end chime" || type === "cancel alert" || type === "breathing audio") {
+    if (type === "end chime") {
       if (sensoryFeedbackMethod === "Audio") {
         loadAndPlayAudio(endChimePlayer);
       } else if (sensoryFeedbackMethod === "Vibrate") {
 
         if (Platform.OS === 'android') {
-          await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          // await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
         } else if (Platform.OS === 'ios') {
           await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }
@@ -83,7 +84,8 @@ export default function Index() {
         loadAndPlayAudio(cancelAudio);
       } else if (sensoryFeedbackMethod === "Vibrate") {
         if (Platform.OS === 'android') {
-          await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          // await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
         } else if (Platform.OS === 'ios') {
           await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }
@@ -93,7 +95,8 @@ export default function Index() {
         loadAndPlayAudio(breathingAudioPlayer);
       } else if (sensoryFeedbackMethod === 'Vibrate') {
         if (Platform.OS === 'android') {
-          await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
+          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          // await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
         } else if (Platform.OS === 'ios') {
           await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }
