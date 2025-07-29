@@ -151,7 +151,7 @@ export default function Index() {
   }, []);
 
 
-  // uses Expo Haptics to trigger audio/vibrations for different events
+  // Uses Expo Haptics and Audio to trigger audio/vibrations for different events
   const handleSensoryFeedbackAlert = async (type: string) => {
     if (sensoryFeedbackMethod === "Vibrate") {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

@@ -119,6 +119,7 @@ export default function Results() {
 
   // Handles the case where the user confirms the respiratory rate. 
   // If opened through PARA, send the FHIR observation via redirect URL to app; if opened through EMR, send the FHIR observation to the server and redirect back to EMR.
+  // If no redirection is needed, variable change will cause button logic to show restart button on animation screen.
   const handleCorrectMeasurement = async () => {
     setRRateConfirmed(true);
     if (launchType === 'app') {
