@@ -94,15 +94,11 @@ export default function Index() {
       if (sensoryFeedbackMethod === 'Audio') {
         loadAndPlayAudio(breathingAudioPlayer);
       } else if (sensoryFeedbackMethod === 'Vibrate') {
-        if (Platform.OS === 'android') {
-          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          // await Haptics.performAndroidHapticsAsync(Haptics.AndroidHaptics.Context_Click);
-        } else if (Platform.OS === 'ios') {
-          await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        }
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
     }
   }
+
 
   // Updates the reference of the Not Enough Taps modal whenever modal visibility changes
   useEffect(() => {
