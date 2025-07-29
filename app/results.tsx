@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView, useWindowDimensions, Vibration, Platform } from 'react-native';
+import { View, Text, Pressable, ScrollView, useWindowDimensions, Platform } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { Theme } from '../assets/theme';
+import * as Haptics from 'expo-haptics';
 import { useAudioPlayer } from 'expo-audio';
 import loadAndPlayAudio from '../utils/audioFunctions';
 import { Linking } from 'react-native';
@@ -82,7 +83,7 @@ export default function Results() {
           if (sensoryFeedbackMethod === 'Audio') {
             loadAndPlayAudio(player);
           } else if (sensoryFeedbackMethod === 'Vibrate') {
-            Vibration.vibrate(100);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
           }
         }
         return next;
@@ -103,7 +104,6 @@ export default function Results() {
         if (player && sensoryFeedbackAfterMeasurement) {
           player.pause?.();
         }
-        Vibration.cancel();
       };
     }, [])
   );

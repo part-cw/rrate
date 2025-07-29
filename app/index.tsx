@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Vibration, Platform } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
@@ -65,29 +65,6 @@ export default function Index() {
       setNotEnoughTapsModalVisible(true);
     }
   };
-
-  const handleSensoryFeedbackAlert = async (type: string) => {
-    if (type === "end chime") {
-      if (sensoryFeedbackMethod === "Audio") {
-        loadAndPlayAudio(endChimePlayer);
-      } else if (sensoryFeedbackMethod === "Vibrate") {
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      }
-    } else if (type === "cancel alert") {
-      if (sensoryFeedbackMethod === "Audio") {
-        loadAndPlayAudio(cancelAudio);
-      } else if (sensoryFeedbackMethod === "Vibrate") {
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      }
-    } else if (type === "breathing audio") {
-      if (sensoryFeedbackMethod === 'Audio') {
-        loadAndPlayAudio(breathingAudioPlayer);
-      } else if (sensoryFeedbackMethod === 'Vibrate') {
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      }
-    }
-  }
-
 
   // Updates the reference of the Not Enough Taps modal whenever modal visibility changes
   useEffect(() => {
@@ -172,6 +149,22 @@ export default function Index() {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
+
+
+  // uses Expo Haptics to trigger audio/vibrations for different events
+  const handleSensoryFeedbackAlert = async (type: string) => {
+    if (sensoryFeedbackMethod === "Vibrate") {
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } else if (sensoryFeedbackMethod === "Audio") {
+      if (type === "end chime") {
+        loadAndPlayAudio(endChimePlayer);
+      } else if (type === "cancel alert") {
+        loadAndPlayAudio(cancelAudio);
+      } else if (type === "breathing audio") {
+        loadAndPlayAudio(breathingAudioPlayer);
+      }
+    }
+  }
 
   // Handler function triggered by the Tap on Inhalation button
   function countAndCalculateTap() {
