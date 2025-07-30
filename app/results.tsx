@@ -191,7 +191,7 @@ export default function Results() {
             {ageThresholdEnabled && <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
               <View style={Style.divider} />
               <View style={Style.dropdownContainer}>
-                <View style={{ width: 170 }}>
+                <View style={{ width: 160 }}>
                   <DropdownList label={age} data={ages} onSelect={setAge} />
                 </View>
               </View>
