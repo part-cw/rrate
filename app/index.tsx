@@ -223,7 +223,7 @@ export default function Index() {
   return (
     <View style={Style.screenContainer}>
       <View style={Style.innerContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexGrow: 1 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           {tapCountRef.current == 0 ?
             <Button
               icon="information-outline"
