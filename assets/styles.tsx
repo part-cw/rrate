@@ -98,7 +98,8 @@ export const GlobalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     backgroundColor: '#fafbfc',
     borderRadius: 8,
     // Web 
