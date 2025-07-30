@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Platform } from "react-native";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
@@ -231,7 +231,7 @@ export default function Index() {
               mode="contained"
               style={{ justifyContent: 'center', alignItems: 'center' }}
               onPress={() => { router.push("/userGuide") }}>
-              <Text>User Guide</Text>
+              User Guide
             </Button> :
             <Button
               icon="close"
@@ -239,7 +239,7 @@ export default function Index() {
               mode="contained"
               style={{ justifyContent: 'center', alignItems: 'center' }}
               onPress={() => { router.push("/") }}>
-              <Text>{t("CANCEL")}</Text>
+              {t("CANCEL")}
             </Button>}
           <Button
             icon="cog"
@@ -247,7 +247,7 @@ export default function Index() {
             mode="contained"
             style={{ justifyContent: 'center', alignItems: 'center' }}
             onPress={() => { router.push("/settings"); }}>
-            <Text>{t("SETTINGS")}</Text>
+            {t("SETTINGS")}
           </Button>
         </View>
 
@@ -259,7 +259,7 @@ export default function Index() {
         </View>
 
         {/* Using Pressable instead of React Native Button to allow for larger button size and clickable area */}
-        <View style={[Style.componentContainer, { maxWidth: 500, flexGrow: 99 }]}>
+        <View style={[Style.componentContainer, { maxWidth: Platform.OS === 'web' ? 500 : undefined, flexGrow: 99 }]}>
           <Pressable
             onPressIn={() => setIsPressed(true)}
             onPressOut={() => setIsPressed(false)}

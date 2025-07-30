@@ -12,9 +12,9 @@ export const GlobalStyles = StyleSheet.create({
   },
   innerContainer: {
     width: '100%',
-    maxWidth: 500,
+    maxWidth: Platform.OS === 'web' ? 500 : undefined,
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     minHeight: '100%',
   },
   componentContainer: {
@@ -26,7 +26,7 @@ export const GlobalStyles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#f5f6f7",
     width: '100%',
-    maxWidth: 500,
+    maxWidth: Platform.OS === 'web' ? 500 : undefined,
     // Web 
     boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
     // iOS 

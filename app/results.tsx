@@ -50,7 +50,7 @@ const babySVGMap = {
 export default function Results() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const [age, setAge] = useState<string>("Set Age");
 
@@ -67,6 +67,9 @@ export default function Results() {
   const DeflateSVG = babySVGMap[babyAnimation as keyof typeof babySVGMap]?.deflate;
   const [isInhaling, setIsInhaling] = useState(false);
   const animationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const sizeAdjustment = measurementMethod === 'timer' ? 0 : 50;
+  const animationWidth = height > 850 ? 470 - sizeAdjustment : 380 - sizeAdjustment;
+  const animationHeight = height > 850 ? 470 - sizeAdjustment : 380 - sizeAdjustment;
 
   // Calculate breaths/min for animation timing 
   const rate = Number(rrate) === 0 ? 40 : Number(rrate); // 40 is default rate for animation
@@ -197,17 +200,17 @@ export default function Results() {
 
         {/* Baby Animation and Consistency Chart */}
         <View>
-          <Pressable onPress={handleTap} style={[Style.pressableContainer, { paddingTop: measurementMethod == 'timer' ? 30 : 0, }]}>
-            <View style={[Style.SVGcontainer, { width: measurementMethod === 'timer' ? 350 : 300, height: measurementMethod === 'timer' ? 380 : 330 }]}>
+          <Pressable onPress={handleTap} style={[Style.pressableContainer, { paddingTop: measurementMethod == 'timer' ? 30 : 20, }]}>
+            <View style={[Style.SVGcontainer, { width: animationWidth, height: animationHeight }]}>
               {isInhaling && InflateSVG &&
                 <InflateSVG
-                  width={measurementMethod === 'timer' ? 350 : 300}
-                  height={measurementMethod === 'timer' ? 380 : 330}
+                  width={animationWidth}
+                  height={animationHeight}
                 />}
               {!isInhaling && DeflateSVG &&
                 <DeflateSVG
-                  width={measurementMethod === 'timer' ? 350 : 300}
-                  height={measurementMethod === 'timer' ? 380 : 330}
+                  width={animationWidth}
+                  height={animationHeight}
                 />}
             </View>
           </Pressable>
