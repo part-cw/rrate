@@ -12,7 +12,7 @@ export const GlobalStyles = StyleSheet.create({
   },
   innerContainer: {
     width: '100%',
-    maxWidth: Platform.OS === 'web' ? 500 : undefined,
+    maxWidth: Platform.OS === 'web' ? 500 : 700,
     display: 'flex',
     justifyContent: 'center',
     minHeight: '100%',
@@ -26,7 +26,7 @@ export const GlobalStyles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#f5f6f7",
     width: '100%',
-    maxWidth: Platform.OS === 'web' ? 500 : undefined,
+    maxWidth: Platform.OS === 'web' ? 500 : 700,
     // Web 
     boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
     // iOS 
@@ -98,7 +98,7 @@ export const GlobalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 14,
+    padding: 15,
     backgroundColor: '#fafbfc',
     borderRadius: 8,
     // Web 
@@ -143,6 +143,8 @@ export const GlobalStyles = StyleSheet.create({
   rateValue: {
     fontSize: 60,
     fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   divider: {
     width: '80%',

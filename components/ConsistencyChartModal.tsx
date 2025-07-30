@@ -8,18 +8,18 @@ import { useGlobalVariables } from "@/utils/globalContext";
 
 type Props = PropsWithChildren<{
   isVisible: boolean;
-  message: string;
+  age?: string;
   onClose: () => void;
 }>;
 
 // Pop-up modal dialog that displays the consistency chart and a description of how consistency is calculated.
-export default function ConsistencyChartModal({ isVisible, onClose }: Props) {
+export default function ConsistencyChartModal({ isVisible, age, onClose }: Props) {
   const router = useRouter();
   const { consistencyThreshold } = useGlobalVariables();
 
   const handleClose = () => {
     onClose();
-    router.push('/results');
+    router.push({ pathname: '/results', params: { age } }); // Pass age back to results screen to prevent reset 
   };
 
   return (

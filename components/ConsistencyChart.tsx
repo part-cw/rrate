@@ -13,10 +13,11 @@ import { Theme } from '../assets/theme';
 type ConsistencyChartProps = {
   showInfoButton?: boolean;
   showLabels?: boolean;
+  age?: string
 };
 
 // Visualizes the consistency of tap intervals by graphing taps against the median tap interval.
-export default function ConsistencyChart({ showInfoButton, showLabels }: ConsistencyChartProps) {
+export default function ConsistencyChart({ showInfoButton, showLabels, age }: ConsistencyChartProps) {
   const { consistencyThreshold, tapTimestamps, tapCountRequired, rrate } = useGlobalVariables();
   const [modalVisible, setModalVisible] = useState(false);
   const { t } = useTranslation();
@@ -187,7 +188,7 @@ export default function ConsistencyChart({ showInfoButton, showLabels }: Consist
         )}
 
         {/* Modal Dialog; only available when on Results Screen */}
-        <ConsistencyChartModal isVisible={modalVisible} message={"Message"} onClose={() => setModalVisible(false)} />
+        <ConsistencyChartModal isVisible={modalVisible} age={age} onClose={() => setModalVisible(false)} />
       </View>
     </View>
   );

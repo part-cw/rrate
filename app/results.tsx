@@ -52,13 +52,15 @@ export default function Results() {
   const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
 
-  const [age, setAge] = useState<string>("Set Age");
-
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, sensoryFeedbackAfterMeasurement, sensoryFeedbackMethod, REDCap, exportDataEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
-  const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam } = useLocalSearchParams(); // must be passed in via index.tsx
+  const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam, age: ageParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true'); // reference the local search params
   const [isRecordSaved, setIsRecordSaved] = useState<boolean>(isRecordSavedParam === 'true');
+  const [age, setAge] = useState<string>(
+    Array.isArray(ageParam) ? ageParam[0] : ageParam || "Set Age"
+  );
+
 
   const player = useAudioPlayer(audioSource);
 
@@ -216,7 +218,8 @@ export default function Results() {
           </Pressable>
 
           {/* Only show consistency chart if using rrate algorithm; too many taps otherwise */}
-          {measurementMethod == "tap" && <ConsistencyChart showInfoButton />}
+          {/* Pass age as param to prevent reset upon returning to page after closing modal */}
+          {measurementMethod == "tap" && <ConsistencyChart showInfoButton age={age} />}
 
           {/* Sets bottom buttons based on whether user has confirmed rate or not */}
           {rrateConfirmed ? (

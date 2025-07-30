@@ -20,7 +20,7 @@ export default function DropdownList({ label, data, onSelect }: { label: string;
   return (
     <View>
       <TouchableOpacity style={Style.dropdownBox} onPress={toggleDropdown}>
-        <Text style={[Style.text, { color: selected == "Set Age" ? Theme.colors['neutral-bttn'] : "black" }]}> {selected}</Text>
+        <Text style={[Style.text, { color: selected == "Set Age" ? Theme.colors['neutral-bttn'] : "black" }]}>{selected}</Text>
         <MaterialIcons name={open ? "keyboard-arrow-up" : "keyboard-arrow-down"} size={24} />
       </TouchableOpacity>
 
