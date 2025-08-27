@@ -5,12 +5,10 @@ import { useFHIRContext } from '../utils/fhirContext';
 import { fetchEndpoint } from '../utils/fhirFunctions';
 import * as Crypto from 'expo-crypto';
 
-const CLIENT_ID = 'rrate-app'; // Replace with registered client_id connected to EHR platform 
-
 // Handles initial launch of the app from either an external app (like PARA) or from an EMR. Follows OAuth 2.0 authentication protocol, with additional PKCE security.
 export default function Launch() {
   const { iss, launch, redirectURI, patient, accessToken, returnURL } = useLocalSearchParams();
-  const { launchType, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL } = useFHIRContext();
+  const { launchType, setLaunchType, setPatientId, setReturnURL, setFHIRBaseURL, clientId, redirectUri } = useFHIRContext();
   const router = useRouter();
 
   // Encodes random string in in base64 URL with high entropy, as required by OAuth 2.0
@@ -51,16 +49,12 @@ export default function Launch() {
         var transformed_verifier = await generateCodeChallenger(code_verifier); // Generate code challenge from code verifier
         var code_challenge = base64URLEncode(transformed_verifier);
 
-        const redirectUri = Platform.OS === 'web'
-          ? "https://rrate.netlify.app/callback"
-          : "rrate://callback";
-
         const scope = "launch patient/Observation.write openid fhirUser";
 
         // Authorization URL uses PKCE security 
         const authorizeUrl = authorizationEndpoint +
           `?response_type=code&` +
-          `client_id=${encodeURIComponent(CLIENT_ID)}&` +
+          `client_id=${encodeURIComponent(clientId)}&` +
           `redirect_uri=${encodeURIComponent(redirectUri)}&` +
           `scope=${encodeURIComponent(scope)}&` +
           `aud=${encodeURIComponent(simpleIss)}&` +

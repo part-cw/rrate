@@ -3,21 +3,14 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Text, View, ActivityIndicator, Platform } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
-const CLIENT_ID = 'rrate-app'; // Replace with registered client_id connected to EHR platform 
-
 // Receives code and state from OAuth2 flow to finalize login and exchange for access token
 export default function CallbackScreen() {
   const router = useRouter();
   const { code } = useLocalSearchParams();
-  const { setAccessToken, setPatientId } = useFHIRContext();
+  const { setAccessToken, setPatientId, clientId, redirectUri } = useFHIRContext();
 
   useEffect(() => {
     if (!code) return;
-
-    const redirectUri =
-      Platform.OS === 'web'
-        ? "https://rrate.netlify.app/callback"
-        : "rrate://callback";
 
     async function exchangeCodeForToken() {
       try {
@@ -38,7 +31,7 @@ export default function CallbackScreen() {
             grant_type: 'authorization_code',
             code: code.toString(),
             redirect_uri: redirectUri,
-            client_id: CLIENT_ID,
+            client_id: clientId,
             code_verifier: codeVerifier || ''
           }).toString(),
         });

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react';
+import { Platform } from 'react-native';
 
 // Save variables used in launching from external app or EMR in memory
 // NOTE: this information is not stored to disk for security, so it will reset for each session 
@@ -17,6 +18,10 @@ type fhirContextType = {
 
   returnURL: string;
   setReturnURL: (url: string) => void;
+
+  clientId: string;
+
+  redirectUri: string;
 };
 
 const FHIRContext = createContext<fhirContextType | null>(null);
@@ -27,6 +32,10 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
   const [accessToken, saveAccessToken] = useState<string>('');
   const [patientId, savePatientId] = useState<string>('');
   const [returnURL, saveReturnURL] = useState<string>('');
+  const clientId = 'rrate-app'; // Replace with registered client_id after registering with EHR platform 
+  const redirectUri = Platform.OS === 'web'
+    ? "https://rrate.netlify.app/callback"
+    : "rrate://callback";
 
   // Memory-only setters
   const setLaunchType = async (type: 'standalone' | 'app' | 'emr') => {
@@ -62,6 +71,8 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
         setPatientId,
         returnURL,
         setReturnURL,
+        clientId,
+        redirectUri
       }}
     >
       {children}
