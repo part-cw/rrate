@@ -22,16 +22,24 @@ export default function SaveDataToFile() {
   // Handles save of most recent session, posting record ID, rate, time, and tap string to local storage
   const handleSingleUpload = async () => {
     if (!recordID) {
-      setResponse('Please enter a Record ID.');
+      setResponse(t("MISSING_RECORD_ID"));
       return;
     }
+
+    // record id must be a number
+    if (!/^\d+$/.test(recordID)) {
+      console.log("Entered")
+      setResponse(t("INVALID_RECORD_ID"));
+      return;
+    }
+
     try {
       const result = await saveSessionToCSV(recordID, rrate, rrTaps, rrTime);
-      setResponse('Saved successfully!');
+      setResponse(t("SAVED_SUCCESS"));
       setRecordSaved(true);
 
     } catch (error: any) {
-      setResponse(`Save failed:\n` + error.message);
+      setResponse(`${t("SAVE_FAILED")}:\n` + error.message);
     }
   };
 
@@ -47,13 +55,13 @@ export default function SaveDataToFile() {
             color={'#000000'}
             style={{ padding: 20 }}
           />
-          <Text style={Style.pageTitle}>Save Data</Text>
-          <Text style={[Style.text, { paddingBottom: 10 }]} > <Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} {t("RRATE_UNIT")} </Text>
-          <Text style={[Style.text, { paddingBottom: 10 }]}> <Text style={{ fontWeight: 'bold' }}>Number of Taps:</Text> {tapTimestamps.length} </Text>
-          <Text style={Style.text}> <Text style={{ fontWeight: 'bold' }}>Time:</Text> {rrTime} </Text>
+          <Text style={Style.pageTitle}>{t("SAVE_DATA")}</Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]} > <Text style={{ fontWeight: 'bold' }}>{t("RATE")}</Text> {rrate} {t("RRATE_UNIT")} </Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]}> <Text style={{ fontWeight: 'bold' }}>{t("NUM_OF_TAPS")}</Text> {tapTimestamps.length} </Text>
+          <Text style={Style.text}> <Text style={{ fontWeight: 'bold' }}>{t("TIME")}</Text> {rrTime} </Text>
           <View style={{ width: '50%' }}>
             <TextInput
-              label="Record ID"
+              label={t("RECORD_ID")}
               value={recordID}
               style={[Style.textField, { marginBottom: 0 }]}
               onChangeText={text => setRecordID(text)}

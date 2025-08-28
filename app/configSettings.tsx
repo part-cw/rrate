@@ -87,7 +87,7 @@ export default function ConfigSettings() {
                   </View>
                   {LongitudinalStudy && (
                     <TextInput
-                      label="Event"
+                      label={t("EVENT")}
                       value={LongitudinalStudyEvent}
                       onChangeText={text => setLongitudinalStudyEvent(text)} />)}
                 </View>
@@ -109,10 +109,10 @@ export default function ConfigSettings() {
                     }} />
                   </View>
                   {UsingRepeatableInstruments && (
-                    <TextInput label="Instrument" value={RepeatableInstrument} onChangeText={text => setRepeatableInstrument(text)} />)}
+                    <TextInput label={t("FORM")} value={RepeatableInstrument} onChangeText={text => setRepeatableInstrument(text)} />)}
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Checkbox label="Upload After Each Measurement" checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
+                  <Checkbox label={t("UPLOAD_AFTER_MEASUREMENT")} checked={UploadSingleRecord} onChange={() => setUploadSingleRecord(!UploadSingleRecord)} />
                 </View>
               </View>
             )}
@@ -121,7 +121,7 @@ export default function ConfigSettings() {
 
         {/* Measurement Method Selection*/}
         <View style={[Style.floatingContainer]}>
-          <Text style={Style.heading}> Measurement Method </Text>
+          <Text style={Style.heading}>{t("MEASUREMENT_METH")}</Text>
           <RadioButtonGroup
             options={[
               { label: t("CHECK"), value: 'tap' },
@@ -137,7 +137,7 @@ export default function ConfigSettings() {
 
         {/* Number of Taps Selection*/}
         <View style={Style.floatingContainer}>
-          <Text style={Style.heading}>Taps </Text>
+          <Text style={Style.heading}>{t("TAPS")}</Text>
           <View style={{ paddingVertical: 20 }}>
             <Text style={Style.text}>{t("CONSISTENCY_NUM_TAPS")}</Text>
           </View>
@@ -173,9 +173,9 @@ export default function ConfigSettings() {
 
         {/* Consistency Threshold Selection*/}
         <View style={Style.floatingContainer}>
-          <Text style={Style.heading}>Consistency Threshold </Text>
+          <Text style={Style.heading}>{t("CONST_THRESHOLD")}</Text>
           <View style={{ paddingVertical: 20 }}>
-            <Text style={Style.text}>{t("CONSISTENCY_THRESH")}</Text>
+            <Text style={Style.text}>{t("CONST_THRESHOLD_DESC")}</Text>
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Slider

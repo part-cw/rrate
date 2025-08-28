@@ -42,7 +42,7 @@ export default function PatientModelPicker() {
 
   return (
     <View style={Style.floatingContainer} >
-      <Text style={Style.heading}> Patient Model </Text>
+      <Text style={Style.heading}>{t("PATIENT_MODEL")}</Text>
       <View style={{ paddingTop: 30 }}>
         <View style={{ alignItems: 'center' }}>
           <Image
@@ -62,7 +62,7 @@ export default function PatientModelPicker() {
           <Pressable onPress={handlePrev} style={{ padding: 5 }}>
             <IconButton icon="arrow-left-drop-circle-outline" size={40} disabled={currentBaby == 1} />
           </Pressable>
-          <Text style={Style.text}> Baby {currentBaby} </Text>
+          <Text style={Style.text}>{t("BABY")} {currentBaby} </Text>
           <Pressable onPress={handleNext} style={{ padding: 10 }}>
             <IconButton icon="arrow-right-drop-circle-outline" size={40} disabled={currentBaby == 6} />
           </Pressable>

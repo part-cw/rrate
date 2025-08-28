@@ -35,16 +35,16 @@ export default function Settings() {
   const [dataForExportStored, setDataForExportStored] = useState<boolean>(false);
 
   // ADD THIS FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
-  // const languages = [
-  //   'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
-  //   'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
-  // ];
-
   const languages = [
-    'English'
+    'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
+    'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
   ];
 
-  const audioOptions = ["Audio", t("VIBRATE_SOUND")];
+  // const languages = [
+  //   'English'
+  // ];
+
+  const audioOptions = [t("AUDIO"), t("VIBRATE")];
 
   // On load, checks to see if REDCap data is stored in AsyncStorage or if there is data stored for export
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Settings() {
         const result = await storedREDCapDataExists();
         setREDCapDataStored(result);
         if (!result) {
-          setResponse('No saved sessions for upload.');
+          setResponse(t("NO_SAVED_SESSIONS"));
         }
       };
       checkREDCapData();
@@ -70,7 +70,7 @@ export default function Settings() {
   // Handles bulk upload of stored measurements to REDCap
   const handleBulkUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
-      setResponse(`Missing Info:\n Please enter your REDCap URL and API token in Settings first.`);
+      setResponse(`${t("MISSING_INFO")}:\n ${t("MISSING_REDCAP")}`);
       return;
     }
 
@@ -116,9 +116,9 @@ export default function Settings() {
 
       await deleteREDCapDatabase();
       setREDCapDataStored(false);
-      setResponse('All sessions uploaded successfully and local database cleared.');
+      setResponse(t("ALL_SESSIONS_SAVED"));
     } catch (error: any) {
-      setResponse('Upload failed:\nPlease check your REDCap settings and try again.');
+      setResponse(`${t("UPLOAD_FAILED")}:\n${t("MISSING_REDCAP")}`);
       console.log('Error uploading to REDCap:', error.message || error);
     }
   };
@@ -134,38 +134,38 @@ export default function Settings() {
 
         {/* Language Selection */}
         <View style={[Style.floatingContainer, { zIndex: 100 }]}>
-          <Text style={[Style.heading, { marginBottom: 10 }]}>Select Language</Text>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>{t("SLCT_LANGUAGE")}</Text>
           <DropDown label={selectedLanguage} data={languages} onSelect={(val) => setSelectedLanguage(val)} />
         </View>
 
         {/* Patient Age Interpretation Dropdown */}
         <View style={Style.floatingContainer}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={Style.heading}>Patient Age Interpretation </Text>
+            <Text style={Style.heading}>{t("AGE_INTRP")}</Text>
             <Switch value={ageThresholdEnabled}
               onValueChange={ageThresholdToggle} />
           </View>
           <View style={{ marginVertical: 20 }}>
-            <Text style={[Style.text, { color: "#707070" }]}>Uses age-based thresholds to classify the respiratory rate as
-              <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> normal</Text> or
-              <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> high.</Text> </Text>
+            <Text style={[Style.text, { color: "#707070" }]}>{t("AGE_INTRP_DESC")}
+              <Text style={{ color: Theme.colors.secondary, fontWeight: "bold" }}> {t("NORMAL")}</Text> {t("OR")}
+              <Text style={{ color: Theme.colors.tertiary, fontWeight: "bold" }}> {t("HIGH")}</Text> </Text>
           </View>
         </View>
 
         {/* Sensory Feedback - Audio and Vibrations */}
         <View style={Style.floatingContainer}>
-          {Platform.OS !== 'web' ? <Text style={[Style.heading, { marginBottom: 10 }]}>Sensory Feedback</Text> :
-            <Text style={[Style.heading, { marginBottom: 10 }]}>Audio</Text>}
+          {Platform.OS !== 'web' ? <Text style={[Style.heading, { marginBottom: 10 }]}>{t("SENS_FEEDBACK")}</Text> :
+            <Text style={[Style.heading, { marginBottom: 10 }]}>{t("AUDIO")}</Text>}
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {/* Only allow vibrations on mobile */}
             {Platform.OS !== "web" &&
               <ToggleButton values={audioOptions} selectedValue={sensoryFeedbackMethod} iconNames={["volume-high", "vibrate"]} onChange={(value) => setSensoryFeedbackMethod(value)} />}
           </View>
           <View style={{ margin: 10 }}>
-            <Checkbox label="Breathing during measurement" checked={sensoryFeedbackDuringMeasurement} onChange={() => setSensoryFeedbackDuringMeasurement(!sensoryFeedbackDuringMeasurement)} />
-            <Checkbox label="Breathing after measurement" checked={sensoryFeedbackAfterMeasurement} onChange={() => setSensoryFeedbackAfterMeasurement(!sensoryFeedbackAfterMeasurement)} />
-            <Checkbox label="Alert when measurement is complete" checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
-            <Checkbox label="Alert when measurement has failed" checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
+            <Checkbox label={t("BREATHING_DURING")} checked={sensoryFeedbackDuringMeasurement} onChange={() => setSensoryFeedbackDuringMeasurement(!sensoryFeedbackDuringMeasurement)} />
+            <Checkbox label={t("BREATHING_AFTER")} checked={sensoryFeedbackAfterMeasurement} onChange={() => setSensoryFeedbackAfterMeasurement(!sensoryFeedbackAfterMeasurement)} />
+            <Checkbox label={t("ALERT_COMPLETE")} checked={endChimeEnabled} onChange={() => setEndChimeEnabled(!endChimeEnabled)} />
+            <Checkbox label={t("ALERT_FAILED")} checked={cancelAlertEnabled} onChange={() => setCancelAlertEnabled(!cancelAlertEnabled)} />
           </View>
         </View>
 
@@ -174,13 +174,13 @@ export default function Settings() {
 
         {/* Upload to REDCap */}
         {Platform.OS !== 'web' && REDCap && <View style={Style.floatingContainer}>
-          <Text style={[Style.heading, { marginBottom: 10 }]}>Upload to REDCap</Text>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>{t("UPLOAD_REDCAP")}</Text>
           <View >
-            <Text style={[Style.text, { color: "#707070" }]}>Import all saved measurements to your REDCap project.</Text>
+            <Text style={[Style.text, { color: "#707070" }]}>{t("IMPORT_REDCAP")}</Text>
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
             {REDCapDataStored &&
-              <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>Upload</Button>}
+              <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.tertiary, width: 200 }} onPress={() => handleBulkUpload()}>{t("UPLOAD_SIMPLE")}</Button>}
           </View>
           {response && (
             <View>
@@ -191,12 +191,12 @@ export default function Settings() {
 
         {/* Data Export */}
         {!REDCap && <View style={Style.floatingContainer}>
-          <Text style={[Style.heading, { marginBottom: 10 }]}>Export Data</Text>
-          <Text style={[Style.text, { color: "#707070" }]}>Download up to 200 measurements as a CSV file.</Text>
+          <Text style={[Style.heading, { marginBottom: 10 }]}>{t("EXPORT")}</Text>
+          <Text style={[Style.text, { color: "#707070" }]}>{t("DOWNLOAD")}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Switch value={exportDataEnabled}
               onValueChange={setExportDataEnabled} />
-            <Text style={[Style.text, { paddingHorizontal: 20, paddingVertical: 10 }]}>Save measurements for download.</Text>
+            <Text style={[Style.text, { paddingHorizontal: 20, paddingVertical: 10 }]}>{t("SAVE_DOWNLOAD")}</Text>
           </View>
           {dataForExportStored && <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
             <Button mode="contained" contentStyle={{ backgroundColor: Theme.colors.secondary, width: 200 }}
@@ -204,7 +204,7 @@ export default function Settings() {
                 exportCSV();
                 setDataForExportStored(false);
               }}>
-              Export CSV</Button>
+              {t("EXPORT_CSV")}</Button>
           </View>}
         </View>
         }
@@ -216,7 +216,7 @@ export default function Settings() {
           }]}>
 
             <EvilIcons name="lock" size={35} color="black" />
-            <Text style={Style.heading}>Configuration Settings</Text>
+            <Text style={Style.heading}>{t("CONFIG_SETT")}</Text>
           </View>
         </Pressable>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Platform } from 'react-native';
-import { GlobalStyles as Style } from '@/assets/styles';
+import { GlobalStyles as Style } from '../assets/styles';
 
 // Shows a timer that counts from 0 to 60 secs
 export default function Timer({ time }: { time: number }) {

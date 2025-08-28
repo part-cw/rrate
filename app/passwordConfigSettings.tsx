@@ -30,7 +30,7 @@ export default function PasswordPage() {
       setConfigSettingsUnlocked(true);
       router.replace('/configSettings');
     } else {
-      setError('Incorrect password');
+      setError(t("INCORRECT_PASS"));
     }
   };
 
@@ -46,10 +46,10 @@ export default function PasswordPage() {
             color={'#000'}
             style={{ marginBottom: 10 }}
           />
-          <Text style={Style.pageTitle}>Configuration Settings</Text>
-          <Text style={[Style.text, { textAlign: 'center' }]}>Please enter the admin password to access these settings.</Text>
+          <Text style={Style.pageTitle}>{t("CONFIG_SETT")}</Text>
+          <Text style={[Style.text, { textAlign: 'center' }]}>{t("ADMIN_PASS")}</Text>
           <TextInput
-            label="Password"
+            label={t("PASSWORD")}
             secureTextEntry
             value={passwordField}
             onChangeText={setPasswordField}
@@ -62,7 +62,7 @@ export default function PasswordPage() {
               {t("BACK")}
             </Button>
             <Button mode="contained" onPress={handleSubmit} style={{ marginHorizontal: 5 }} >
-              Access Settings
+              {t("ACCESS_SETT")}
             </Button>
           </View>
         </View >

@@ -15,8 +15,6 @@ export default function ToggleButton({ values, selectedValue, iconNames, onChang
     <View style={Style.toggleButtonContainer}>
       {values.map((option, index) => {
         const selected = selectedValue === option;
-        const isFirst = index === 0;
-        const isLast = index === values.length - 1;
 
         return (
           <Pressable

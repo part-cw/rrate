@@ -1,5 +1,5 @@
 import { Modal, View, Text } from "react-native";
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 import { GlobalStyles as Style } from "@/assets/styles";
 import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -33,7 +33,7 @@ export default function AlertModal({ isVisible, message, onClose }: Props) {
             color={'#000000'}
             style={{ padding: 20 }}
           />
-          <Text>{message}</Text>
+          <Text style={{ textAlign: 'center' }}>{message}</Text>
           <View style={Style.buttonRow}>
             <Button
               icon="arrow-u-right-bottom"

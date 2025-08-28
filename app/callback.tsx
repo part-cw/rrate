@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Text, View, ActivityIndicator, Platform } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import { useFHIRContext } from '../utils/fhirContext';
 
 // Receives code and state from OAuth2 flow to finalize login and exchange for access token

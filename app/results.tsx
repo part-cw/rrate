@@ -8,7 +8,7 @@ import { useAudioPlayer } from 'expo-audio';
 import loadAndPlayAudio from '../utils/audioFunctions';
 import { Linking } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { GlobalStyles as Style } from '@/assets/styles';
+import { GlobalStyles as Style } from '../assets/styles';
 import { useGlobalVariables } from '../utils/globalContext';
 import { useFHIRContext } from '../utils/fhirContext';
 import { sendFHIRObservation, sendFHIRObservationToApp } from '../utils/fhirFunctions';
@@ -17,7 +17,6 @@ import ConsistencyChart from '../components/ConsistencyChart';
 import useTranslation from '../utils/useTranslation';
 
 // LOCAL VARIABLES
-const ages = ['<2 months', '2–12 months', '>1 year'];
 const audioSource = require('../assets/audio/breathing.mp3');
 const babySVGMap = {
   1: {
@@ -52,13 +51,15 @@ export default function Results() {
   const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
 
+  const ages = [`<2 ${t("MONTHS")}`, `2–12 ${t("MONTHS")}`, `>1 ${t("YEAR")}`];
+
   const { rrate, babyAnimation, measurementMethod, ageThresholdEnabled, sensoryFeedbackAfterMeasurement, sensoryFeedbackMethod, REDCap, exportDataEnabled } = useGlobalVariables();
   const { launchType, setLaunchType, patientId, accessToken, returnURL, FHIRBaseURL } = useFHIRContext();
   const { rrateConfirmed: rrateConfirmedParam, isRecordSaved: isRecordSavedParam, age: ageParam } = useLocalSearchParams(); // must be passed in via index.tsx
   const [rrateConfirmed, setRRateConfirmed] = useState<boolean>(rrateConfirmedParam === 'true'); // reference the local search params
   const [isRecordSaved, setIsRecordSaved] = useState<boolean>(isRecordSavedParam === 'true');
   const [age, setAge] = useState<string>(
-    Array.isArray(ageParam) ? ageParam[0] : ageParam || "Set Age"
+    Array.isArray(ageParam) ? ageParam[0] : ageParam || t("SET_AGE")
   );
 
 
@@ -232,7 +233,7 @@ export default function Results() {
                     mode="contained"
                     onPress={() => router.push("/saveDataToREDCap")}
                     style={{ width: '100%', marginVertical: 2, marginHorizontal: 5 }}>
-                    Save to REDCap
+                    {t("REDCAP_SAVE")}
                   </Button>
                 }
                 <Button
@@ -248,7 +249,7 @@ export default function Results() {
           ) : (
             <View style={[Style.floatingContainer, Style.darkButtonContainer]}>
               <Text style={{ fontWeight: 'bold', color: "#ffffff" }}>{t("RR_MATCH")} </Text>
-              <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>Tap the animation to sync with inhalation</Text>
+              <Text style={{ color: Theme.colors['neutral-bttn'], textAlign: 'center' }}>{t("TAP_TO_SYNC")}</Text>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }} >
                 <Button
                   icon="check"

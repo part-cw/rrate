@@ -6,7 +6,7 @@ import { Theme } from '../assets/theme';
 import { useRouter } from 'expo-router';
 import useTranslation from '../utils/useTranslation';
 import { uploadRecordToREDCap } from '../utils/redcap';
-import { GlobalStyles as Style } from '@/assets/styles';
+import { GlobalStyles as Style } from '../assets/styles';
 import { saveREDCapSession } from '../utils/storeSessionData';
 
 // Page for saving single measurement to REDCap
@@ -27,7 +27,14 @@ export default function SaveDataToREDCap() {
   // Handles upload of most recent session, posting record ID, rate, time, and tap string to REDCap
   const handleSingleUpload = async () => {
     if (!REDCapURL || !REDCapAPI) {
-      setResponse('Please enter your REDCap URL and API token in Settings first.');
+      setResponse(t("MISSING_REDCAP"));
+      return;
+    }
+
+    // record id must be a number
+    if (!/^\d+$/.test(recordID)) {
+      console.log("Entered")
+      setResponse(t("INVALID_RECORD_ID"));
       return;
     }
 
@@ -53,24 +60,30 @@ export default function SaveDataToREDCap() {
       });
 
       setIsRecordUploaded(true);
+      setResponse(`${t("UPLOAD_SUCCESS")}!`);
       console.log('Upload result for Record ID ' + recordID + ':' + result);
-      setResponse('Upload successful!');
-
     } catch (error: any) {
-      setResponse(`Upload failed:\nPlease check your REDCap settings and try again.`);
+      setResponse(`${t("UPLOAD_FAILED")}:\n${t("MISSING_REDCAP")}`);
       console.log(`Error uploading to REDCap:\n`, error.message || error);
     }
   };
 
   // Handles saving most recent session to REDCap storage
   const handleSingleSave = async () => {
+    // record id must be a number
+    if (!/^\d+$/.test(recordID)) {
+      console.log("Entered")
+      setResponse(t("INVALID_RECORD_ID"));
+      return;
+    }
+
     try {
       await saveREDCapSession(recordID, rrate, rrTime, rrTaps);
-      setResponse("Session saved.");
+      setResponse(t("SESSION_SAVED"));
       setIsRecordSaved(true);
 
     } catch (error: any) {
-      setResponse(`Error saving session:\n` + error.message);
+      setResponse(`${t("SESSION_ERROR")}:\n` + error.message);
     }
   }
 
@@ -84,12 +97,12 @@ export default function SaveDataToREDCap() {
             source={require('../assets/images/REDCap-icon.png')}
             style={{ width: 67, height: 70, marginBottom: 20 }}
           />
-          <Text style={Style.pageTitle}>Save Data to REDCap</Text>
-          <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Rate:</Text> {rrate} breaths/min </Text>
-          <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>Number of taps:</Text> {tapTimestamps.length} </Text>
+          <Text style={Style.pageTitle}>{t("REDCAP_SAVE")}</Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>{t("RATE")}</Text> {rrate} {t("RRATE_UNIT")} </Text>
+          <Text style={[Style.text, { paddingBottom: 10 }]}><Text style={{ fontWeight: 'bold' }}>{t("NUM_OF_TAPS")}</Text> {tapTimestamps.length} </Text>
           <View style={{ width: '50%' }}>
             <TextInput
-              label="Record ID"
+              label={t("RECORD_ID")}
               value={recordID}
               style={[Style.textField, { marginBottom: 0 }]}
               onChangeText={text => setRecordID(text)}
@@ -111,7 +124,7 @@ export default function SaveDataToREDCap() {
             {isRecordSaved && !isRecordUploaded && UploadSingleRecord &&
               <View style={{ flexDirection: 'column', alignItems: 'center', gap: 5 }}>
                 <Button icon="upload" buttonColor={Theme.colors.secondary} mode="contained" style={{ marginHorizontal: 5, }} onPress={() => handleSingleUpload()}>
-                  {t("UPLOAD")}
+                  {t("UPLOAD_SIMPLE")}
                 </Button>
                 <Button icon="arrow-u-right-bottom" buttonColor={Theme.colors["neutral-bttn"]} mode="contained" onPress={() => router.push("/")} style={{ width: '100%' }}>
                   {t("RESTART")} </Button>

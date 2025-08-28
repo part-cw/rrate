@@ -29,29 +29,25 @@ export default function Tutorial() {
               color={'#000000'}
               style={{ padding: 20 }}
             />
-            <Text style={Style.pageTitle}>How to Use RRate</Text>
-            <Text style={[Style.text, { textAlign: 'center', paddingVertical: 20 }]}>RRate helps healthcare providers accurately measure a patient's respiratory rate. Compared to traditional methods,
-              RRate is faster, easy to use, and reduces rounding errors.</Text>
+            <Text style={Style.pageTitle}>{t("HOW_TO")}</Text>
+            <Text style={[Style.text, { textAlign: 'center', paddingVertical: 20 }]}>{t("INTRO")}</Text>
           </View>
           <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, gap: 15 }}>
             <View style={[Style.tutorialBox, { backgroundColor: "rgba(39, 92, 172, 0.10)" }]}>
-              <Text style={[Style.heading, { textAlign: 'center' }]}>1. Take a Measurement</Text>
-              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>Tap the screen each time the patient inhales. The app will measure the median of intervals between breaths
-                to estimate the rate and finish the measurement once a consistent rate is detected.</Text>
+              <Text style={[Style.heading, { textAlign: 'center' }]}>1. {t("TAKE_MEASUREMENT")}</Text>
+              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>{t("TAKE_MEAS_DESC")}</Text>
             </View>
             <View style={[Style.tutorialBox, { backgroundColor: "rgba(39, 92, 172, 0.20)" }]}>
-              <Text style={[Style.heading, { textAlign: 'center' }]}>2. Compare with the Patient</Text>
-              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>Once RRate has calculated a consistent respiratory rate, it displays the rate alongside an animation of a baby breathing
-                at that rate. Use the animation to visually compare with the patient’s breathing. Tap on the animation to sync it with the patient's inhalation.</Text>
+              <Text style={[Style.heading, { textAlign: 'center' }]}>2. {t("COMPARE_W_PATIENT")}</Text>
+              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>{t("COMPARE_W_PATIENT_DESC")}</Text>
             </View>
             <View style={[Style.tutorialBox, { backgroundColor: "rgba(39, 92, 172, 0.30)" }]}>
-              <Text style={[Style.heading, { textAlign: 'center' }]}>3. Review the Consistency</Text>
-              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>RRate estimates a rate based on the previous {tapCountRequired} consistent taps. The consistency analysis chart
-                shows whether your taps were fast, slow or consistent with the median time interval during the measurement.</Text>
+              <Text style={[Style.heading, { textAlign: 'center' }]}>3. {t("REVIEW_CONST")}</Text>
+              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>{t("REVIEW_CONST_DESC")}</Text>
             </View>
             <View style={[Style.tutorialBox, { backgroundColor: "rgba(39, 92, 172, 0.40)" }]}>
-              <Text style={[Style.heading, { textAlign: 'center' }]}>4. Confirm the Rate</Text>
-              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>Select "Yes" if the rate matches the patient's breathing, and "No" if you need to redo the measurement.</Text>
+              <Text style={[Style.heading, { textAlign: 'center' }]}>4. {t("CONFIRM")}</Text>
+              <Text style={[Style.text, { textAlign: 'center', paddingVertical: 10 }]}>{t("CONFIRM_DESC")}</Text>
             </View>
           </View>
         </View>

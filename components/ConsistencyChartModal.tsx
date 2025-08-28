@@ -1,10 +1,11 @@
 import { Modal, View, Text } from "react-native";
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, use } from 'react';
 import { GlobalStyles as Style } from "@/assets/styles";
 import { IconButton } from 'react-native-paper';
 import { useRouter } from "expo-router";
+import useTranslation from '../utils/useTranslation';
 import ConsistencyChart from "./ConsistencyChart";
-import { useGlobalVariables } from "@/utils/globalContext";
+import { useGlobalVariables } from "../utils/globalContext";
 
 type Props = PropsWithChildren<{
   isVisible: boolean;
@@ -15,7 +16,11 @@ type Props = PropsWithChildren<{
 // Pop-up modal dialog that displays the consistency chart and a description of how consistency is calculated.
 export default function ConsistencyChartModal({ isVisible, age, onClose }: Props) {
   const router = useRouter();
+  const { t } = useTranslation();
   const { consistencyThreshold } = useGlobalVariables();
+
+  const rawTranslation = t("CONSISTENCY_DESC");
+  const message = rawTranslation.replace("{threshold}", consistencyThreshold.toString());
 
   const handleClose = () => {
     onClose();
@@ -32,9 +37,8 @@ export default function ConsistencyChartModal({ isVisible, age, onClose }: Props
             right: 5,
             zIndex: 1,
           }} onPress={handleClose} />
-          <Text style={[Style.heading, { paddingTop: 15 }]}>Consistency Analysis</Text>
-          <Text style={[Style.text, { marginHorizontal: 15, marginVertical: 20, textAlign: 'center' }]}>A tap is consistent if it falls within <Text style={{ fontWeight: "bold" }}>{consistencyThreshold}%</Text> of the median interval.
-            {'\n'}The grey area shows this range.</Text>
+          <Text style={[Style.heading, { paddingTop: 15 }]}>{t("CONSISTENCY_ANALYSIS")}</Text>
+          <Text style={[Style.text, { marginHorizontal: 15, marginVertical: 20, textAlign: 'center' }]}>{message}</Text>
           <View style={{ marginVertical: 30 }}>
             <ConsistencyChart showLabels />
 

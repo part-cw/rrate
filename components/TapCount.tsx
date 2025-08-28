@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { GlobalStyles as Style } from "@/assets/styles";
+import useTranslation from "../utils/useTranslation";
 
 type TapCountProps = {
   tapCount: number;
@@ -7,11 +8,12 @@ type TapCountProps = {
 
 // TapCount displays a blue circle for each tap on the Tap on Inhalation button.
 export default function TapCount({ tapCount }: TapCountProps) {
+  const { t } = useTranslation();
 
   return (
     <View style={Style.floatingContainer}>
       <Text style={{ fontWeight: 'bold', textAlign: 'center', userSelect: "none" }}>
-        Tap Count
+        {t("TAP_COUNT")}
       </Text>
       <View style={Style.circleRow}>
         {tapCount > 0 ? (
