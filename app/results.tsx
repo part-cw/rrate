@@ -128,6 +128,7 @@ export default function Results() {
   // If no redirection is needed, variable change will cause button logic to show restart button on animation screen.
   const handleCorrectMeasurement = async () => {
     setRRateConfirmed(true);
+    console.log("LAUNCH type is", launchType);
     if (launchType === 'app') {
       const fullUrl = await sendFHIRObservationToApp(patientId, rrate, returnURL);
       setLaunchType('standalone'); // reset launch type to standalone for next use
