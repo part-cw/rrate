@@ -34,13 +34,14 @@ export const FHIRContextProvider = ({ children }: { children: React.ReactNode })
   const [patientId, savePatientId] = useState<string>('');
   const [returnURL, saveReturnURL] = useState<string>('');
   const clientId = 'rrate-app'; // Replace with registered client_id after registering with EHR platform 
-  // const redirectUri = Platform.OS === 'web'
-  //   ? "https://rrate.netlify.app/callback"
-  //   : "rrate://callback";
-
   const redirectUri = Platform.OS === 'web'
-    ? "http://localhost:8081/callback"
+    ? "https://rrate.netlify.app/callback"
     : "rrate://callback";
+
+  // USED FOR TESTING WITH EMR SANDBOX ON WEB
+  // const redirectUri = Platform.OS === 'web'
+  //   ? "http://localhost:8081/callback"
+  //   : "rrate://callback";
 
   // AsyncStorage keys
   const keys = {
