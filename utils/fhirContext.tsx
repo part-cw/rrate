@@ -17,12 +17,12 @@ type fhirContextType = {
   patientId: string;
   setPatientId: (id: string) => Promise<void>;
 
-  returnURL: string;
+  returnURL: string; // the URL that RRate will redirect to after the measurement is complete
   setReturnURL: (url: string) => void;
 
   clientId: string;
 
-  redirectUri: string;
+  redirectUri: string; // the redirect uri corresponds to the callback page that launch.tsx redirects to, provided the tokens are verified
 };
 
 const FHIRContext = createContext<fhirContextType | null>(null);
