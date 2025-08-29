@@ -48,7 +48,7 @@ const translations = {
     CONFIRM_DESC: "Select \"Yes\" if the rate matches the patient's breathing, and \"No\" if you need to redo the measurement.",
     SLCT_LANGUAGE: "Select Language",
     AGE_INTRP: "Patient Age Interpretation",
-    AGE_INTRP_DESC: "Uses age-based thresholds to classify the respiratory rate as.",
+    AGE_INTRP_DESC: "Uses age-based thresholds to classify the respiratory rate as",
     SENS_FEEDBACK: "Sensory Feedback",
     AUDIO: "Audio",
     VIBRATE: "Vibrate",
