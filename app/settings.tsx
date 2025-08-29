@@ -35,14 +35,14 @@ export default function Settings() {
   const [dataForExportStored, setDataForExportStored] = useState<boolean>(false);
 
   // ADD THIS FOR LATER VERSIONS THAT SUPPORT MULTIPLE LANGUAGES
-  const languages = [
-    'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
-    'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
-  ];
-
   // const languages = [
-  //   'English'
+  //   'Amharic', 'Aymara', 'Dinka', 'English', 'Español',
+  //   'Français', 'Khmer', 'Luganda', 'Português', 'Quechua',
   // ];
+
+  const languages = [
+    'English'
+  ];
 
   const audioOptions = [t("AUDIO"), t("VIBRATE")];
 
