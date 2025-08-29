@@ -140,7 +140,11 @@ export default function Results() {
     } else if (launchType === 'emr') {
       setLaunchType('standalone'); // reset launch type to standalone for next use
       await sendFHIRObservation(FHIRBaseURL, patientId, rrate, accessToken);
-      window.location.href = returnURL;
+      if (returnURL !== "") {
+        window.location.href = returnURL
+      } else {
+        router.push('/');
+      }
     } else if (REDCap) { // standalone launch
       router.push('/saveDataToREDCap');
     } else if (exportDataEnabled) {

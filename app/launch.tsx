@@ -33,7 +33,7 @@ export default function Launch() {
       // Launched from EMR
       if (iss && launch) {
         setLaunchType('emr');
-        if (returnURL) setReturnURL(returnURL.toString()); // if EMR provides a return URL
+        setReturnURL(returnURL?.toString() || ''); // if EMR provides a return URL; if not, use empty string to replace previous return url in AsyncStorage
         setFHIRBaseURL(iss.toString());
         const simpleIss = Array.isArray(iss) ? iss[0] : iss; // sometimes iss is an array, handle that case
 
